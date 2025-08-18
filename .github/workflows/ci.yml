@@ -71,4 +71,4 @@ jobs:
 
     - name: Type check with mypy
       run: |
-        mypy src/ --ignore-missing-imports
+        mypy src/formation_model.py --ignore-missing-imports

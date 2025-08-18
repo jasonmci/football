@@ -1,4 +1,3 @@
-import pytest
 from typing import cast
 from src.formation_model import (
     OffFormation,

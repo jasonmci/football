@@ -35,9 +35,11 @@ defense = DefFormation()
 o(offense, "left", "line", 1)      # Left tackle
 o(offense, "middle", "line", 3)    # Center and guards  
 o(offense, "right", "line", 1)     # Right tackle
-o(offense, "middle", "backfield", 1) # Running back
+o(offense, "right", "line",  1)      # Tight end
+o(offense, "middle", "backfield", 2) # Running back
 o(offense, "left", "wide", 1)      # Left receiver
-o(offense, "right", "wide", 1)     # Right receiver
+o(offense, "right", "wide", 2)     # Right receiver
+
 
 # Build a defensive formation
 d(defense, "left", "line", 1)      # Left end
