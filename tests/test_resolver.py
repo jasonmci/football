@@ -1,13 +1,14 @@
 from typing import cast
 from unittest.mock import patch
-from src.resolver import (
+from football.resolver import (
     lane_for_play,
     lane_modifier,
+    defensive_overlay_adjust,
     resolve_play,
     BOUNDS,
 )
-from src.formation_model import OffFormation, DefFormation, o, d, Lane
-from src.play_v_play_matrix import BASE
+from football.formation_model import OffFormation, DefFormation, o, d, Lane
+from football.play_v_play_matrix import BASE
 
 
 class TestLaneForPlay:
@@ -186,6 +187,87 @@ class TestLaneModifier:
         assert result2 == -3
 
 
+class TestDefensiveOverlayAdjust:
+    """Test cases for the defensive_overlay_adjust function."""
+
+    def test_no_overlay_tags(self):
+        """Test with empty overlay tags."""
+        result = defensive_overlay_adjust("inside_run", "middle", {})
+        assert result == 0
+
+    def test_run_commit_with_run_play(self):
+        """Test run_commit overlay with run play."""
+        overlay_tags = {"call": "run_commit"}
+        result = defensive_overlay_adjust("inside_run", "middle", overlay_tags)
+        assert result == 1
+
+    def test_run_commit_with_pass_play(self):
+        """Test run_commit overlay with pass play."""
+        overlay_tags = {"call": "run_commit"}
+        result = defensive_overlay_adjust("short_pass", "middle", overlay_tags)
+        assert result == -1
+
+    def test_blitz_with_pass_in_blitz_lane(self):
+        """Test blitz overlay with pass play in blitzed lane."""
+        overlay_tags = {"call": "blitz", "lanes": ("left", "middle")}
+        result = defensive_overlay_adjust("short_pass", "left", overlay_tags)
+        assert result == 2
+
+    def test_blitz_with_pass_not_in_blitz_lane(self):
+        """Test blitz overlay with pass play not in blitzed lane."""
+        overlay_tags = {"call": "blitz", "lanes": ("left", "middle")}
+        result = defensive_overlay_adjust("short_pass", "right", overlay_tags)
+        assert result == 0
+
+    def test_blitz_with_outside_run_not_in_blitz_lane(self):
+        """Test blitz overlay with outside run not in blitzed lane."""
+        overlay_tags = {"call": "blitz", "lanes": ("left",)}
+        result = defensive_overlay_adjust("outside_run", "right", overlay_tags)
+        assert result == -1
+
+    def test_blitz_with_outside_run_in_blitz_lane(self):
+        """Test blitz overlay with outside run in blitzed lane."""
+        overlay_tags = {"call": "blitz", "lanes": ("left",)}
+        result = defensive_overlay_adjust("outside_run", "left", overlay_tags)
+        assert result == 0
+
+    def test_blitz_with_inside_run(self):
+        """Test blitz overlay with inside run (should have no special effect)."""
+        overlay_tags = {"call": "blitz", "lanes": ("left", "right")}
+        result = defensive_overlay_adjust("inside_run", "middle", overlay_tags)
+        assert result == 0
+
+    def test_short_shell_with_short_pass(self):
+        """Test short_shell overlay with short pass."""
+        overlay_tags = {"call": "short_shell"}
+        result = defensive_overlay_adjust("short_pass", "middle", overlay_tags)
+        assert result == 1
+
+    def test_short_shell_with_other_play(self):
+        """Test short_shell overlay with other play."""
+        overlay_tags = {"call": "short_shell"}
+        result = defensive_overlay_adjust("deep_pass", "middle", overlay_tags)
+        assert result == 0
+
+    def test_deep_shell_with_deep_pass(self):
+        """Test deep_shell overlay with deep pass."""
+        overlay_tags = {"call": "deep_shell"}
+        result = defensive_overlay_adjust("deep_pass", "left", overlay_tags)
+        assert result == 2
+
+    def test_deep_shell_with_other_play(self):
+        """Test deep_shell overlay with other play."""
+        overlay_tags = {"call": "deep_shell"}
+        result = defensive_overlay_adjust("short_pass", "left", overlay_tags)
+        assert result == 0
+
+    def test_unknown_call(self):
+        """Test with unknown overlay call."""
+        overlay_tags = {"call": "unknown_call"}
+        result = defensive_overlay_adjust("inside_run", "middle", overlay_tags)
+        assert result == 0
+
+
 class TestBounds:
     """Test cases for the BOUNDS constant."""
 
@@ -305,17 +387,17 @@ class TestResolvePlay:
             assert result["yards"] == -10
 
     def test_fumble_event(self):
-        """Test fumble event on inside runs."""
+        """Test that fumble events are no longer implemented in the current version."""
         off = OffFormation()
         deff = DefFormation()
-
+        
         with patch("random.randint") as mock_randint:
-            mock_randint.side_effect = [3, 4, 1, 8]  # roll=0, rare=1, fumble_yards=8
-
+            mock_randint.side_effect = [3, 4, 1]  # roll=0, rare=1
+            
             result = resolve_play("inside_run", "base", off, deff)
-
-            assert result["event"] == "fumble"
-            assert result["yards"] == -8
+            
+            # Fumbles are no longer implemented in the current version
+            assert result["event"] is None
 
     def test_sack_event(self):
         """Test sack event on blitz with negative yards."""
@@ -326,7 +408,9 @@ class TestResolvePlay:
             # Force negative yards initially, then rare<=3, then sack penalty
             mock_randint.side_effect = [1, 1, 2, 5]  # roll=-5, rare=2, sack_penalty=5
 
-            result = resolve_play("short_pass", "blitz", off, deff)
+            # Need overlay_tags with blitz call for sack to trigger
+            overlay_tags = {"call": "blitz"}
+            result = resolve_play("short_pass", "base", off, deff, overlay_tags)
 
             # Should have sack event and additional negative yards
             assert result["event"] == "sack"
@@ -451,15 +535,15 @@ class TestResolvePlay:
         """Test edge cases with play names."""
         off = OffFormation()
         deff = DefFormation()
-
-        # Test that plays starting with "inside" trigger fumble
+        
+        # Test that interceptions can happen on any play containing "pass"
         with patch("random.randint") as mock_randint:
-            mock_randint.side_effect = [3, 4, 1, 5]  # fumble conditions
-
-            result = resolve_play("inside_run", "base", off, deff)
-            assert result["event"] == "fumble"
-
-            # Test that other runs don't trigger fumble with same rare roll
+            mock_randint.side_effect = [3, 4, 1, 5]  # interception conditions
+            
+            result = resolve_play("short_pass", "base", off, deff)
+            assert result["event"] == "interception"
+            
+            # Test that runs don't trigger interceptions with same rare roll
             mock_randint.side_effect = [3, 4, 1]
             result2 = resolve_play("outside_run", "base", off, deff)
-            assert result2["event"] is None  # outside_run doesn't start with "inside"
+            assert result2["event"] is None  # runs don't contain "pass"

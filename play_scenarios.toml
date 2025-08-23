@@ -1,0 +1,159 @@
+# Football Play Scenarios Configuration
+# Define various offensive and defensive formations and plays for testing
+
+[scenarios.balanced_attack]
+name = "Balanced Offensive Attack"
+description = "Standard balanced formation vs base defense"
+
+[scenarios.balanced_attack.offense]
+formation = "balanced"
+play = "short_pass"
+players = [
+    "left,wide,1",
+    "middle,backfield,2", 
+    "right,wide,1"
+]
+
+[scenarios.balanced_attack.defense]
+formation = "base_4_3"
+play = "base"
+players = [
+    "left,line,1",
+    "left,box,1",
+    "middle,line,2",
+    "middle,box,1", 
+    "middle,deep,2",
+    "right,line,1",
+    "right,box,1"
+]
+
+[scenarios.power_run]
+name = "Power Running Attack"
+description = "Heavy run formation vs run-stopping defense"
+
+[scenarios.power_run.offense]
+formation = "power_i"
+play = "inside_run"
+players = [
+    "middle,backfield,3"
+]
+
+[scenarios.power_run.defense]
+formation = "run_stop"
+play = "base"
+overlay_call = "run_commit"
+players = [
+    "left,line,2",
+    "left,box,2",
+    "middle,line,2",
+    "middle,box,2",
+    "middle,deep,1",
+    "right,line,2",
+    "right,box,2"
+]
+
+[scenarios.spread_offense]
+name = "Spread Passing Attack"
+description = "4-wide receiver spread vs nickel defense"
+
+[scenarios.spread_offense.offense]
+formation = "spread"
+play = "short_pass"
+players = [
+    "left,wide,2",
+    "middle,backfield,1",
+    "right,wide,2"
+]
+
+[scenarios.spread_offense.defense]
+formation = "nickel"
+play = "base"
+players = [
+    "left,line,1",
+    "left,box,1",
+    "left,deep,1",
+    "middle,line,2",
+    "middle,deep,1",
+    "right,line,1",
+    "right,box,1",
+    "right,deep,1"
+]
+
+[scenarios.blitz_test]
+name = "Blitz vs Pass"
+description = "Testing blitz pressure on passing plays"
+
+[scenarios.blitz_test.offense]
+formation = "shotgun"
+play = "short_pass"
+players = [
+    "left,wide,1",
+    "middle,backfield,1",
+    "right,wide,1"
+]
+
+[scenarios.blitz_test.defense]
+formation = "blitz"
+play = "base"
+overlay_call = "blitz"
+overlay_lanes = ["left", "middle"]
+players = [
+    "left,line,2",
+    "left,box,2",
+    "middle,line,2",
+    "right,line,1",
+    "right,deep,2"
+]
+
+[scenarios.deep_pass]
+name = "Deep Ball Attack"
+description = "Vertical passing vs deep shell coverage"
+
+[scenarios.deep_pass.offense]
+formation = "vertical"
+play = "deep_pass"
+players = [
+    "left,wide,2",
+    "middle,backfield,1",
+    "right,wide,2"
+]
+
+[scenarios.deep_pass.defense]
+formation = "deep_shell"
+play = "deep_shell"
+overlay_call = "deep_shell"
+players = [
+    "left,line,1",
+    "left,deep,2",
+    "middle,line,2",
+    "middle,box,1",
+    "middle,deep,2",
+    "right,line,1",
+    "right,deep,2"
+]
+
+[scenarios.goal_line]
+name = "Goal Line Stand"
+description = "Short yardage power vs heavy run defense"
+
+[scenarios.goal_line.offense]
+formation = "goal_line"
+play = "inside_run"
+players = [
+    "left,backfield,1",
+    "middle,backfield,2",
+    "right,backfield,1"
+]
+
+[scenarios.goal_line.defense]
+formation = "goal_line_defense"
+play = "base"
+overlay_call = "run_commit"
+players = [
+    "left,line,3",
+    "left,box,2",
+    "middle,line,3",
+    "middle,box,3",
+    "right,line,3",
+    "right,box,2"
+]

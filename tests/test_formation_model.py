@@ -1,12 +1,13 @@
 from typing import cast
-from src.formation_model import (
-    OffFormation,
+from football.formation_model import (
+    OffFormationFull,
     DefFormation,
     o,
     d,
     Lane,
     OffDepth,
     DefDepth,
+    to_counts
 )
 
 
@@ -15,9 +16,9 @@ class TestOffFormation:
 
     def test_off_formation_initialization(self):
         """Test that OffFormation initializes with correct defaults."""
-        formation = OffFormation()
+        formation = OffFormationFull()
 
-        assert formation.counts == {}
+        assert to_counts(formation) == {}
         assert formation.has_qb is True
 
     def test_off_formation_custom_initialization(self):
@@ -33,7 +34,7 @@ class TestOffFormation:
 
     def test_off_formation_counts_type(self):
         """Test that counts dictionary accepts valid lane/depth combinations."""
-        formation = OffFormation()
+        formation = OffFormationFull()
         formation.counts[("left", "line")] = 1
         formation.counts[("middle", "backfield")] = 2
         formation.counts[("right", "wide")] = 3
