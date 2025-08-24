@@ -1,0 +1,35 @@
+# personnel.yaml
+personnel_groups:
+  - code: "10"     # 1 RB, 0 TE, 4 WR
+    rb: 1
+    te: 0
+  - code: "11"     # 1 RB, 1 TE, 3 WR
+    rb: 1
+    te: 1
+  - code: "12"     # 1 RB, 2 TE, 2 WR
+    rb: 1
+    te: 2
+  - code: "21"     # 2 RB, 1 TE, 2 WR
+    rb: 2
+    te: 1
+  - code: "22"     # 2 RB, 2 TE, 1 WR
+    rb: 2
+    te: 2
+  - code: "23"     # 2 RB, 3 TE, 0 WR
+    rb: 2
+    te: 3
+  - code: "31"     # 3 RB, 1 TE, 1 WR
+    rb: 3
+    te: 1
+  - code: "32"     # 3 RB, 2 TE, 0 WR (Jumbo)
+    rb: 3
+    te: 2
+  - code: "00"     # Empty 5 WR
+    rb: 0
+    te: 0
+  - code: "01"     # Empty 4 WR + 1 TE
+    rb: 0
+    te: 1
+  - code: "02"     # Empty 3 WR + 2 TE
+    rb: 0
+    te: 2

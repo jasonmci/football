@@ -1,0 +1,122 @@
+# formations_offense.yaml
+# lanes: left | middle | right
+# depths: line | backfield | wide
+
+formations:
+  - key: pro
+    label: "Pro Set"
+    allowed_personnel: ["21","11","12"]   # typical pairings
+    placements:
+      # 5 OL
+      - { pos: OL, lane: left,   depth: line, count: 1 }
+      - { pos: OL, lane: middle, depth: line, count: 3 }
+      - { pos: OL, lane: right,  depth: line, count: 1 }
+      # QB + RB/FB
+      - { pos: QB, lane: middle, depth: backfield, count: 1 }
+      - { pos: RB, lane: middle, depth: backfield, count: 2 }
+      # TE inline (right), WR split
+      - { pos: TE, lane: right, depth: line, count: 1 }
+      - { pos: WR, lane: left,  depth: wide, count: 1 }
+      - { pos: WR, lane: right, depth: wide, count: 1 }
+
+  - key: singleback_11
+    label: "Singleback (11)"
+    allowed_personnel: ["11"]
+    placements:
+      - { pos: OL, lane: left,   depth: line, count: 1 }
+      - { pos: OL, lane: middle, depth: line, count: 3 }
+      - { pos: OL, lane: right,  depth: line, count: 1 }
+      - { pos: QB, lane: middle, depth: backfield, count: 1 }
+      - { pos: RB, lane: middle, depth: backfield, count: 1 }
+      - { pos: TE, lane: right,  depth: line, count: 1 }
+      - { pos: WR, lane: left,   depth: wide, count: 1 }
+      - { pos: WR, lane: right,  depth: wide, count: 2 }  # one could be slot
+
+  - key: singleback_12
+    label: "Singleback (12)"
+    allowed_personnel: ["12"]
+    placements:
+      - { pos: OL, lane: left,   depth: line, count: 1 }
+      - { pos: OL, lane: middle, depth: line, count: 3 }
+      - { pos: OL, lane: right,  depth: line, count: 1 }
+      - { pos: QB, lane: middle, depth: backfield, count: 1 }
+      - { pos: RB, lane: middle, depth: backfield, count: 1 }
+      - { pos: TE, lane: left,   depth: line, count: 1 }
+      - { pos: TE, lane: right,  depth: line, count: 1 }
+      - { pos: WR, lane: left,   depth: wide, count: 1 }
+      - { pos: WR, lane: right,  depth: wide, count: 1 }
+
+  - key: trips_right_11
+    label: "Trips Right (11)"
+    allowed_personnel: ["11","10"]
+    placements:
+      - { pos: OL, lane: left,   depth: line, count: 1 }
+      - { pos: OL, lane: middle, depth: line, count: 3 }
+      - { pos: OL, lane: right,  depth: line, count: 1 }
+      - { pos: QB, lane: middle, depth: backfield, count: 1 }
+      - { pos: RB, lane: middle, depth: backfield, count: 1 }
+      - { pos: TE, lane: right,  depth: line, count: 1 }       # can swap with a WR if 10
+      - { pos: WR, lane: right,  depth: wide, count: 2 }       # stack/trips
+      - { pos: WR, lane: left,   depth: wide, count: 1 }
+
+  - key: spread_10
+    label: "Spread (10)"
+    allowed_personnel: ["10"]
+    placements:
+      - { pos: OL, lane: left,   depth: line, count: 1 }
+      - { pos: OL, lane: middle, depth: line, count: 3 }
+      - { pos: OL, lane: right,  depth: line, count: 1 }
+      - { pos: QB, lane: middle, depth: backfield, count: 1 }
+      - { pos: RB, lane: middle, depth: backfield, count: 1 }
+      - { pos: WR, lane: left,   depth: wide, count: 2 }
+      - { pos: WR, lane: right,  depth: wide, count: 2 }
+
+  - key: empty_00
+    label: "Empty (00) 5WR"
+    allowed_personnel: ["00"]
+    placements:
+      - { pos: OL, lane: left,   depth: line, count: 1 }
+      - { pos: OL, lane: middle, depth: line, count: 3 }
+      - { pos: OL, lane: right,  depth: line, count: 1 }
+      - { pos: QB, lane: middle, depth: backfield, count: 1 }
+      - { pos: WR, lane: left,   depth: wide, count: 2 }
+      - { pos: WR, lane: right,  depth: wide, count: 3 }
+
+  - key: empty_01
+    label: "Empty (01) 4WR+TE"
+    allowed_personnel: ["01"]
+    placements:
+      - { pos: OL, lane: left,   depth: line, count: 1 }
+      - { pos: OL, lane: middle, depth: line, count: 3 }
+      - { pos: OL, lane: right,  depth: line, count: 1 }
+      - { pos: QB, lane: middle, depth: backfield, count: 1 }
+      - { pos: TE, lane: right,  depth: line, count: 1 }     # inline or flex
+      - { pos: WR, lane: left,   depth: wide, count: 2 }
+      - { pos: WR, lane: right,  depth: wide, count: 2 }
+
+  - key: empty_02
+    label: "Empty (02) 3WR+2TE"
+    allowed_personnel: ["02"]
+    placements:
+      - { pos: OL, lane: left,   depth: line, count: 1 }
+      - { pos: OL, lane: middle, depth: line, count: 3 }
+      - { pos: OL, lane: right,  depth: line, count: 1 }
+      - { pos: QB, lane: middle, depth: backfield, count: 1 }
+      - { pos: TE, lane: left,   depth: line, count: 1 }
+      - { pos: TE, lane: right,  depth: line, count: 1 }
+      - { pos: WR, lane: left,   depth: wide, count: 1 }
+      - { pos: WR, lane: right,  depth: wide, count: 2 }
+
+  - key: goal_32
+    label: "Goal Line (32 Jumbo)"
+    allowed_personnel: ["32"]
+    placements:
+      - { pos: OL, lane: left,   depth: line, count: 1 }
+      - { pos: OL, lane: middle, depth: line, count: 3 }
+      - { pos: OL, lane: right,  depth: line, count: 1 }
+      - { pos: QB, lane: middle, depth: backfield, count: 1 }
+      - { pos: RB, lane: left,   depth: backfield, count: 1 }
+      - { pos: RB, lane: middle, depth: backfield, count: 1 }
+      - { pos: RB, lane: right,  depth: backfield, count: 1 }
+      - { pos: TE, lane: left,   depth: line, count: 1 }
+      - { pos: TE, lane: right,  depth: line, count: 1 }
