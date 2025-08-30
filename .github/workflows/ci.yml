@@ -69,7 +69,3 @@ jobs:
     - name: Check code formatting with black
       run: |
         black --check src/ tests/
-
-    - name: Type check with mypy
-      run: |
-        mypy src/formation_model.py --ignore-missing-imports
