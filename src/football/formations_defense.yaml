@@ -1,8 +1,10 @@
-# formations_defense.yaml
+# depths: line | box | deep
+# lanes:  left | middle | right
 
 formations:
   - key: "43"
     label: "4-3 Base"
+    # 4 DL + 3 LB + 4 DB = 11
     counts:
       - { lane: left,   depth: line, count: 1 }
       - { lane: middle, depth: line, count: 2 }
@@ -11,59 +13,91 @@ formations:
       - { lane: middle, depth: box,  count: 1 }
       - { lane: right,  depth: box,  count: 1 }
       - { lane: left,   depth: deep, count: 1 }
+      - { lane: middle, depth: deep, count: 2 }   # FS + SS deep by default
       - { lane: right,  depth: deep, count: 1 }
+    roles:
+      RE:        { lane: right,  depth: line }
+      DT_right:  { lane: middle, depth: line }
+      DT_left:   { lane: middle, depth: line }
+      LE:        { lane: left,   depth: line }
+      WLB:       { lane: left,   depth: box }
+      MLB:       { lane: middle, depth: box }
+      SLB:       { lane: right,  depth: box }
+      CB_left:   { lane: left,   depth: deep }
+      CB_right:  { lane: right,  depth: deep }
+      FS:        { lane: middle, depth: deep }
+      SS:        { lane: middle, depth: deep }  # roll down via plays
 
-  - key: "34"
-    label: "3-4 Base"
-    counts:
-      - { lane: left,   depth: line, count: 1 }
-      - { lane: middle, depth: line, count: 1 }
-      - { lane: right,  depth: line, count: 1 }
-      - { lane: left,   depth: box,  count: 2 }
-      - { lane: middle, depth: box,  count: 2 }
-      - { lane: right,  depth: box,  count: 2 }
-      - { lane: left,   depth: deep, count: 1 }
-      - { lane: right,  depth: deep, count: 1 }
-
-  - key: nickel
+  - key: "nickel"
     label: "Nickel 4-2-5"
+    # 4 DL + 2 LB + 5 DB = 11
     counts:
       - { lane: left,   depth: line, count: 1 }
       - { lane: middle, depth: line, count: 2 }
       - { lane: right,  depth: line, count: 1 }
-      - { lane: middle, depth: box,  count: 2 }
-      - { lane: left,   depth: box,  count: 1 }
-      - { lane: right,  depth: box,  count: 1 }
-      - { lane: left,   depth: deep, count: 1 }
-      - { lane: right,  depth: deep, count: 1 }
+      - { lane: middle, depth: box,  count: 2 }   # 2 LBs
+      - { lane: left,   depth: deep, count: 1 }   # CBL
+      - { lane: middle, depth: deep, count: 1 }   # FS (base)
+      - { lane: right,  depth: deep, count: 1 }   # CBR
+      - { lane: left,   depth: box,  count: 1 }   # Nickel/Star in box
+      - { lane: right,  depth: box,  count: 1 }   # SS down or nickel adjust
+    roles:
+      RE:        { lane: right,  depth: line }
+      DT_right:  { lane: middle, depth: line }
+      DT_left:   { lane: middle, depth: line }
+      LE:        { lane: left,   depth: line }
+      MLB:       { lane: middle, depth: box }
+      WLB:       { lane: middle, depth: box }
+      CB_left:   { lane: left,   depth: deep }
+      CB_right:  { lane: right,  depth: deep }
+      FS:        { lane: middle, depth: deep }
+      SS:        { lane: right,  depth: box }     # box safety by default here
+      NB:        { lane: left,   depth: box }     # nickel/slot
 
-  - key: dime
+  - key: "dime"
     label: "Dime 4-1-6"
+    # 4 DL + 1 LB + 6 DB = 11
     counts:
       - { lane: left,   depth: line, count: 1 }
       - { lane: middle, depth: line, count: 2 }
       - { lane: right,  depth: line, count: 1 }
-      - { lane: middle, depth: box,  count: 1 }
+      - { lane: middle, depth: box,  count: 1 }   # lone LB
       - { lane: left,   depth: deep, count: 2 }
+      - { lane: middle, depth: deep, count: 2 }
       - { lane: right,  depth: deep, count: 2 }
+    roles:
+      RE:        { lane: right,  depth: line }
+      DT_right:  { lane: middle, depth: line }
+      DT_left:   { lane: middle, depth: line }
+      LE:        { lane: left,   depth: line }
+      LB:        { lane: middle, depth: box }
+      CB_left:   { lane: left,   depth: deep }
+      CB_right:  { lane: right,  depth: deep }
+      S_left:    { lane: left,   depth: deep }
+      S_right:   { lane: right,  depth: deep }
+      FS:        { lane: middle, depth: deep }
+      NB:        { lane: middle, depth: deep }    # 6th DB
 
-  - key: bear46
+  - key: "bear46"
     label: "46 Bear"
+    # 6 on the line + 4 in box + 1 deep = 11 (ultra run-heavy)
     counts:
       - { lane: left,   depth: line, count: 2 }
       - { lane: middle, depth: line, count: 2 }
       - { lane: right,  depth: line, count: 2 }
-      - { lane: middle, depth: box,  count: 2 }
       - { lane: left,   depth: box,  count: 1 }
+      - { lane: middle, depth: box,  count: 2 }
       - { lane: right,  depth: box,  count: 1 }
       - { lane: middle, depth: deep, count: 1 }
-
-  - key: goal
-    label: "Goal Line"
-    counts:
-      - { lane: left,   depth: line, count: 2 }
-      - { lane: middle, depth: line, count: 3 }
-      - { lane: right,  depth: line, count: 2 }
-      - { lane: left,   depth: box,  count: 2 }
-      - { lane: middle, depth: box,  count: 2 }
-
+    roles:
+      RE:        { lane: right,  depth: line }
+      RDT:       { lane: right,  depth: line }
+      MDT:       { lane: middle, depth: line }
+      LDT:       { lane: left,   depth: line }
+      LE:        { lane: left,   depth: line }
+      SS:        { lane: middle, depth: box }
+      MLB:       { lane: middle, depth: box }
+      OLB:       { lane: left,   depth: box }
+      FS:        { lane: middle, depth: deep }
+      CB_left:   { lane: left,   depth: deep }
+      CB_right:  { lane: right,  depth: deep }

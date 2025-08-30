@@ -1,0 +1,37 @@
+# plays_defense.yaml
+plays:
+  - key: <unique_id>                 # e.g., "nickel_blitz_mike", "43_stunt_right"
+    label: <human name>              # optional
+    formation: <def_formation_key>   # must exist in formations_defense.yaml
+    shell: cover1                    # cover0|cover1|cover2|cover3|quarters|match (hint/tag)
+
+    # --- Pre-snap disguise/movement ---
+    pre_snap:
+      - type: shift_front
+        direction: left              # left | right | pinch | wide
+      - type: safety_roll
+        player: SS                   # which safety rolls
+        to_depth: box                # box | deep
+      - type: show_blitz
+        player: MLB
+        lane: middle
+
+    # --- Post-snap assignments (front + coverage) ---
+    assignments:
+      - player: MLB
+        action: blitz
+        lane: middle                 # rush lane
+
+      - player: RE
+        action: stunt
+        partner: DT_right            # twist partner id/role
+        path: loop_inside            # loop_inside | crash_inside | loop_outside
+
+      - player: CB1
+        action: man
+        target: WR1                  # man target (role id)
+
+      - player: SS
+        action: zone
+        zone: hook                   # flat|curl|hook|seam|deep_half|deep_third|quarter
+        landmark: middle

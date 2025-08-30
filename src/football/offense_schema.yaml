@@ -1,0 +1,60 @@
+# plays_offense.yaml
+plays:
+  - key: <unique_id>                # e.g., "counter_right", "pa_slant_motion"
+    label: <human name>             # optional
+    personnel: "<RB><TE>"           # e.g., "11","12","21","10"
+    formation: <off_formation_key>  # must exist in formations_offense.yaml
+    # Optional tags to help AI later
+    tags: [run, counter, short_pass, deep_pass, screen]
+
+    # --- Pre-snap: any number of shifts; at most ONE motion man is typical ---
+    pre_snap:
+      # Move one or more players to a different lane/depth before the snap
+      - type: shift
+        players: [TE]               # names/roles you use in your roster/formation
+        to:
+          lane: left                # left | middle | right
+          depth: line               # line | backfield | wide
+      # Fake look: people show run/PA stance (cosmetic hook for resolver)
+      - type: posture
+        player: RB1
+        as: run                     # run | pass | block (hint for deception)
+
+    # Exactly zero or one motion block (enforce single motion man if you want NFL realism)
+    motion:
+      player: WR2                   # the motion man
+      timing: pre_snap              # pre_snap | at_snap (jet/orbit at snap)
+      path:                         # symbolic waypoints or lane/depth hops
+        - { lane: left,  depth: wide }
+        - { lane: middle, depth: wide }   # e.g., across the formation to slot
+        - { lane: right, depth: wide }
+
+    # --- Post-snap assignments (what each role tries to do) ---
+    assignments:
+      # QB, ball-handlers, routes
+      - player: QB
+        action: pass                # pass | handoff | keep | boot
+        read: quick                 # quick | progression | shot
+        target_primary: WR1         # optional; can list [WR1, TE, RB1] for progressions
+
+      - player: RB1
+        action: pass_protect        # pass_protect | run | screen | chip_release
+        lane: middle                # for run/screen/aim; optional for pass_protect
+        chip_on: RE                 # optional: who to chip before releasing
+
+      - player: WR1
+        action: route
+        route: slant                # slant | hitch | post | corner | go | drag | out | in | screen_bubble
+        depth_yards: 5              # nominal break depth
+        side: right                 # side hint for resolver/UI
+
+      - player: LG
+        action: pull                # pull | trap | double | reach | down | climb
+        to_lane: right
+
+      - player: TE
+        action: block_down          # down block to seal edge
+
+    # Optional: constraints or audibles
+    checks:
+      allow_alert: true             # QB can flip to the tagged 'alert' if blitz heavy
