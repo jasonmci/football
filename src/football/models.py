@@ -56,6 +56,7 @@ class Placement:
     - depth: line|backfield|wide  (WR/TE can be 'wide'; OL must be 'line'; QB/RB/FB must be 'backfield')
     - count: number of players in this bucket (>=1)
     """
+
     pos: PosOff
     lane: Lane
     depth: OffDepth
@@ -66,7 +67,9 @@ class Placement:
             raise ValueError(f"Placement count must be >=1 (got {self.count})")
         combos = ALLOWED_COMBOS.get(self.pos)
         if combos is None or (self.lane, self.depth) not in combos:
-            raise ValueError(f"Illegal alignment for {self.pos}: {self.lane}/{self.depth}")
+            raise ValueError(
+                f"Illegal alignment for {self.pos}: {self.lane}/{self.depth}"
+            )
 
 
 @dataclass
@@ -75,6 +78,7 @@ class OffFormationFull:
     Full offensive formation described as a list of placements.
     Provides validation guardrails and converts to lane/depth counts.
     """
+
     placements: List[Placement] = field(default_factory=list)
 
     def total_players(self) -> int:
@@ -141,6 +145,7 @@ class DefFormation:
       counts[('middle','box')] = 2
       counts[('right','deep')] = 1
     """
+
     counts: Dict[Tuple[Lane, DefDepth], int] = field(default_factory=dict)
 
     def add(self, lane: Lane, depth: DefDepth, n: int = 1) -> None:

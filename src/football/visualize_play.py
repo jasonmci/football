@@ -10,36 +10,46 @@ except ImportError:
     from yaml_loader import load_off_formations, load_def_formations
     from plays_loader import load_offense_plays, load_defense_plays
 
-LANES = ("left","middle","right")
-OFF_DEPTHS = ("line","backfield","wide")
-DEF_DEPTHS = ("line","box","deep")
+LANES = ("left", "middle", "right")
+OFF_DEPTHS = ("line", "backfield", "wide")
+DEF_DEPTHS = ("line", "box", "deep")
+
 
 def _grid(counts, lanes=LANES, depths=()):
     rows = []
     for d in depths:
         row = []
         for ln in lanes:
-            row.append(counts.get((ln,d), 0))
+            row.append(counts.get((ln, d), 0))
         rows.append((d, row))
     return rows
+
 
 def _render_off(off_counts):
     print("OFFENSE (Ln/Bk/W):")
     for d, row in _grid(off_counts, LANES, OFF_DEPTHS):
         print(f"  {d[:3].upper():>3} | " + "  ".join(f"{n:2d}" for n in row))
 
+
 def _render_def(def_counts):
     print("DEFENSE (Ln/Box/Deep):")
     for d, row in _grid(def_counts, LANES, DEF_DEPTHS):
         print(f"  {d[:4].upper():>4} | " + "  ".join(f"{n:2d}" for n in row))
 
+
 def _motion_str(motion: dict | None) -> str:
-    if not motion: return "(none)"
-    pts = [f"{wp['lane']}/{wp['depth']}" for wp in motion.get("path",[])]
-    return f"{motion.get('player')} @ {motion.get('timing','pre_snap')}: " + " → ".join(pts)
+    if not motion:
+        return "(none)"
+    pts = [f"{wp['lane']}/{wp['depth']}" for wp in motion.get("path", [])]
+    return f"{motion.get('player')} @ {motion.get('timing','pre_snap')}: " + " → ".join(
+        pts
+    )
+
 
 def main(argv=None):
-    ap = argparse.ArgumentParser(description="Visualize offense/defense formations & motion from YAML plays.")
+    ap = argparse.ArgumentParser(
+        description="Visualize offense/defense formations & motion from YAML plays."
+    )
     ap.add_argument("--off-form", required=True, help="off formation key")
     ap.add_argument("--def-form", required=True, help="def formation key")
     ap.add_argument("--off-play", help="off play key (to show motion/assignments)")
@@ -51,10 +61,18 @@ def main(argv=None):
     args = ap.parse_args(argv)
 
     here = Path(__file__).resolve().parent
-    off_forms_path = Path(args.off_forms) if args.off_forms else here / "formations_offense.yaml"
-    def_forms_path = Path(args.def_forms) if args.def_forms else here / "formations_defense.yaml"
-    plays_off_path = Path(args.plays_off) if args.plays_off else here / "plays_offense.yaml"
-    plays_def_path = Path(args.plays_def) if args.plays_def else here / "plays_defense.yaml"
+    off_forms_path = (
+        Path(args.off_forms) if args.off_forms else here / "formations_offense.yaml"
+    )
+    def_forms_path = (
+        Path(args.def_forms) if args.def_forms else here / "formations_defense.yaml"
+    )
+    plays_off_path = (
+        Path(args.plays_off) if args.plays_off else here / "plays_offense.yaml"
+    )
+    plays_def_path = (
+        Path(args.plays_def) if args.plays_def else here / "plays_defense.yaml"
+    )
 
     OFF_FORMS = load_off_formations(str(off_forms_path))
     DEF_FORMS = load_def_formations(str(def_forms_path))
@@ -80,6 +98,7 @@ def main(argv=None):
         if pre:
             for p in pre:
                 print("  pre-snap:", p)
+
 
 if __name__ == "__main__":
     sys.exit(main())

@@ -16,6 +16,7 @@ ALLOWED_COMBOS = {
     "OL": {("left", "line"), ("middle", "line"), ("right", "line")},
 }
 
+
 def load_personnel(path: str) -> Dict[str, Tuple[int, int, int]]:
     """
     Return mapping "code" -> (rb, te, wr). WR is derived as 5 - rb - te.
@@ -29,9 +30,12 @@ def load_personnel(path: str) -> Dict[str, Tuple[int, int, int]]:
         rb, te = int(g["rb"]), int(g["te"])
         wr = 5 - rb - te
         if wr < 0:
-            raise ValueError(f"personnel {code}: rb({rb}) + te({te}) exceeds 5 skill players")
+            raise ValueError(
+                f"personnel {code}: rb({rb}) + te({te}) exceeds 5 skill players"
+            )
         out[code] = (rb, te, wr)
     return out
+
 
 def load_off_formations(path: str) -> Dict[str, OffFormationFull]:
     """
@@ -74,6 +78,7 @@ def load_off_formations(path: str) -> Dict[str, OffFormationFull]:
 
     return out
 
+
 def load_def_formations(path: str) -> Dict[str, DefFormation]:
     """
     Load defensive formations from YAML into DefFormation (counts by (lane, depth)).
@@ -93,7 +98,9 @@ def load_def_formations(path: str) -> Dict[str, DefFormation]:
             depth = c["depth"]
             count = int(c["count"])
             if depth not in ("line", "box", "deep"):
-                raise ValueError(f"{key}: illegal defensive depth '{depth}' (must be line|box|deep)")
+                raise ValueError(
+                    f"{key}: illegal defensive depth '{depth}' (must be line|box|deep)"
+                )
             d.counts[(lane, depth)] = d.counts.get((lane, depth), 0) + count
             total += count
 
