@@ -1,52 +1,64 @@
 #!/usr/bin/env python3
 from __future__ import annotations
+from typing import Mapping, Dict, Tuple, List, Optional
 import argparse, sys
 from pathlib import Path
 
-try:
-    from .yaml_loader import load_off_formations, load_def_formations
-    from .plays_loader import load_offense_plays, load_defense_plays
-except ImportError:
-    from yaml_loader import load_off_formations, load_def_formations
-    from plays_loader import load_offense_plays, load_defense_plays
+from .yaml_loader import load_off_formations, load_def_formations
+from .plays_loader import load_offense_plays, load_defense_plays
+from .models import Lane, OffDepth, DefDepth
 
-LANES = ("left", "middle", "right")
-OFF_DEPTHS = ("line", "backfield", "wide")
-DEF_DEPTHS = ("line", "box", "deep")
+LANES: Tuple[Lane, ...] = ("left","middle","right")
+OFF_DEPTHS: Tuple[OffDepth, ...] = ("line","backfield","wide")
+DEF_DEPTHS: Tuple[DefDepth, ...] = ("line","box","deep")
 
+# Strongly-typed counts
+OffCounts = Mapping[Tuple[Lane, OffDepth], int]
+DefCounts = Mapping[Tuple[Lane, DefDepth], int]
 
-def _grid(counts, lanes=LANES, depths=()):
-    rows = []
+def _grid_off(
+    counts: OffCounts,
+    lanes: Tuple[Lane, ...],
+    depths: Tuple[OffDepth, ...],
+) -> List[Tuple[OffDepth, List[int]]]:
+    rows: List[Tuple[OffDepth, List[int]]] = []
     for d in depths:
-        row = []
+        row: List[int] = []
         for ln in lanes:
             row.append(counts.get((ln, d), 0))
         rows.append((d, row))
     return rows
 
+def _grid_def(
+    counts: DefCounts,
+    lanes: Tuple[Lane, ...],
+    depths: Tuple[DefDepth, ...],
+) -> List[Tuple[DefDepth, List[int]]]:
+    rows: List[Tuple[DefDepth, List[int]]] = []
+    for d in depths:
+        row: List[int] = []
+        for ln in lanes:
+            row.append(counts.get((ln, d), 0))
+        rows.append((d, row))
+    return rows
 
-def _render_off(off_counts):
+def _render_off(off_counts: OffCounts) -> None:
     print("OFFENSE (Ln/Bk/W):")
-    for d, row in _grid(off_counts, LANES, OFF_DEPTHS):
+    for d, row in _grid_off(off_counts, LANES, OFF_DEPTHS):
         print(f"  {d[:3].upper():>3} | " + "  ".join(f"{n:2d}" for n in row))
 
-
-def _render_def(def_counts):
+def _render_def(def_counts: DefCounts) -> None:
     print("DEFENSE (Ln/Box/Deep):")
-    for d, row in _grid(def_counts, LANES, DEF_DEPTHS):
+    for d, row in _grid_def(def_counts, LANES, DEF_DEPTHS):
         print(f"  {d[:4].upper():>4} | " + "  ".join(f"{n:2d}" for n in row))
 
-
-def _motion_str(motion: dict | None) -> str:
+def _motion_str(motion: Optional[dict]) -> str:
     if not motion:
         return "(none)"
     pts = [f"{wp['lane']}/{wp['depth']}" for wp in motion.get("path", [])]
-    return f"{motion.get('player')} @ {motion.get('timing','pre_snap')}: " + " → ".join(
-        pts
-    )
+    return f"{motion.get('player')} @ {motion.get('timing','pre_snap')}: " + " → ".join(pts)
 
-
-def main(argv=None):
+def main(argv: Optional[List[str]] = None) -> int:
     ap = argparse.ArgumentParser(
         description="Visualize offense/defense formations & motion from YAML plays."
     )
@@ -98,6 +110,7 @@ def main(argv=None):
         if pre:
             for p in pre:
                 print("  pre-snap:", p)
+    return 0
 
 
 if __name__ == "__main__":

@@ -62,7 +62,7 @@ class Placement:
     depth: OffDepth
     count: int = 1
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         if self.count <= 0:
             raise ValueError(f"Placement count must be >=1 (got {self.count})")
         combos = ALLOWED_COMBOS.get(self.pos)
@@ -70,6 +70,7 @@ class Placement:
             raise ValueError(
                 f"Illegal alignment for {self.pos}: {self.lane}/{self.depth}"
             )
+        
 
 
 @dataclass

@@ -71,7 +71,7 @@ class PlayLoadError(ValueError):
     pass
 
 
-def _req(obj: dict, key: str):
+def _req(obj: dict, key: str) -> Any:
     if key not in obj:
         raise PlayLoadError(f"Missing required field: {key}")
     return obj[key]
