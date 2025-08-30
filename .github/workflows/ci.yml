@@ -9,17 +9,15 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.12"]
+    # just run on latest python no matrix
 
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Set up Python 3.12
       uses: actions/setup-python@v4
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: "3.12"
 
     - name: Install dependencies
       run: |
@@ -29,15 +27,6 @@ jobs:
     - name: Run tests with pytest
       run: |
         python -m pytest tests/ -v --tb=short --cov=src --cov-report=xml --cov-report=term-missing
-
-    - name: Upload coverage to Codecov
-      if: matrix.python-version == '3.12'
-      uses: codecov/codecov-action@v3
-      with:
-        file: ./coverage.xml
-        flags: unittests
-        name: codecov-umbrella
-        fail_ci_if_error: false
 
   lint:
     runs-on: ubuntu-latest
