@@ -70,7 +70,6 @@ class Placement:
             raise ValueError(
                 f"Illegal alignment for {self.pos}: {self.lane}/{self.depth}"
             )
-        
 
 
 @dataclass

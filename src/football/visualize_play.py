@@ -8,13 +8,14 @@ from .yaml_loader import load_off_formations, load_def_formations
 from .plays_loader import load_offense_plays, load_defense_plays
 from .models import Lane, OffDepth, DefDepth
 
-LANES: Tuple[Lane, ...] = ("left","middle","right")
-OFF_DEPTHS: Tuple[OffDepth, ...] = ("line","backfield","wide")
-DEF_DEPTHS: Tuple[DefDepth, ...] = ("line","box","deep")
+LANES: Tuple[Lane, ...] = ("left", "middle", "right")
+OFF_DEPTHS: Tuple[OffDepth, ...] = ("line", "backfield", "wide")
+DEF_DEPTHS: Tuple[DefDepth, ...] = ("line", "box", "deep")
 
 # Strongly-typed counts
 OffCounts = Mapping[Tuple[Lane, OffDepth], int]
 DefCounts = Mapping[Tuple[Lane, DefDepth], int]
+
 
 def _grid_off(
     counts: OffCounts,
@@ -29,6 +30,7 @@ def _grid_off(
         rows.append((d, row))
     return rows
 
+
 def _grid_def(
     counts: DefCounts,
     lanes: Tuple[Lane, ...],
@@ -42,21 +44,27 @@ def _grid_def(
         rows.append((d, row))
     return rows
 
+
 def _render_off(off_counts: OffCounts) -> None:
     print("OFFENSE (Ln/Bk/W):")
     for d, row in _grid_off(off_counts, LANES, OFF_DEPTHS):
         print(f"  {d[:3].upper():>3} | " + "  ".join(f"{n:2d}" for n in row))
+
 
 def _render_def(def_counts: DefCounts) -> None:
     print("DEFENSE (Ln/Box/Deep):")
     for d, row in _grid_def(def_counts, LANES, DEF_DEPTHS):
         print(f"  {d[:4].upper():>4} | " + "  ".join(f"{n:2d}" for n in row))
 
+
 def _motion_str(motion: Optional[dict]) -> str:
     if not motion:
         return "(none)"
     pts = [f"{wp['lane']}/{wp['depth']}" for wp in motion.get("path", [])]
-    return f"{motion.get('player')} @ {motion.get('timing','pre_snap')}: " + " → ".join(pts)
+    return f"{motion.get('player')} @ {motion.get('timing','pre_snap')}: " + " → ".join(
+        pts
+    )
+
 
 def main(argv: Optional[List[str]] = None) -> int:
     ap = argparse.ArgumentParser(
