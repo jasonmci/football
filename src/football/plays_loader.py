@@ -1,7 +1,7 @@
 # plays_loader.py
 from __future__ import annotations
 import yaml
-from typing import Dict, Any, Optional
+from typing import Dict, Any
 
 LANES = {"left", "middle", "right"}
 LANES_EXT = {"left", "middle", "right", "strong", "weak"}  # NEW
