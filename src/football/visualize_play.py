@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-from typing import Mapping, Dict, Tuple, List, Optional
-import argparse, sys
-from pathlib import Path
 
-from .yaml_loader import load_off_formations, load_def_formations
-from .plays_loader import load_offense_plays, load_defense_plays
-from .models import Lane, OffDepth, DefDepth
+import argparse
+import sys
+from pathlib import Path
+from typing import List, Mapping, Optional, Tuple
+
+from .models import DefDepth, Lane, OffDepth
+from .plays_loader import load_defense_plays, load_offense_plays
+from .yaml_loader import load_def_formations, load_off_formations
 
 LANES: Tuple[Lane, ...] = ("left", "middle", "right")
 OFF_DEPTHS: Tuple[OffDepth, ...] = ("line", "backfield", "wide")

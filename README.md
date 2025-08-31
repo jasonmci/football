@@ -33,7 +33,7 @@ defense = DefFormation()
 
 # Build an offensive formation
 o(offense, "left", "line", 1)      # Left tackle
-o(offense, "middle", "line", 3)    # Center and guards  
+o(offense, "middle", "line", 3)    # Center and guards
 o(offense, "right", "line", 1)     # Right tackle
 o(offense, "right", "line",  1)      # Tight end
 o(offense, "middle", "backfield", 2) # Running back
@@ -62,7 +62,7 @@ The formation model uses a **lane/depth grid** system:
 
 ### Lanes
 - `"left"` - Left side of the field
-- `"middle"` - Center of the field  
+- `"middle"` - Center of the field
 - `"right"` - Right side of the field
 
 ### Offensive Depths

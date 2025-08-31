@@ -1,7 +1,8 @@
-import re
-import pytest
 import random
-from unittest.mock import patch, MagicMock
+import re
+from unittest.mock import patch
+
+import pytest
 
 from src.football.resolver import roll_core
 
@@ -99,15 +100,30 @@ class TestRollCore:
             assert result == 7  # normal 2d6 roll: 3 + 4
             assert mock_randint.call_count == 2  # no extra dice
 
-    def test_advantage_and_disadvantage_cancel_different_values(self):
-        """Test cancellation with different advantage/disadvantage values."""
+    def test_advantage_and_disadvantage_net_different_values(self):
+        """Test advantage=2 and disadvantage=1 (net advantage=1)."""
         rng = random.Random(42)
 
-        # advantage=2, disadvantage=3 should cancel to disadvantage=0, advantage=0
-        with patch.object(rng, "randint", side_effect=[1, 6]) as mock_randint:
-            result = roll_core("2d6", rng, advantage=2, disadvantage=3)
-            assert result == 7  # normal roll, they cancel out
+        # 1d6 with advantage=2 and disadvantage=1 -> net=+1 -> roll 2d6, keep best 1
+        with patch.object(rng, "randint", side_effect=[2, 5]) as mock_randint:
+            result = roll_core("1d6", rng, advantage=2, disadvantage=1)
+            assert result == 5
             assert mock_randint.call_count == 2
+
+        # 2d6 with advantage=1 and disadvantage=2 -> net=-1 -> roll 3d6, keep worst 2
+        with patch.object(rng, "randint", side_effect=[3, 4, 2]) as mock_randint:
+            result = roll_core("2d6", rng, advantage=1, disadvantage=2)
+            assert result == 5  # min(3, 4, 2) = 2
+            assert mock_randint.call_count == 3
+
+        # 4d10 with advantage=3 and disadvantage=1 -> net=+2 -> roll 6d10, keep best 4
+        with patch.object(
+            rng, "randint", side_effect=[1, 10, 5, 7, 3, 9]
+        ) as mock_randint:
+            result = roll_core("4d10", rng, advantage=3, disadvantage=1)
+            # Keep best 4 from [1, 10, 5, 7, 3, 9] = [10, 9, 7, 5] = 31
+            assert result == 31
+            assert mock_randint.call_count == 6
 
     def test_multiple_advantage(self):
         """Test advantage=2 (roll extra 2 dice)."""
@@ -204,17 +220,17 @@ class TestRollCore:
         rng = random.Random(42)
 
         # D&D style advantage on attack roll (1d20+5)
-        with patch.object(rng, "randint", side_effect=[8, 16]) as mock_randint:
+        with patch.object(rng, "randint", side_effect=[8, 16]):
             result = roll_core("1d20+5", rng, advantage=1)
             assert result == 21  # max(8, 16) + 5 = 16 + 5 = 21
 
         # Disadvantage on stealth check (1d20+3)
-        with patch.object(rng, "randint", side_effect=[15, 6]) as mock_randint:
+        with patch.object(rng, "randint", side_effect=[15, 6]):
             result = roll_core("1d20+3", rng, disadvantage=1)
             assert result == 9  # min(15, 6) + 3 = 6 + 3 = 9
 
         # Football scenario: 2d6 effectiveness with advantage
-        with patch.object(rng, "randint", side_effect=[2, 4, 6]) as mock_randint:
+        with patch.object(rng, "randint", side_effect=[2, 4, 6]):
             result = roll_core("2d6", rng, advantage=1)
             assert result == 10  # best 2 from [2, 4, 6] = 6 + 4 = 10
 
@@ -226,7 +242,7 @@ class TestRollCore:
         # Currently they don't, which is an inconsistency
 
         # This test documents the current behavior
-        with patch.object(rng, "randint") as mock_randint:
+        with patch.object(rng, "randint"):
             result = roll_core("0d6", rng, advantage=1)
             assert result == 0  # Currently works, returns 0
 

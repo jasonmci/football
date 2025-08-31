@@ -10,7 +10,7 @@ formation = "balanced"
 play = "short_pass"
 players = [
     "left,wide,1",
-    "middle,backfield,2", 
+    "middle,backfield,2",
     "right,wide,1"
 ]
 
@@ -21,7 +21,7 @@ players = [
     "left,line,1",
     "left,box,1",
     "middle,line,2",
-    "middle,box,1", 
+    "middle,box,1",
     "middle,deep,2",
     "right,line,1",
     "right,box,1"

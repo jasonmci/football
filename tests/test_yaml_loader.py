@@ -1,16 +1,17 @@
-import pytest
-import tempfile
 import os
-import yaml
-from unittest.mock import patch, mock_open
+import tempfile
+from unittest.mock import patch
 
+import pytest
+import yaml
+
+from src.football.models import DefFormation, OffFormationFull
 from src.football.yaml_loader import (
-    load_personnel,
-    load_off_formations,
-    load_def_formations,
     ALLOWED_COMBOS,
+    load_def_formations,
+    load_off_formations,
+    load_personnel,
 )
-from src.football.models import OffFormationFull, DefFormation, Placement
 
 
 class TestLoadPersonnel:

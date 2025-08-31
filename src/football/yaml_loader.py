@@ -1,10 +1,11 @@
 # yaml_loader.py
 from __future__ import annotations
 
-import yaml
 from typing import Dict, Tuple
 
-from .models import OffFormationFull, Placement, DefFormation, Lane, OffDepth
+import yaml
+
+from .models import DefFormation, OffFormationFull, Placement
 
 # --- Alignment guardrails for offense (prevent impossible spots like TE middle/wide) ---
 ALLOWED_COMBOS = {

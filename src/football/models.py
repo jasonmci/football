@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Tuple, Literal, Iterable
+from typing import Dict, Iterable, List, Literal, Tuple
 
 # ----------------------------
 # Type aliases / enums

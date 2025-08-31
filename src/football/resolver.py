@@ -1,12 +1,13 @@
 from __future__ import annotations
+
 import random
 import re
-import yaml
 from dataclasses import dataclass
-from typing import Dict, Tuple, Optional, Any
+from typing import Any, Dict, Optional, Tuple
 
-from .models import Lane, OffDepth, DefDepth, OffFormationFull, DefFormation
-from .plays_loader import load_offense_plays, load_defense_plays
+import yaml
+
+from .models import DefFormation, Lane, OffDepth, OffFormationFull
 
 # ---------- Dice engine ----------
 _DICE_RE = re.compile(r"^\s*(\d+)d(\d+)([+-]\d+)?\s*$")
@@ -30,26 +31,40 @@ def roll_core(
     expr: str, rng: random.Random, advantage: int = 0, disadvantage: int = 0
 ) -> int:
     """
-    Advantage/disadvantage implemented as 'keep best/worst extra die' on top of base expr.
-    For bell curves like '2d6', advantage=1 -> roll 3d6 keep best 2; disadvantage=1 -> keep worst 2.
+    Roll using dice expression 'XdY(+Z)' and offsetting advantage/disadvantage.
+
+    Offset rule:
+      net = advantage - disadvantage
+      - If net > 0: roll (n + net) dice, keep the BEST n.
+      - If net < 0: roll (n + |net|) dice, keep the WORST n.
+      - If net == 0: roll exactly n dice.
+
+    Examples (expr='2d6'):
+      adv=1, dis=0  -> roll 3d6 keep best 2
+      adv=2, dis=1  -> net=+1 -> roll 3d6 keep best 2
+      adv=1, dis=2  -> net=-1 -> roll 3d6 keep worst 2
+      adv=0, dis=0  -> roll 2d6
     """
     m = _DICE_RE.match(expr)
     if not m:
+        # Fallback: simple XdY+Z parser
         return roll_dice(expr, rng)
+
     n, faces, mod = int(m.group(1)), int(m.group(2)), int(m.group(3) or 0)
-    base_rolls = [rng.randint(1, faces) for _ in range(n)]
-    if advantage > 0 and disadvantage > 0:
-        # cancel out, treat as neutral
-        advantage = disadvantage = 0
-    if advantage > 0:
-        extra = [rng.randint(1, faces) for _ in range(advantage)]
-        kept = sorted(base_rolls + extra, reverse=True)[:n]
-        return sum(kept) + mod
-    if disadvantage > 0:
-        extra = [rng.randint(1, faces) for _ in range(disadvantage)]
-        kept = sorted(base_rolls + extra)[:n]  # keep worst n
-        return sum(kept) + mod
-    return sum(base_rolls) + mod
+    net = int(advantage) - int(disadvantage)
+    extra = abs(net)
+
+    # Base pool + offset extras
+    rolls = [rng.randint(1, faces) for _ in range(n + extra)]
+
+    if net > 0:
+        kept = sorted(rolls, reverse=True)[:n]  # keep BEST n
+    elif net < 0:
+        kept = sorted(rolls)[:n]  # keep WORST n
+    else:
+        kept = rolls[:n]  # exactly n
+
+    return sum(kept) + mod
 
 
 # ---------- Config ----------

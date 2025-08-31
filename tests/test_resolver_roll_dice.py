@@ -1,7 +1,8 @@
-import re
-import pytest
 import random
-from unittest.mock import patch, MagicMock
+import re
+from unittest.mock import patch
+
+import pytest
 
 from src.football.resolver import roll_dice
 
@@ -89,13 +90,6 @@ class TestRollDice:
     def test_whitespace_handling(self):
         """Test that whitespace in expressions is handled correctly."""
         rng = random.Random(42)
-
-        test_cases = [
-            " 1d6 ",
-            "  2d8+1  ",
-            "\t1d10-2\t",
-            " 3d4 + 2 ",  # Note: this should fail with current regex
-        ]
 
         # Valid cases (no spaces around operators)
         with patch.object(rng, "randint", return_value=5):
@@ -222,8 +216,8 @@ class TestRollDice:
         assert initial_state != new_state
 
         # But calling it again should give different results
-        result1 = roll_dice("1d6", rng)
-        result2 = roll_dice("1d6", rng)
+        roll_dice("1d6", rng)
+        roll_dice("1d6", rng)
         # They might be the same by chance, but the RNG state changed
         final_state = rng.getstate()
         assert new_state != final_state
