@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 import pytest
 
-from src.football.resolver import roll_dice
+from src.football.dice_engine import roll_dice
 
 
 class TestRollDice:
