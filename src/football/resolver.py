@@ -146,8 +146,8 @@ def maybe_turnover(
 def resolve_play_v2(
     off_form: OffFormationFull,
     def_form: DefFormation,
-    off_play: dict,
-    def_play: dict,
+    off_play: Dict[str, Any],
+    def_play: Dict[str, Any],
     cfg: ResolverConfig,
     rng: random.Random,
 ) -> ResolveResult:

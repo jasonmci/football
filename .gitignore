@@ -1,6 +1,7 @@
 # My additional ignores for Python projects
 
 tools/
+*.code-workspace
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

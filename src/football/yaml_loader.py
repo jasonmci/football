@@ -1,7 +1,7 @@
 # yaml_loader.py
 from __future__ import annotations
 
-from typing import Dict, Tuple
+from typing import Dict
 
 import yaml
 
@@ -18,26 +18,6 @@ ALLOWED_COMBOS = {
 }
 
 
-def load_personnel(path: str) -> Dict[str, Tuple[int, int, int]]:
-    """
-    Return mapping "code" -> (rb, te, wr). WR is derived as 5 - rb - te.
-    Raises on invalid totals (>5 skill players).
-    """
-    with open(path, "r") as f:
-        data = yaml.safe_load(f)
-    out: Dict[str, Tuple[int, int, int]] = {}
-    for g in data.get("personnel_groups", []):
-        code = str(g["code"])
-        rb, te = int(g["rb"]), int(g["te"])
-        wr = 5 - rb - te
-        if wr < 0:
-            raise ValueError(
-                f"personnel {code}: rb({rb}) + te({te}) exceeds 5 skill players"
-            )
-        out[code] = (rb, te, wr)
-    return out
-
-
 def load_off_formations(path: str) -> Dict[str, OffFormationFull]:
     """
     Load offensive formations from YAML and build OffFormationFull objects.
@@ -50,7 +30,7 @@ def load_off_formations(path: str) -> Dict[str, OffFormationFull]:
 
     for fdef in data.get("formations", []):
         key = str(fdef["key"])
-        placements = []
+        placements: list[Placement] = []
         total = 0
 
         for p in fdef.get("placements", []):

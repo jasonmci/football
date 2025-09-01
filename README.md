@@ -1,6 +1,6 @@
 # Football Formation Model
 
-[![CI](https://github.com/YOUR_USERNAME/football/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_USERNAME/football/actions/workflows/ci.yml)
+[![CI](https://github.com/jasonmci/football/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_USERNAME/football/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/YOUR_USERNAME/football/branch/main/graph/badge.svg)](https://codecov.io/gh/YOUR_USERNAME/football)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
@@ -19,7 +19,7 @@ A Python library for modeling football formations using a lane/depth grid system
 ```bash
 git clone https://github.com/YOUR_USERNAME/football.git
 cd football
-pip install -r requirements-dev.txt
+pip install -r requirements.txt
 ```
 
 ## Quick Start
@@ -141,6 +141,12 @@ The project uses GitHub Actions for:
 5. Commit your changes (`git commit -m 'Add amazing feature'`)
 6. Push to the branch (`git push origin feature/amazing-feature`)
 7. Open a Pull Request
+
+## API
+
+```
+uvicorn src.football.api:app --reload --host 0.0.0.0 --port 8000
+```
 
 ## License
 

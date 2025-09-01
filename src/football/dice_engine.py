@@ -2,7 +2,6 @@
 import random
 import re
 
-
 _DICE_RE = re.compile(r"^\s*(\d+)d(\d+)([+-]\d+)?\s*$")
 
 

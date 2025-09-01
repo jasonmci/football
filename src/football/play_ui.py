@@ -11,6 +11,7 @@ from .yaml_loader import load_off_formations, load_def_formations
 from .plays_loader import load_offense_plays, load_defense_plays
 from .resolver import ResolverConfig, ResolveResult, resolve_play_v2
 from .models import OffFormationFull, DefFormation
+from .personnel import infer_personnel
 
 
 def discover_default_paths(here: Path) -> Tuple[Path, Path, Path, Path, Path]:
@@ -128,11 +129,15 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     off_form: OffFormationFull = OFF_FORMS[off_form_key]
     def_form: DefFormation = DEF_FORMS[def_form_key]
+    pers_code, pers_counts = infer_personnel(off_form)
     off_play = OFF_PLAYS[off_play_key]
     def_play = DEF_PLAYS[def_play_key]
 
     print("\n---------------------------------------------")
-    print(f"OFF: {off_form_key} | PLAY: {off_play_key}")
+    print(
+        f"OFF: {off_form_key} | PLAY: {off_play_key} | PERSONNEL: {pers_code} "
+        f"(RB={pers_counts['RB']}, TE={pers_counts['TE']}, WR={pers_counts['WR']})"
+    )
     print(f"DEF: {def_form_key} | PLAY: {def_play_key}")
     print(f"Trials: {args.trials} | Dice: {CFG.core_expr}\n")
 
