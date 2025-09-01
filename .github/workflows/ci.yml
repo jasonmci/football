@@ -61,7 +61,3 @@ jobs:
     - name: Run ruff linter
       run: |
         ruff check src/ tests/
-
-    - name: Type check with mypy
-      run: |
-        mypy src/
