@@ -3,11 +3,29 @@ from __future__ import annotations
 import random
 import re
 from dataclasses import dataclass
-from typing import Any, Dict, Optional, Tuple
+from typing import Any, Dict, Optional, Tuple, TypedDict
 
 import yaml
 
 from .models import DefFormation, Lane, OffDepth, OffFormationFull
+
+
+class Mods(TypedDict):
+    lane: int
+    overlay: int
+    o_tags: int
+    coverage: int
+
+
+class ResolveResult(TypedDict):
+    lane: Lane
+    core: int
+    eff: int
+    mods: Mods
+    play_family: str
+    yards: int
+    event: str
+
 
 # ---------- Dice engine ----------
 _DICE_RE = re.compile(r"^\s*(\d+)d(\d+)([+-]\d+)?\s*$")
@@ -189,7 +207,7 @@ def resolve_play_v2(
     def_play: dict,
     cfg: ResolverConfig,
     rng: random.Random,
-) -> Dict[str, Any]:
+) -> ResolveResult:
     # Phase 0: pre-snap (you can extend: motion shift → slight lane bias)
     te_side = offense_te_side(off_form)
 
