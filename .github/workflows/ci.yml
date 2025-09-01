@@ -19,12 +19,13 @@ jobs:
       with:
         python-version: "3.12"
 
-    - name: Bootstrap pip
+    # 👇 FIX: upgrade pip first so its vendored 'packaging' is new enough
+    - name: Bootstrap pip (upgrade vendored 'packaging')
       run: |
-        python -m pip install -U pip setuptools wheel packaging
+        python -m pip install --upgrade "pip>=24.2" "setuptools>=69" "wheel>=0.43" "packaging>=24.1"
         python -m pip --version
 
-    - name: Install dependencies
+    - name: Install requirements
       run: |
         python -m pip install -r requirements.txt
 
@@ -43,10 +44,15 @@ jobs:
       with:
         python-version: 3.12
 
-    - name: Install dependencies
+    # 👇 FIX: upgrade pip first so its vendored 'packaging' is new enough
+    - name: Bootstrap pip (upgrade vendored 'packaging')
       run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        python -m pip install --upgrade "pip>=24.2" "setuptools>=69" "wheel>=0.43" "packaging>=24.1"
+        python -m pip --version
+
+    - name: Install requirements
+      run: |
+        python -m pip install -r requirements.txt
 
     - name: Check code formatting with black
       run: |
