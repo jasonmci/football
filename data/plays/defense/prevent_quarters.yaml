@@ -1,0 +1,116 @@
+name: prevent_quarters
+label: "Prevent Defense Quarters Coverage"
+formation: prevent_defense
+personnel: []
+play_type: defense
+tags: [coverage, prevent, quarters, deep_protection]
+
+pre_snap_shifts:
+  - player: CB1
+    action: move_back
+    coordinate:
+      x: -12
+      y: -12
+    timing: 1
+  - player: CB2
+    action: move_back
+    coordinate:
+      x: 12
+      y: -12
+    timing: 1
+
+motion: null
+defensive_reactions: []
+
+# Prevent quarters coverage
+assignments:
+  - player: DE1
+    assignment: rush
+    details:
+      technique: "contain_rush"
+      gap: "C_gap"
+      no_deep_rush: true
+  
+  - player: DT1
+    assignment: rush
+    details:
+      technique: "penetration"
+      gap: "B_gap"
+      controlled_rush: true
+  
+  - player: DT2
+    assignment: rush
+    details:
+      technique: "penetration"
+      gap: "B_gap"
+      controlled_rush: true
+  
+  - player: DE2
+    assignment: rush
+    details:
+      technique: "contain_rush"
+      gap: "C_gap"
+      no_deep_rush: true
+  
+  - player: MLB
+    assignment: coverage
+    zone: "hook"
+    details:
+      coverage: "zone"
+      depth: "8_to_15"
+      robber: true
+  
+  - player: CB1
+    assignment: coverage
+    zone: "quarter"
+    details:
+      coverage: "zone"
+      depth: "12_to_20"
+      side: "left"
+      no_inside_help: true
+  
+  - player: CB2
+    assignment: coverage
+    zone: "quarter"
+    details:
+      coverage: "zone"
+      depth: "12_to_20"
+      side: "right"
+      no_inside_help: true
+  
+  - player: NB1
+    assignment: coverage
+    zone: "hook"
+    details:
+      coverage: "zone"
+      depth: "5_to_12"
+      side: "left"
+  
+  - player: NB2
+    assignment: coverage
+    zone: "hook"
+    details:
+      coverage: "zone"
+      depth: "5_to_12"
+      side: "right"
+  
+  - player: FS
+    assignment: coverage
+    zone: "quarter"
+    details:
+      coverage: "zone"
+      depth: "20_plus"
+      side: "left"
+      help_corners: true
+  
+  - player: SS
+    assignment: coverage
+    zone: "quarter"
+    details:
+      coverage: "zone"
+      depth: "20_plus"
+      side: "right"
+      help_corners: true
+
+snap_count: null
+audible_options: ["check_to_cover_2", "all_out_rush"]

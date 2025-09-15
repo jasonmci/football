@@ -1,0 +1,111 @@
+name: power_right
+label: "Power Right (21 I)"
+formation: i_form
+personnel: ["21"]
+play_type: run
+tags: [run, power, gap, physical]
+
+# Pre-snap shifts
+pre_snap_shifts: []
+
+motion: null
+
+# Power concept - double teams and kick out blocks
+assignments:
+  - player: QB
+    assignment: handoff
+    target: RB1
+    details:
+      mesh_point: "deep"
+      ball_handling: "firm_handoff"
+      fake: "play_action_fake"  # Sell play action
+  
+  - player: RB1
+    assignment: run_block
+    direction: right
+    details:
+      technique: "power_run"
+      vision: "press_double_team"
+      target_gap: "C_gap"
+      patience: "let_blocks_develop"
+  
+  - player: FB
+    assignment: lead_block
+    target: "linebacker"
+    direction: right
+    details:
+      scheme: "isolation"
+      technique: "shoulder_drive"
+      level: "second_level"
+  
+  # LEFT SIDE - Big on big
+  - player: LT
+    assignment: run_block
+    details:
+      scheme: "big_on_big"
+      technique: "vertical_set"
+      target: "defensive_end"
+  
+  - player: LG
+    assignment: run_block
+    details:
+      scheme: "back_block"
+      target: "penetrator"
+      help: "center"
+  
+  # POWER BLOCKING - Double teams and kick outs
+  - player: C
+    assignment: run_block
+    details:
+      scheme: "double_team"
+      target: "nose_tackle"
+      partner: "right_guard"
+      technique: "drive_block"
+  
+  - player: RG
+    assignment: run_block
+    details:
+      scheme: "double_team"
+      target: "nose_tackle"
+      partner: "center"
+      technique: "drive_block"
+      work_to: "linebacker"  # Combo block
+  
+  - player: RT
+    assignment: run_block
+    details:
+      scheme: "double_team"
+      target: "defensive_tackle"
+      partner: "tight_end"
+      technique: "drive_block"
+  
+  - player: TE
+    assignment: run_block
+    details:
+      scheme: "double_team"
+      target: "defensive_tackle"  
+      partner: "right_tackle"
+      technique: "drive_block"
+      work_to: "linebacker"
+  
+  - player: WR1
+    assignment: run_block
+    details:
+      technique: "crack"
+      target: "linebacker"
+      timing: "aggressive"
+  
+  - player: WR2
+    assignment: run_block
+    details:
+      technique: "stalk"
+      target: "corner"
+
+snap_count: "on one"
+audible_options: ["play_action_pass", "quick_slant"]
+
+# Power concept advantages:
+# 1. Multiple double teams create push at point of attack
+# 2. FB provides extra gap protection
+# 3. Physical, downhill running style
+# 4. Effective in short yardage situations

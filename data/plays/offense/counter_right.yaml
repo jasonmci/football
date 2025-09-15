@@ -1,0 +1,89 @@
+name: counter_right
+label: "Counter Right (21 I)"
+formation: i_form
+personnel: ["21"]
+play_type: run
+tags: [run, counter, power]
+
+# Pre-snap shifts (none for basic counter)
+pre_snap_shifts: []
+
+motion: null
+
+# Counter play assignments
+assignments:
+  - player: QB
+    assignment: handoff
+    target: RB1
+    details:
+      fake_direction: left
+      mesh_point: "deep"
+  
+  - player: RB1
+    assignment: run_block
+    direction: right
+    details:
+      technique: "counter_step"
+      initial_direction: left
+      cut_direction: right
+      vision: "cutback"
+  
+  - player: FB
+    assignment: lead_block
+    target: "first_linebacker"
+    direction: right
+    details:
+      scheme: "isolation"
+  
+  - player: LT
+    assignment: run_block
+    details:
+      scheme: "big_on_big"
+      technique: "vertical_set"
+  
+  - player: LG
+    assignment: run_block
+    details:
+      scheme: "pull"
+      direction: right
+      lead_through: "C_gap"
+  
+  - player: C
+    assignment: run_block
+    details:
+      scheme: "back_block"
+      target: "first_threat"
+  
+  - player: RG
+    assignment: run_block
+    details:
+      scheme: "back_block"
+      target: "penetrator"
+  
+  - player: RT
+    assignment: run_block
+    details:
+      scheme: "big_on_big"
+      technique: "vertical_set"
+  
+  - player: TE
+    assignment: run_block
+    details:
+      scheme: "seal"
+      target: "end_man"
+      direction: right
+  
+  - player: WR1
+    assignment: run_block
+    details:
+      technique: "crack"
+      target: "inside_linebacker"
+  
+  - player: WR2
+    assignment: run_block
+    details:
+      technique: "stalk"
+      target: "corner"
+
+snap_count: "on one"
+audible_options: ["quick_slant", "check_to_pass"]

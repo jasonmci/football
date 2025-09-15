@@ -1,0 +1,90 @@
+name: pistol_read_option
+label: "Pistol Read Option (11 Personnel)"
+formation: pistol_11
+personnel: ["11"]
+play_type: run
+tags: [run, option, read, dual_threat]
+
+pre_snap_shifts: []
+motion: null
+
+# Read option assignments
+assignments:
+  - player: QB
+    assignment: route
+    details:
+      action: "read_option"
+      read_key: "end_man_on_line"
+      keep_or_give: "mesh_decision"
+      escape_route: "designed_keeper"
+  
+  - player: RB1
+    assignment: run_block
+    direction: right
+    details:
+      hole: "B_gap"
+      vision: "cut_back"
+      mesh_point: "normal"
+  
+  - player: WR1
+    assignment: run_block
+    details:
+      technique: "crack"
+      target: "inside_linebacker"
+  
+  - player: WR2
+    assignment: run_block
+    details:
+      technique: "stalk"
+      target: "corner"
+  
+  - player: WR3
+    assignment: run_block
+    details:
+      technique: "stalk"
+      target: "safety"
+  
+  - player: TE
+    assignment: run_block
+    details:
+      scheme: "zone"
+      technique: "reach"
+      direction: "right"
+  
+  - player: LT
+    assignment: run_block
+    details:
+      scheme: "zone"
+      technique: "reach"
+      direction: "right"
+  
+  - player: LG
+    assignment: run_block
+    details:
+      scheme: "zone"
+      technique: "reach"
+      direction: "right"
+  
+  - player: C
+    assignment: run_block
+    details:
+      scheme: "zone"
+      technique: "combo"
+      help_to: "RG"
+  
+  - player: RG
+    assignment: run_block
+    details:
+      scheme: "zone"
+      technique: "reach"
+      direction: "right"
+  
+  - player: RT
+    assignment: run_block
+    details:
+      scheme: "zone"
+      technique: "reach"
+      direction: "right"
+
+snap_count: "on one"
+audible_options: ["check_to_pass", "change_read_side"]

@@ -1,0 +1,97 @@
+name: empty_slants
+label: "Empty Formation All Slants (00 Personnel)"
+formation: empty_backfield
+personnel: ["00"]
+play_type: pass
+tags: [pass, quick, slants, hot]
+
+pre_snap_shifts: []
+motion: null
+
+# Quick slant concept
+assignments:
+  - player: QB
+    assignment: route
+    details:
+      action: "quick_pass"
+      read: "hot_route"
+      progression: ["WR1", "WR2", "WR3", "WR4", "WR5"]
+      timing: "3_step"
+  
+  - player: WR1
+    assignment: route
+    details:
+      pattern: "slant"
+      depth: 4
+      leverage: "inside"
+      timing: "quick"
+  
+  - player: WR2
+    assignment: route
+    details:
+      pattern: "slant"
+      depth: 5
+      leverage: "inside"
+      timing: "quick"
+  
+  - player: WR3
+    assignment: route
+    details:
+      pattern: "slant"
+      depth: 4
+      leverage: "inside"
+      timing: "quick"
+  
+  - player: WR4
+    assignment: route
+    details:
+      pattern: "slant"
+      depth: 5
+      leverage: "inside"
+      timing: "quick"
+  
+  - player: WR5
+    assignment: route
+    details:
+      pattern: "slant"
+      depth: 4
+      leverage: "inside"
+      timing: "quick"
+  
+  - player: LT
+    assignment: pass_block
+    details:
+      protection: "slide"
+      direction: "left"
+      max_protect: true
+  
+  - player: LG
+    assignment: pass_block
+    details:
+      protection: "slide"
+      direction: "left"
+      max_protect: true
+  
+  - player: C
+    assignment: pass_block
+    details:
+      protection: "slide"
+      direction: "left"
+      max_protect: true
+  
+  - player: RG
+    assignment: pass_block
+    details:
+      protection: "slide"
+      direction: "left"
+      max_protect: true
+  
+  - player: RT
+    assignment: pass_block
+    details:
+      protection: "slide"
+      direction: "left"
+      max_protect: true
+
+snap_count: "on one"
+audible_options: ["check_to_fade", "max_protect"]

@@ -1,0 +1,16 @@
+name: i_form
+label: "I-Formation (21)"
+allowed_personnel: ["21"]
+
+roles:
+  QB:         { pos: QB, lane: middle, depth: backfield }
+  RB1:        { pos: RB, lane: middle, depth: backfield }   # tailback
+  FB:         { pos: FB, lane: middle, depth: backfield }   # directly in front of RB1 (engine can offset later)
+  TE:         { pos: TE, lane: right,  depth: line, align: tight }
+  WR_left:    { pos: WR, lane: left,   depth: line, align: outside }
+  WR_right:   { pos: WR, lane: right,  depth: line, align: outside }
+  LT:         { pos: OL, lane: left,   depth: line, align: tight }
+  LG:         { pos: OL, lane: middle, depth: line, align: tight }
+  C:          { pos: OL, lane: middle, depth: line, align: tight }
+  RG:         { pos: OL, lane: middle, depth: line, align: tight }
+  RT:         { pos: OL, lane: right,  depth: line, align: tight }

@@ -1,0 +1,109 @@
+name: 43_cover3_base
+label: "4-3 Cover 3 (Base)"
+formation: base43
+personnel: []
+play_type: defense
+tags: [coverage, cover3, zone, base_defense]
+
+# Pre-snap adjustments
+pre_snap_shifts:
+  - player: DT1
+    action: move_tight
+    coordinate:
+      x: -1
+      y: 0
+    timing: 1
+  - player: DT2
+    action: move_tight
+    coordinate:
+      x: 1
+      y: 0
+    timing: 1
+
+motion: null
+defensive_reactions: []
+
+# Player assignments for Cover 3
+assignments:
+  - player: DE1
+    assignment: rush
+    details:
+      technique: "contain_rush"
+      gap: "C_gap"
+  
+  - player: DT1
+    assignment: rush
+    details:
+      technique: "penetration"
+      gap: "A_gap"
+  
+  - player: DT2
+    assignment: rush
+    details:
+      technique: "penetration"
+      gap: "A_gap"
+  
+  - player: DE2
+    assignment: rush
+    details:
+      technique: "contain_rush"
+      gap: "C_gap"
+  
+  - player: MLB
+    assignment: coverage
+    zone: "hook"
+    details:
+      coverage: "zone"
+      depth: "8_to_12"
+      landmark: "middle"
+  
+  - player: WLB
+    assignment: coverage
+    zone: "flat"
+    details:
+      coverage: "zone"
+      depth: "0_to_5"
+      side: "weak"
+  
+  - player: SLB
+    assignment: coverage
+    zone: "flat"
+    details:
+      coverage: "zone"
+      depth: "0_to_5"
+      side: "strong"
+  
+  - player: CB1
+    assignment: coverage
+    zone: "deep_third"
+    details:
+      coverage: "zone"
+      depth: "15_plus"
+      side: "left"
+  
+  - player: CB2
+    assignment: coverage
+    zone: "deep_third"
+    details:
+      coverage: "zone"
+      depth: "15_plus"
+      side: "right"
+  
+  - player: FS
+    assignment: coverage
+    zone: "deep_third"
+    details:
+      coverage: "zone"
+      depth: "15_plus"
+      landmark: "middle"
+  
+  - player: SS
+    assignment: coverage
+    zone: "hook"
+    details:
+      coverage: "zone"
+      depth: "8_to_12"
+      side: "strong"
+
+snap_count: null
+audible_options: ["check_to_cover_1", "robber_coverage"]

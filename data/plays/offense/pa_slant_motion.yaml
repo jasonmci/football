@@ -1,0 +1,104 @@
+name: pa_slant_motion
+label: "Play-Action Slant (11 Singleback, WR2 Jet)"
+formation: singleback_11
+personnel: ["11"]
+play_type: pass
+tags: [pass, play_action, quick, motion]
+
+# Pre-snap shift
+pre_snap_shifts:
+  - player: RB1
+    action: shift_right
+    target_lane: right
+    target_depth: backfield
+    timing: 1
+
+# Jet motion across formation
+motion:
+  player: WR2
+  type: jet
+  start_lane: left
+  start_depth: line
+  end_lane: right
+  end_depth: line
+  speed: fast
+
+# Play-action passing assignments
+assignments:
+  - player: QB
+    assignment: fake
+    target: RB1
+    details:
+      fake_type: "handoff"
+      sell_time: "2_count"
+      pass_target: "WR1"
+  
+  - player: RB1
+    assignment: pass_block
+    details:
+      protection: "scan"
+      fake_first: true
+      responsibility: "blitzer"
+  
+  - player: WR1
+    assignment: route
+    details:
+      pattern: "slant"
+      depth: 5
+      leverage: "inside"
+      timing: "quick"
+  
+  - player: WR2
+    assignment: route
+    details:
+      pattern: "drag"
+      depth: 3
+      direction: "opposite"
+      leverage: "underneath"
+  
+  - player: TE
+    assignment: route
+    details:
+      pattern: "hitch"
+      depth: 6
+      sit_spot: "soft"
+      safety_valve: true
+  
+  - player: LT
+    assignment: pass_block
+    details:
+      protection: "slide"
+      direction: "left"
+      sell_run_fake: true
+  
+  - player: LG
+    assignment: run_block
+    details:
+      scheme: "pull"
+      direction: "right"
+      sell_fake: true
+      then_protect: true
+  
+  - player: C
+    assignment: pass_block
+    details:
+      protection: "slide"
+      direction: "left"
+      sell_run_fake: true
+  
+  - player: RG
+    assignment: pass_block
+    details:
+      protection: "slide"
+      direction: "left"
+      sell_run_fake: true
+  
+  - player: RT
+    assignment: pass_block
+    details:
+      protection: "slide"
+      direction: "left"
+      sell_run_fake: true
+
+snap_count: "on one"
+audible_options: ["kill_to_run", "hot_slants"]

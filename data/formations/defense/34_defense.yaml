@@ -1,0 +1,15 @@
+name: "34_defense"
+label: "3-4 Defense"
+# 3 DL + 4 LB + 4 DB = 11
+roles:
+  NT:        { pos: DL, lane: middle, depth: line }     # Nose Tackle
+  RE:        { pos: DL, lane: right,  depth: line }     # Right End
+  LE:        { pos: DL, lane: left,   depth: line }     # Left End
+  ROLB:      { pos: LB, lane: right,  depth: box }      # Right Outside LB
+  RILB:      { pos: LB, lane: middle, depth: box }      # Right Inside LB  
+  LILB:      { pos: LB, lane: middle, depth: box }      # Left Inside LB
+  LOLB:      { pos: LB, lane: left,   depth: box }      # Left Outside LB
+  CB_left:   { pos: CB, lane: left,   depth: deep }
+  CB_right:  { pos: CB, lane: right,  depth: deep }
+  FS:        { pos: S,  lane: middle, depth: deep }     # Free Safety
+  SS:        { pos: S,  lane: right,  depth: box }      # Strong Safety

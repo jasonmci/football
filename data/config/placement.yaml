@@ -1,0 +1,40 @@
+lanes: { left: 3, middle: 10, right: 17 }   # still used as a last-resort fallback
+
+depths:
+  offense: { under_center: 13, line: 12, wing: 11, backfield: 14, pistol: 15, shotgun: 16 }
+  defense: { line: 8, box: 6, overhang: 5, deep: 3 }
+
+# Role locks (OL never shift) — formation placement can also override these
+overrides:
+  by_role:
+    LT: { x: 5,  y: 12 }
+    LG: { x: 6,  y: 12 }
+    C:  { x: 7, y: 12 }
+    RG: { x: 8, y: 12 }
+    RT: { x: 9, y: 12 }
+
+# NEW: default (x,y) for lane+depth+align combos (pos-agnostic)
+# If no align-specific entry exists, use '*'.
+combos:
+  offense:
+    left:
+      line:
+        outside: { x: 2,  y: 12 }   # WR outside L
+        slot:    { x: 4,  y: 12 }   # WR slot L
+        tight:   { x: 3,  y: 12 }   # TE tight L
+      backfield:
+        "*":     { x: 4,  y: 14 }   # RB left backfield
+    middle:
+      shotgun:
+        "*":     { x: 7, y: 16 }   # QB shotgun mid
+      backfield:
+        "*":     { x: 7, y: 14 }   # RB mid backfield
+      line:
+        tight:   { x: 10, y: 12 }   # inline TE over C
+    right:
+      line:
+        outside: { x: 18, y: 12 }   # WR outside R
+        slot:    { x: 16, y: 12 }   # WR slot R
+        tight:   { x: 17, y: 12 }   # TE tight R
+      backfield:
+        "*":     { x: 16, y: 14 }   # RB right backfield

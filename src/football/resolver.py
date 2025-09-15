@@ -1,255 +1,124 @@
-from __future__ import annotations
+from typing import TypeVar, Sequence, cast
+from .schemas import (
+    Team, FormationSpecDTO, PlaySpecDTO,
+    LogicalPlayerFrame, RoleSpec, Lane, Align,
+    PlayLogicalFramesDTO, OffenseDepth, DefenseDepth
+)
 
-import random
-from dataclasses import dataclass
-from typing import Any, Dict, Optional, Tuple, TypedDict
+# Typed orders
+LANE_ORDER: Sequence[Lane] = ("left", "middle", "right")
+OFF_DEPTH_ORDER: Sequence[OffenseDepth] = ("under_center", "line", "wing", "backfield", "pistol", "shotgun")
+DEF_DEPTH_ORDER: Sequence[DefenseDepth] = ("line", "box", "overhang", "deep")
 
-import yaml
+# Generic stepper that preserves the literal type T
+T = TypeVar("T", bound=str)
+def _next_toward(current: T, target: T, order: Sequence[T]) -> T:
+    if current == target:
+        return current
+    ci, ti = order.index(current), order.index(target)
+    step = 1 if ti > ci else -1
+    return order[ci + step]
 
-from .dice_engine import roll_core
+def _resolve_role_name(name: str, formation: FormationSpecDTO) -> str | None:
+    if name in formation.roles: return name
+    if name in formation.aliases and formation.aliases[name] in formation.roles:
+        return formation.aliases[name]
+    lname = name.lower()
+    for k in formation.roles.keys():
+        if k.lower() == lname: return k
+    for a, canon in formation.aliases.items():
+        if a.lower() == lname and canon in formation.roles: return canon
+    return None
 
-from .models import DefFormation, Lane, OffDepth, OffFormationFull
+def build_logical_presnap_frames( team: Team, formation: FormationSpecDTO, play: PlaySpecDTO) -> PlayLogicalFramesDTO:
+    # mutable copy of role specs (lane/depth/align mutate over time)
+    roles: dict[str, RoleSpec] = {
+        r: RoleSpec(**spec.model_dump()) for r, spec in formation.roles.items()
+    }
 
+    def snap() -> list[LogicalPlayerFrame]:
+        return [
+            LogicalPlayerFrame(
+                id=r,
+                team=team,
+                pos=spec.pos,
+                lane=spec.lane,
+                depth=spec.depth,
+                align=spec.align,
+            )
+            for r, spec in roles.items()
+        ]
 
-class Mods(TypedDict):
-    lane: int
-    overlay: int
-    o_tags: int
-    coverage: int
+    frames: list[list[LogicalPlayerFrame]] = [snap()]
 
+    # ---- pre-snap events (apply → snapshot) ----
+    unknown: list[str] = []
+    for evt in play.pre_snap:
+        rname = _resolve_role_name(evt.player, formation)
+        if rname is None:
+            unknown.append(evt.player)
+            frames.append(snap())
+            continue
 
-class ResolveResult(TypedDict):
-    lane: Lane
-    core: int
-    eff: int
-    mods: Mods
-    play_family: str
-    yards: int
-    event: str
+        rs = roles[rname]
+        if evt.to.lane is not None:
+            rs.lane = evt.to.lane
+        if evt.to.depth is not None:
+            # depth is a Union; narrow to the correct side
+            if team == "offense":
+                rs.depth = cast(OffenseDepth, evt.to.depth)
+            else:
+                rs.depth = cast(DefenseDepth, evt.to.depth)
+        if evt.to.align is not None:
+            rs.align = evt.to.align
 
+        frames.append(snap())
 
-# ---------- Config ----------
-@dataclass
-class ResolverConfig:
-    core_expr: str
-    adv_bonus: int
-    dis_bonus: int
-    eff_min: int
-    eff_max: int
-    mods: Dict[str, int]
-    tables: Dict[str, Dict[int, Dict[str, Any]]]
-    to_chance: Dict[str, Any]
-
-    @staticmethod
-    def from_yaml(path: str) -> "ResolverConfig":
-        data = yaml.safe_load(open(path, "r"))
-        core = data["dice"]["core"]
-        adv = int(data["dice"].get("advantage_bonus", 1))
-        dis = int(data["dice"].get("disadvantage_penalty", 1))
-        eff_min = int(data["weights"].get("eff_min", 3))
-        eff_max = int(data["weights"].get("eff_max", 12))
-        mods = {k: int(v) for k, v in data.get("modifiers", {}).items()}
-        # normalize table keys to int
-        tables: Dict[str, Dict[int, Dict[str, Any]]] = {}
-        for play, mapping in data.get("tables", {}).items():
-            tables[play] = {int(k): v for k, v in mapping.items()}
-        return ResolverConfig(
-            core, adv, dis, eff_min, eff_max, mods, tables, data.get("turnovers", {})
+    if unknown:
+        avail = ", ".join(sorted(formation.roles.keys()))
+        raise ValueError(
+            f"pre_snap references unknown role(s): {', '.join(unknown)}; available: {avail}"
         )
 
+    # ---- motion (offense only) ----
+    if team == "offense" and play.motion:
+        mover_name = _resolve_role_name(play.motion.player, formation)
+        if mover_name and mover_name in roles:
+            # delay ticks (snapshot to reflect time passing)
+            for _ in range(max(0, play.motion.delay)):
+                frames.append(snap())
 
-# ---------- Helpers ----------
-def clamp(x: int, lo: int, hi: int) -> int:
-    return lo if x < lo else hi if x > hi else x
+            for wp in play.motion.path:
+                ticks = 0
+                while ticks < 2000:  # safety cap
+                    ticks += 1
+                    rs = roles[mover_name]
+                    moved = False
 
+                    # lane step (Lane -> Lane, preserves literal type)
+                    if rs.lane != wp.lane:
+                        rs.lane = _next_toward(rs.lane, wp.lane, LANE_ORDER)
+                        moved = True
 
-def lane_strength(off_counts: Dict[Tuple[Lane, OffDepth], int], lane: Lane) -> int:
-    return (
-        off_counts.get((lane, "line"), 0)
-        + off_counts.get((lane, "backfield"), 0)
-        + off_counts.get((lane, "wide"), 0)
-    )
+                    # depth step (narrow union before stepping)
+                    if not moved and rs.depth != wp.depth:
+                        if team == "offense":
+                            cur = cast(OffenseDepth, rs.depth)
+                            tgt = cast(OffenseDepth, wp.depth)
+                            rs.depth = _next_toward(cur, tgt, OFF_DEPTH_ORDER)
+                        else:
+                            cur = cast(DefenseDepth, rs.depth)
+                            tgt = cast(DefenseDepth, wp.depth)
+                            rs.depth = _next_toward(cur, tgt, DEF_DEPTH_ORDER)
+                        moved = True
 
+                    # align snaps to target if provided (no intermediate steps)
+                    if wp.align is not None:
+                        rs.align = wp.align
 
-def lane_modifier(
-    off_counts: Dict[Tuple[Lane, OffDepth], int],
-    deff: DefFormation,
-    lane: Lane,
-    cap: int,
-) -> int:
-    off_strength = lane_strength(off_counts, lane)
-    def_pressure = deff.counts.get((lane, "line"), 0) + deff.counts.get(
-        (lane, "box"), 0
-    )
-    raw = off_strength - def_pressure
-    return clamp(raw, -cap, cap)
+                    frames.append(snap())
 
+                    if not moved and rs.lane == wp.lane and rs.depth == wp.depth:
+                        break
 
-def strong_weak_to_lane(token: str, te_side: Lane) -> Lane:
-    if token in ("left", "middle", "right"):
-        return token  # type: ignore
-    if token == "strong":
-        return te_side
-    if token == "weak":
-        return "left" if te_side == "right" else "right"
-    return "middle"
-
-
-def offense_te_side(off_form: OffFormationFull) -> Lane:
-    # crude: if any TE wide/line on right>0 -> right else left; fallback right
-    counts = off_form.to_counts()
-    right = counts.get(("right", "line"), 0) + counts.get(("right", "wide"), 0)
-    left = counts.get(("left", "line"), 0) + counts.get(("left", "wide"), 0)
-    return "right" if right >= left else "left"
-
-
-# ---------- Outcome sampling ----------
-def sample_from_table(
-    play_key: str, eff: int, cfg: ResolverConfig, rng: random.Random
-) -> Tuple[int, Optional[str]]:
-    table = cfg.tables[play_key]
-    eff = clamp(eff, cfg.eff_min, cfg.eff_max)
-    band = table[eff]
-    kind = band["kind"]
-    lo, hi = band["y"]
-    if kind in ("inc",):
-        return 0, None
-    if kind in ("sack", "stuff"):
-        return rng.randint(lo, hi), kind
-    # gain/break
-    return rng.randint(lo, hi), None
-
-
-def maybe_turnover(
-    is_pass: bool,
-    eff: int,
-    blitz_on_lane: bool,
-    cfg: ResolverConfig,
-    rng: random.Random,
-) -> Optional[str]:
-    if is_pass:
-        td = cfg.to_chance.get("pass_interception", {})
-        p = float(td.get("base", 0.0))
-        p += float(td.get(f"eff{eff}", 0.0))
-        if blitz_on_lane:
-            p += float(td.get("blitz_lane_bonus", 0.0))
-        return "interception" if rng.random() < p else None
-    else:
-        td = cfg.to_chance.get("run_fumble", {})
-        p = float(td.get("base", 0.0))
-        if eff <= 3:
-            p += float(td.get("eff3", 0.0))
-        return "fumble" if rng.random() < p else None
-
-
-# ---------- Main API ----------
-def resolve_play_v2(
-    off_form: OffFormationFull,
-    def_form: DefFormation,
-    off_play: Dict[str, Any],
-    def_play: Dict[str, Any],
-    cfg: ResolverConfig,
-    rng: random.Random,
-) -> ResolveResult:
-    # Phase 0: pre-snap (you can extend: motion shift → slight lane bias)
-    te_side = offense_te_side(off_form)
-
-    # Phase 1: choose lane (simplified: plays may specify lane; else pick weighted)
-    chosen_lane: Lane = "middle"
-    # try to read an assignment lane; fall back to strongest lane
-    for a in off_play.get("assignments", []):
-        if a.get("action") in ("run", "route", "screen") and "lane" in a:
-            chosen_lane = strong_weak_to_lane(
-                a["lane"], te_side
-            )  # supports strong/weak later if you add it on offense
-            break
-
-    # Phase 2: compute modifiers
-    off_counts = off_form.to_counts()
-    lm_cap = int(cfg.mods.get("lane_strength_cap", 2))
-    lane_mod = lane_modifier(off_counts, def_form, chosen_lane, lm_cap)
-
-    # defensive assignments → overlay-style modifiers
-    overlay_mod = 0
-    blitz_on_lane = False
-    shell_short = shell_deep = 0
-    for a in def_play.get("assignments", []):
-        if a["action"] == "blitz":
-            ln = strong_weak_to_lane(a.get("lane", "middle"), te_side)
-            if ln == chosen_lane:
-                overlay_mod += int(
-                    cfg.mods.get("blitz_pass_penalty", -1)
-                )  # hurts passes
-                blitz_on_lane = True
-        elif a["action"] in ("zone", "deep_help"):
-            # crude shell effect
-            sh = def_play.get("shell", "")
-            if sh in ("cover2", "cover3", "quarters"):
-                shell_short += int(cfg.mods.get("shell_vs_short", -1))
-                shell_deep += int(cfg.mods.get("shell_vs_deep", -1))
-
-    # offense special tags (draw, play_action)
-    o_tag_mod = 0
-    is_pass = any(x.get("action") == "pass" for x in off_play.get("assignments", []))
-    is_run = any(x.get("action") == "run" for x in off_play.get("assignments", []))
-    tags = off_play.get("tags", [])
-    if "play_action" in tags and def_play.get("shell") in ("cover1", "cover3"):
-        # PA vs single-high shell: soften coverage a hair
-        o_tag_mod += 1
-    if is_run and any(
-        a.get("action") == "blitz" for a in def_play.get("assignments", [])
-    ):
-        # Draw/counter could give a small bonus if tagged that way
-        if "draw" in tags or "counter" in tags:
-            o_tag_mod += int(cfg.mods.get("draw_vs_blitz", +1))
-
-    # coverage penalty based on pass depth tag
-    coverage_mod = 0
-    if is_pass:
-        if "deep" in tags:
-            coverage_mod += shell_deep
-        else:
-            coverage_mod += shell_short
-
-    # Phase 3: roll
-    core = roll_core(cfg.core_expr, rng)
-    eff = clamp(
-        core + lane_mod + overlay_mod + o_tag_mod + coverage_mod,
-        cfg.eff_min,
-        cfg.eff_max,
-    )
-
-    # Phase 4: table lookup (pick play family; default from tags)
-    play_family = "inside_run"
-    if is_pass and "deep" in tags:
-        play_family = "deep_pass"
-    elif is_pass:
-        play_family = "short_pass"
-    elif is_run:
-        play_family = "inside_run"
-    yards, event = sample_from_table(play_family, eff, cfg, rng)
-
-    # Phase 5: secondary turnover chance (if none yet)
-    if event is None:
-        maybe = maybe_turnover(is_pass, eff, blitz_on_lane, cfg, rng)
-        if maybe:
-            event = maybe
-            if event == "interception":
-                yards = rng.randint(-15, -6)
-            elif event == "fumble":
-                yards = rng.randint(-9, -3)
-
-    return {
-        "lane": chosen_lane,
-        "core": core,
-        "eff": eff,
-        "mods": {
-            "lane": lane_mod,
-            "overlay": overlay_mod,
-            "o_tags": o_tag_mod,
-            "coverage": coverage_mod,
-        },
-        "play_family": play_family,
-        "yards": int(yards),
-        "event": event or "none",
-    }
+    return PlayLogicalFramesDTO(name=play.name, frames=frames)

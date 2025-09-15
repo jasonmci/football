@@ -1,0 +1,112 @@
+name: nickel_zone_blitz_showA
+label: "Nickel Zone Blitz (show A, RE/DT stunt)"
+formation: nickel
+personnel: []
+play_type: defense
+tags: [blitz, zone, stunt, pressure, cover3]
+
+# Pre-snap movements to disguise
+pre_snap_shifts:
+  - player: MLB
+    action: move_up
+    coordinate:
+      x: 0
+      y: 2
+    timing: 1
+  - player: SS
+    action: move_up
+    coordinate:
+      x: 5
+      y: -5
+    timing: 2
+
+motion: null
+defensive_reactions: []
+
+# Zone blitz with stunt
+assignments:
+  - player: DE1
+    assignment: rush
+    details:
+      technique: "contain_rush"
+      gap: "C_gap"
+  
+  - player: DT1
+    assignment: rush
+    details:
+      technique: "stunt"
+      partner: "DE2"
+      direction: "right"
+  
+  - player: DT2
+    assignment: coverage
+    zone: "hook"
+    details:
+      coverage: "zone"
+      depth: "5_to_10"
+      drop_to_coverage: true
+  
+  - player: DE2
+    assignment: rush
+    details:
+      technique: "stunt"
+      partner: "DT1"
+      direction: "left"
+      path: "loop_inside"
+  
+  - player: MLB
+    assignment: blitz
+    details:
+      gap: "A_gap"
+      timing: "snap_plus_one"
+  
+  - player: OLB1
+    assignment: coverage
+    zone: "hook"
+    details:
+      coverage: "zone"
+      depth: "8_to_12"
+      side: "weak"
+  
+  - player: CB1
+    assignment: coverage
+    zone: "flat"
+    details:
+      coverage: "zone"
+      depth: "0_to_5"
+      side: "left"
+  
+  - player: CB2
+    assignment: coverage
+    zone: "flat"
+    details:
+      coverage: "zone"
+      depth: "0_to_5"
+      side: "right"
+  
+  - player: NB
+    assignment: coverage
+    zone: "hook"
+    details:
+      coverage: "zone"
+      depth: "8_to_12"
+      robber: true
+  
+  - player: FS
+    assignment: coverage
+    zone: "deep_third"
+    details:
+      coverage: "zone"
+      depth: "15_plus"
+      landmark: "middle"
+  
+  - player: SS
+    assignment: coverage
+    zone: "deep_third"
+    details:
+      coverage: "zone"
+      depth: "15_plus"
+      side: "strong"
+
+snap_count: null
+audible_options: ["check_to_base_cover_3", "safety_blitz"]

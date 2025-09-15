@@ -1,0 +1,57 @@
+name: dime_cover4_quarters
+label: "Dime Cover 4 Quarters Match"
+formation: dime
+play_type: coverage
+tags: [coverage, cover4, quarters, match, pass_defense]
+
+description: "Dime defense with cover 4 quarters coverage and pattern matching. Excellent against 4 vertical concepts and bunch formations."
+
+assignments:
+  - player: DE_L
+    assignment: rush
+    details: "Speed rush, get upfield"
+  
+  - player: DT_L
+    assignment: rush
+    details: "Rush QB, attack A gap"
+  
+  - player: DT_R
+    assignment: rush
+    details: "Rush QB, attack A gap"
+  
+  - player: DE_R
+    assignment: rush
+    details: "Speed rush, get upfield"
+  
+  - player: MLB
+    assignment: coverage
+    details: "Hole coverage, robber in middle"
+  
+  - player: NB
+    assignment: coverage
+    details: "Match coverage on slot receiver"
+  
+  - player: CB_L
+    assignment: coverage
+    details: "Quarter coverage, deep outside left"
+  
+  - player: FS
+    assignment: coverage
+    details: "Quarter coverage, deep inside left"
+  
+  - player: SS
+    assignment: coverage
+    details: "Quarter coverage, deep inside right"
+  
+  - player: CB_R
+    assignment: coverage
+    details: "Quarter coverage, deep outside right"
+  
+  - player: SS2
+    assignment: coverage
+    details: "Dime coverage, match #3 receiver"
+
+pre_snap_shifts: []
+motion_reactions:
+  - trigger: "Any receiver motion"
+    reaction: "Pattern match coverage adjusts to motion, maintain quarter integrity"

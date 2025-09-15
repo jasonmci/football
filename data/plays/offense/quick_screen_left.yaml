@@ -1,0 +1,89 @@
+name: quick_screen_left
+label: "Quick Bubble Left (10 Spread)"
+formation: spread_10
+personnel: ["10"]
+play_type: pass
+tags: [pass, screen, quick, bubble]
+
+pre_snap_shifts: []
+motion: null
+
+# Quick bubble screen assignments
+assignments:
+  - player: QB
+    assignment: route
+    details:
+      action: "quick_pass"
+      read: "bubble_screen"
+      target: "WR2"
+      timing: "quick_game"
+  
+  - player: RB1
+    assignment: route
+    details:
+      pattern: "swing"
+      direction: "right"
+      depth: 2
+      safety_valve: true
+  
+  - player: WR1
+    assignment: run_block
+    details:
+      technique: "block_down"
+      target: "inside_defender"
+      leverage: "outside"
+  
+  - player: WR2
+    assignment: route
+    details:
+      pattern: "screen"
+      type: "bubble"
+      depth: 0
+      direction: "left"
+  
+  - player: WR3
+    assignment: route
+    details:
+      pattern: "go"
+      depth: 20
+      clear_out: true
+  
+  - player: WR4
+    assignment: route
+    details:
+      pattern: "hitch"
+      depth: 6
+      comeback: true
+  
+  - player: LT
+    assignment: pass_block
+    details:
+      protection: "slide"
+      direction: "left"
+  
+  - player: LG
+    assignment: pass_block
+    details:
+      protection: "slide"
+      direction: "left"
+  
+  - player: C
+    assignment: pass_block
+    details:
+      protection: "slide"
+      direction: "left"
+  
+  - player: RG
+    assignment: pass_block
+    details:
+      protection: "slide"
+      direction: "left"
+  
+  - player: RT
+    assignment: pass_block
+    details:
+      protection: "slide"
+      direction: "left"
+
+snap_count: "on one"
+audible_options: ["check_to_slant", "fade_route"]
