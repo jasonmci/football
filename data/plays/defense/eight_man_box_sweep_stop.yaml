@@ -1,0 +1,170 @@
+name: eight_man_box_sweep_stop
+label: "8-Man Box Sweep Stopper"
+formation: bear46
+personnel: []
+play_type: defense
+tags: [run_defense, sweep_stop, edge_setting, 8_man_box]
+
+# Pre-snap adjustments to stop sweeps
+pre_snap_shifts:
+  - player: SS
+    action: rotate_to_box
+    coordinate:
+      x: 2
+      y: 2
+    timing: 1
+  - player: OLB1
+    action: walk_up
+    coordinate:
+      x: -2
+      y: 1
+    timing: 1
+  - player: OLB2
+    action: walk_up
+    coordinate:
+      x: 2
+      y: 1
+    timing: 1
+
+motion: null
+defensive_reactions:
+  - trigger: "wr_motion_across"
+    action: "rotate_secondary"
+  - trigger: "rb_alignment_wide"
+    action: "edge_alert"
+
+# 8-man box sweep stopping assignments
+assignments:
+  # FRONT 6 - PENETRATE AND PURSUE
+  - player: DE1
+    assignment: rush
+    details:
+      technique: "edge_set"
+      gap: "outside"
+      responsibility: "force_inside"
+      pursuit_angle: "aggressive"
+
+  - player: DT1
+    assignment: rush
+    details:
+      technique: "penetration"
+      gap: "A_gap"
+      responsibility: "pursue_ball"
+      backside_pursuit: true
+
+  - player: NT
+    assignment: rush
+    details:
+      technique: "two_gap"
+      gap: "both_A_gaps"
+      responsibility: "control_center"
+      pursue_ball: true
+
+  - player: DT2
+    assignment: rush
+    details:
+      technique: "penetration"
+      gap: "A_gap"
+      responsibility: "pursue_ball"
+      backside_pursuit: true
+
+  - player: DE2
+    assignment: rush
+    details:
+      technique: "edge_set_hard"
+      gap: "outside"
+      responsibility: "force_inside"
+      no_escape: true
+
+  # LINEBACKERS - SCRAPE AND PURSUE
+  - player: OLB1
+    assignment: run_defense
+    details:
+      technique: "scrape_exchange"
+      responsibility: "outside_contain"
+      pursuit_angle: "wide"
+      no_cutback: true
+
+  - player: ILB1
+    assignment: run_defense
+    details:
+      technique: "flow_to_ball"
+      responsibility: "inside_out"
+      pursuit_angle: "aggressive"
+      fill_gap: "B_gap"
+
+  - player: ILB2
+    assignment: run_defense
+    details:
+      technique: "flow_to_ball"
+      responsibility: "inside_out"
+      pursuit_angle: "aggressive"
+      fill_gap: "B_gap"
+
+  - player: OLB2
+    assignment: run_defense
+    details:
+      technique: "edge_set"
+      responsibility: "outside_contain"
+      pursuit_angle: "force_inside"
+      primary_edge: true
+
+  # SECONDARY - 8TH MAN IN BOX
+  - player: SS
+    assignment: run_defense
+    details:
+      technique: "force_support"
+      responsibility: "alley_defender"
+      fill_gap: "C_gap"
+      box_safety: true
+
+  - player: CB1
+    assignment: coverage
+    details:
+      zone: "outside_leverage"
+      depth: "short"
+      technique: "press_coverage"
+      run_support: true
+
+  - player: CB2
+    assignment: coverage
+    details:
+      zone: "outside_leverage"
+      depth: "short"
+      technique: "press_coverage"
+      run_support: true
+
+  - player: FS
+    assignment: coverage
+    details:
+      zone: "center_field"
+      depth: "deep"
+      technique: "single_high"
+      responsibility: "last_line"
+      run_support_angle: "inside_out"
+
+# Execution notes
+execution:
+  key_timing: "Edge defenders must set hard to force inside"
+  success_factors: ["Hard edge setting", "Fast pursuit", "Gap discipline"]
+  failure_points: ["Broken edge contain", "Overpursuit", "Cutback lanes"]
+
+# Tactical advantages
+tactical_advantages:
+  - "edge_discipline"
+  - "gap_control"
+  - "sweep_stop"
+  - "run_commit"
+  - "eight_man_box"
+  
+advantages:
+  - "8 defenders in the box"
+  - "Hard edge setting forces cutback"
+  - "Excellent vs outside runs"
+  - "Fast pursuit to ball"
+  
+disadvantages:
+  - "Vulnerable to play action"
+  - "Only single high safety"
+  - "Can be beaten by speed to edge"
+  - "Weak vs quick passing game"

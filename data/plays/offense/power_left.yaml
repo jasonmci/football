@@ -16,7 +16,7 @@ assignments:
     details:
       mesh_point: "deep"
       ball_security: "high_and_tight"
-  
+
   - player: RB1
     assignment: run_block
     direction: left
@@ -24,7 +24,7 @@ assignments:
       hole: "C_gap"
       vision: "bang_it"
       follow: "lead_blocker"
-  
+
   - player: FB
     assignment: lead_block
     target: "first_linebacker"
@@ -32,57 +32,57 @@ assignments:
     details:
       scheme: "isolation"
       aiming_point: "inside_shoulder"
-  
+
   - player: LT
     assignment: run_block
     details:
       scheme: "big_on_big"
       technique: "vertical_set"
-  
+
   - player: LG
     assignment: run_block
     details:
       scheme: "pull"
       direction: left
       kick_out: "end_man_on_line"
-  
+
   - player: C
     assignment: run_block
     details:
       scheme: "back_block"
       target: "first_threat"
-  
+
   - player: RG
     assignment: run_block
     details:
       scheme: "back_block"
       help_center: true
-  
+
   - player: RT
     assignment: run_block
     details:
       scheme: "back_block"
       target: "penetrator"
-  
+
   - player: TE1
     assignment: run_block
     details:
       scheme: "down_block"
       target: "first_down_lineman"
-  
+
   - player: TE2
     assignment: run_block
     details:
       scheme: "cutoff"
       target: "backside_pursuit"
-  
+
   - player: WR1
     assignment: run_block
     details:
       technique: "stalk"
       target: "corner"
       side: "left"
-  
+
   - player: WR2
     assignment: run_block
     details:

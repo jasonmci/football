@@ -30,27 +30,27 @@ assignments:
     details:
       progression: ["WR1", "WR2", "TE", "RB1"]
       protection_call: "slide_left"
-  
+
   - player: RB1
     assignment: pass_block
     details:
       technique: "scan"
       responsibility: "mike_linebacker"
-  
+
   - player: WR1
     assignment: route
     details:
       pattern: "corner"
       depth: 12
       break_point: 8
-  
+
   - player: WR2
     assignment: route
     details:
       pattern: "hitch"
       depth: 6
       sit_zone: "soft_spot"
-  
+
   - player: WR3
     assignment: route
     details:
@@ -58,40 +58,40 @@ assignments:
       depth: 4
       leverage: "inside"
       timing: "quick"
-  
+
   - player: TE
     assignment: route
     details:
       pattern: "drag"
       depth: 4
       direction: "opposite_motion"
-  
+
   - player: LT
     assignment: pass_block
     details:
       protection: "slide"
       direction: "left"
       help_from: LG
-  
+
   - player: LG
     assignment: pass_block
     details:
       protection: "slide"
       direction: "left"
-  
+
   - player: C
     assignment: pass_block
     details:
       protection: "slide"
       direction: "left"
       mike_id: true
-  
+
   - player: RG
     assignment: pass_block
     details:
       protection: "slide"
       direction: "left"
-  
+
   - player: RT
     assignment: pass_block
     details:

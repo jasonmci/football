@@ -6,7 +6,7 @@ roles:
   RE:        { pos: DL, lane: right,  depth: line }     # Right End
   LE:        { pos: DL, lane: left,   depth: line }     # Left End
   ROLB:      { pos: LB, lane: right,  depth: box }      # Right Outside LB
-  RILB:      { pos: LB, lane: middle, depth: box }      # Right Inside LB  
+  RILB:      { pos: LB, lane: middle, depth: box }      # Right Inside LB
   LILB:      { pos: LB, lane: middle, depth: box }      # Left Inside LB
   LOLB:      { pos: LB, lane: left,   depth: box }      # Left Outside LB
   CB_left:   { pos: CB, lane: left,   depth: deep }

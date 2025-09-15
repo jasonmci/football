@@ -1,17 +1,32 @@
 from typing import TypeVar, Sequence, cast
 from .schemas import (
-    Team, FormationSpecDTO, PlaySpecDTO,
-    LogicalPlayerFrame, RoleSpec, Lane, Align,
-    PlayLogicalFramesDTO, OffenseDepth, DefenseDepth
+    Team,
+    FormationSpecDTO,
+    PlaySpecDTO,
+    LogicalPlayerFrame,
+    RoleSpec,
+    Lane,
+    PlayLogicalFramesDTO,
+    OffenseDepth,
+    DefenseDepth,
 )
 
 # Typed orders
 LANE_ORDER: Sequence[Lane] = ("left", "middle", "right")
-OFF_DEPTH_ORDER: Sequence[OffenseDepth] = ("under_center", "line", "wing", "backfield", "pistol", "shotgun")
+OFF_DEPTH_ORDER: Sequence[OffenseDepth] = (
+    "under_center",
+    "line",
+    "wing",
+    "backfield",
+    "pistol",
+    "shotgun",
+)
 DEF_DEPTH_ORDER: Sequence[DefenseDepth] = ("line", "box", "overhang", "deep")
 
 # Generic stepper that preserves the literal type T
 T = TypeVar("T", bound=str)
+
+
 def _next_toward(current: T, target: T, order: Sequence[T]) -> T:
     if current == target:
         return current
@@ -19,18 +34,25 @@ def _next_toward(current: T, target: T, order: Sequence[T]) -> T:
     step = 1 if ti > ci else -1
     return order[ci + step]
 
+
 def _resolve_role_name(name: str, formation: FormationSpecDTO) -> str | None:
-    if name in formation.roles: return name
+    if name in formation.roles:
+        return name
     if name in formation.aliases and formation.aliases[name] in formation.roles:
         return formation.aliases[name]
     lname = name.lower()
     for k in formation.roles.keys():
-        if k.lower() == lname: return k
+        if k.lower() == lname:
+            return k
     for a, canon in formation.aliases.items():
-        if a.lower() == lname and canon in formation.roles: return canon
+        if a.lower() == lname and canon in formation.roles:
+            return canon
     return None
 
-def build_logical_presnap_frames( team: Team, formation: FormationSpecDTO, play: PlaySpecDTO) -> PlayLogicalFramesDTO:
+
+def build_logical_presnap_frames(
+    team: Team, formation: FormationSpecDTO, play: PlaySpecDTO
+) -> PlayLogicalFramesDTO:
     # mutable copy of role specs (lane/depth/align mutate over time)
     roles: dict[str, RoleSpec] = {
         r: RoleSpec(**spec.model_dump()) for r, spec in formation.roles.items()

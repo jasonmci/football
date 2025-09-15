@@ -17,7 +17,7 @@ assignments:
       read: "hot_route"
       progression: ["WR1", "WR2", "WR3", "WR4", "WR5"]
       timing: "3_step"
-  
+
   - player: WR1
     assignment: route
     details:
@@ -25,7 +25,7 @@ assignments:
       depth: 4
       leverage: "inside"
       timing: "quick"
-  
+
   - player: WR2
     assignment: route
     details:
@@ -33,7 +33,7 @@ assignments:
       depth: 5
       leverage: "inside"
       timing: "quick"
-  
+
   - player: WR3
     assignment: route
     details:
@@ -41,7 +41,7 @@ assignments:
       depth: 4
       leverage: "inside"
       timing: "quick"
-  
+
   - player: WR4
     assignment: route
     details:
@@ -49,7 +49,7 @@ assignments:
       depth: 5
       leverage: "inside"
       timing: "quick"
-  
+
   - player: WR5
     assignment: route
     details:
@@ -57,35 +57,35 @@ assignments:
       depth: 4
       leverage: "inside"
       timing: "quick"
-  
+
   - player: LT
     assignment: pass_block
     details:
       protection: "slide"
       direction: "left"
       max_protect: true
-  
+
   - player: LG
     assignment: pass_block
     details:
       protection: "slide"
       direction: "left"
       max_protect: true
-  
+
   - player: C
     assignment: pass_block
     details:
       protection: "slide"
       direction: "left"
       max_protect: true
-  
+
   - player: RG
     assignment: pass_block
     details:
       protection: "slide"
       direction: "left"
       max_protect: true
-  
+
   - player: RT
     assignment: pass_block
     details:

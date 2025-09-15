@@ -17,13 +17,13 @@ assignments:
       read: "levels"
       progression: ["WR1", "WR2", "WR3", "WR4"]
       depth: "deep_shot"
-  
+
   - player: RB1
     assignment: pass_block
     details:
       protection: "scan"
       responsibility: "mike_linebacker"
-  
+
   - player: WR1
     assignment: route
     details:
@@ -31,7 +31,7 @@ assignments:
       depth: 20
       side: "left"
       leverage: "outside"
-  
+
   - player: WR2
     assignment: route
     details:
@@ -39,7 +39,7 @@ assignments:
       depth: 18
       side: "left"
       leverage: "inside"
-  
+
   - player: WR3
     assignment: route
     details:
@@ -47,7 +47,7 @@ assignments:
       depth: 18
       side: "right"
       leverage: "inside"
-  
+
   - player: WR4
     assignment: route
     details:
@@ -55,31 +55,31 @@ assignments:
       depth: 20
       side: "right"
       leverage: "outside"
-  
+
   - player: LT
     assignment: pass_block
     details:
       protection: "slide"
       direction: "left"
-  
+
   - player: LG
     assignment: pass_block
     details:
       protection: "slide"
       direction: "left"
-  
+
   - player: C
     assignment: pass_block
     details:
       protection: "slide"
       direction: "left"
-  
+
   - player: RG
     assignment: pass_block
     details:
       protection: "slide"
       direction: "left"
-  
+
   - player: RT
     assignment: pass_block
     details:

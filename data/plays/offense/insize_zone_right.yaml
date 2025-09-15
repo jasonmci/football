@@ -20,35 +20,35 @@ assignments:
     target: RB1
     details:
       fake_direction: left  # Sell the fake opposite direction
-  
+
   - player: RB1
     assignment: run_block  # Actually carrying, but using run_block for the scheme
     direction: right
     details:
       hole: "B_gap"
       vision: "inside_out"
-  
+
   - player: FB
     assignment: lead_block
     target: "first_linebacker"
     direction: right
     details:
       scheme: "isolation"
-  
+
   - player: LT
     assignment: run_block
     details:
       scheme: zone
       direction: right
       technique: "reach"
-  
+
   - player: LG
     assignment: run_block
     details:
       scheme: zone
       direction: right
       technique: "reach"
-  
+
   - player: C
     assignment: run_block
     details:
@@ -56,34 +56,34 @@ assignments:
       direction: right
       technique: "combo"
       help_to: RG
-  
+
   - player: RG
     assignment: run_block
     details:
       scheme: zone
       direction: right
       technique: "reach"
-  
+
   - player: RT
     assignment: run_block
     details:
       scheme: zone
       direction: right
       technique: "reach"
-  
+
   - player: TE
     assignment: run_block
     details:
       scheme: zone
       target: "end_man_on_line"
       technique: "block_down"
-  
+
   - player: WR1
     assignment: run_block
     details:
       technique: "stalk"
       target: "outside_defender"
-  
+
   - player: WR2
     assignment: run_block
     details:

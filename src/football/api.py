@@ -25,21 +25,27 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.get("/api/health")
 def health() -> dict[str, str]:
     return {"status": "ok"}
 
+
 # ---------- lists ----------
+
 
 @app.get("/api/{team}/formations", response_model=List[str])
 def get_formations(team: TeamParam = Path(...)) -> List[str]:
     return list_items("formations", team)  # list of names (file stems)
 
+
 @app.get("/api/{team}/plays", response_model=List[str])
 def get_plays(team: TeamParam = Path(...)) -> List[str]:
     return list_items("plays", team)
 
+
 # ---------- items ----------
+
 
 # details (your new paths)
 @app.get("/api/{team}/formations/{name}", response_model=FormationSpecDTO)
@@ -51,6 +57,7 @@ def get_formation(team: TeamParam, name: str) -> FormationSpecDTO:
     except ValueError as e:
         raise HTTPException(status_code=422, detail=str(e)) from e
 
+
 @app.get("/api/{team}/plays/{name}", response_model=PlaySpecDTO)
 def get_play(team: TeamParam, name: str) -> PlaySpecDTO:
     try:
@@ -59,7 +66,7 @@ def get_play(team: TeamParam, name: str) -> PlaySpecDTO:
         raise HTTPException(status_code=404, detail=str(e)) from e
     except ValueError as e:
         raise HTTPException(status_code=422, detail=str(e)) from e
-    
+
 
 @app.get("/api/{team}/plays/{name}/frames.logical", response_model=PlayLogicalFramesDTO)
 def get_frames_logical(team: TeamParam, name: str):
@@ -70,25 +77,35 @@ def get_frames_logical(team: TeamParam, name: str):
     except ValueError as e:
         raise HTTPException(status_code=422, detail=str(e))
 
+
 @app.get("/api/{team}/plays/{name}/frames", response_model=PlayFramesDTO)
-def get_frames(team: TeamParam, name: str, cols: int = 20, rows: int = 20, reload: bool = False):
+def get_frames(
+    team: TeamParam, name: str, cols: int = 20, rows: int = 20, reload: bool = False
+):
     try:
         play = get_play(team, name)
         formation = get_formation(team, play.formation)
         logical = build_logical_presnap_frames(team, formation, play)
-        return render_frames(team, formation, logical, cols=cols, rows=rows, force_reload_config=reload)
+        return render_frames(
+            team, formation, logical, cols=cols, rows=rows, force_reload_config=reload
+        )
     except ValueError as e:
         raise HTTPException(status_code=422, detail=str(e))
-    
+
+
 # add frames.txt
 @app.get("/api/{team}/plays/{name}/frames.txt", response_class=PlainTextResponse)
-def get_frames_text(team: TeamParam, name: str, cols: int = 20, rows: int = 20, reload: bool = False):
+def get_frames_text(
+    team: TeamParam, name: str, cols: int = 20, rows: int = 20, reload: bool = False
+):
     try:
         play = get_play(team, name)
         formation = get_formation(team, play.formation)
         logical = build_logical_presnap_frames(team, formation, play)
-        frames_dto = render_frames(team, formation, logical, cols=cols, rows=rows, force_reload_config=reload)
-        
+        frames_dto = render_frames(
+            team, formation, logical, cols=cols, rows=rows, force_reload_config=reload
+        )
+
         lines: List[str] = []
         for fnum, frame in enumerate(frames_dto.frames):
             lines.append(f"Frame {fnum}:")

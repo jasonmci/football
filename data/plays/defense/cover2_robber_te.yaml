@@ -1,0 +1,137 @@
+name: cover2_robber_te
+label: "Cover 2 Robber (Anti-TE)"
+formation: base43
+personnel: []
+play_type: defense
+tags: [coverage, cover2, robber, te_coverage]
+
+# Pre-snap adjustments to cover TEs
+pre_snap_shifts:
+  - player: MLB
+    action: align_deeper
+    coordinate:
+      x: 0
+      y: -2
+    timing: 1
+  - player: SS
+    action: rotate_center
+    coordinate:
+      x: 0
+      y: -3
+    timing: 1
+
+motion: null
+defensive_reactions:
+  - trigger: "te_motion"
+    action: "rotate_coverage"
+  - trigger: "12_personnel"
+    action: "te_alert"
+
+# Cover 2 with TE robber assignments
+assignments:
+  - player: DE1
+    assignment: rush
+    details:
+      technique: "contain_rush"
+      gap: "C_gap"
+      responsibility: "force_inside"
+
+  - player: DT1
+    assignment: rush
+    details:
+      technique: "penetration"
+      gap: "A_gap"
+      responsibility: "shoot_gap"
+
+  - player: DT2
+    assignment: rush
+    details:
+      technique: "penetration"
+      gap: "A_gap"
+      responsibility: "shoot_gap"
+
+  - player: DE2
+    assignment: rush
+    details:
+      technique: "contain_rush"
+      gap: "C_gap"
+      responsibility: "force_inside"
+
+  - player: OLB1
+    assignment: coverage
+    details:
+      zone: "flat_left"
+      depth: "short"
+      technique: "pattern_match"
+      te_awareness: true
+
+  # KEY - MLB robs TE routes
+  - player: MLB
+    assignment: coverage
+    details:
+      zone: "te_robber"
+      depth: "intermediate"
+      technique: "rob_te_routes"
+      primary_responsibility: "tight_end"
+      coverage_area: "seam_hook"
+
+  - player: OLB2
+    assignment: coverage
+    details:
+      zone: "flat_right"
+      depth: "short"
+      technique: "pattern_match"
+      te_awareness: true
+
+  - player: CB1
+    assignment: coverage
+    details:
+      zone: "underneath_left"
+      depth: "intermediate"
+      technique: "pattern_match"
+      responsibility: "cover_wr"
+
+  - player: CB2
+    assignment: coverage
+    details:
+      zone: "underneath_right"
+      depth: "intermediate"
+      technique: "pattern_match"
+      responsibility: "cover_wr"
+
+  # COVER 2 SAFETIES
+  - player: FS
+    assignment: coverage
+    details:
+      zone: "deep_half_left"
+      depth: "deep"
+      technique: "cover2_safety"
+      responsibility: "deep_coverage"
+
+  - player: SS
+    assignment: coverage
+    details:
+      zone: "deep_half_right"
+      depth: "deep"
+      technique: "cover2_safety"
+      responsibility: "deep_coverage"
+      te_help: true
+
+# Execution notes
+execution:
+  key_timing: "MLB must jump TE routes while covering middle"
+  success_factors: ["MLB TE recognition", "Safety deep coverage", "CB underneath"]
+  failure_points: ["TE behind MLB", "Deep ball over safeties", "Slot confusion"]
+
+# Tactical advantages
+advantages:
+  - "MLB specifically targets TE routes"
+  - "Two deep safeties prevent big plays"
+  - "Good vs intermediate passing"
+  - "Covers TE seams well"
+  
+disadvantages:
+  - "Vulnerable to deep corner routes"
+  - "Weak vs 4 vertical concepts"
+  - "Limited blitz pressure"
+  - "Can be beaten by TE speed"

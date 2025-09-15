@@ -7,17 +7,16 @@ Defines plays as dynamic modifications to base formations, including:
 - Position-specific assignments and responsibilities
 """
 
-from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Dict, List, Optional, Union, Any
-from ..core.game_board import Coordinate, Lane
-from ..core.players import Formation
+from typing import Dict, List, Optional, Any
+from ..core.game_board import Coordinate
 from .positions import FootballFormation
 
 
 class PreSnapAction(Enum):
     """Types of pre-snap actions players can take."""
+
     SHIFT_LEFT = "shift_left"
     SHIFT_RIGHT = "shift_right"
     MOVE_UP = "move_up"
@@ -31,6 +30,7 @@ class PreSnapAction(Enum):
 
 class MotionType(Enum):
     """Types of motion a player can execute."""
+
     ORBIT = "orbit"  # Around the formation
     JET = "jet"  # Across the formation at speed
     SHUTTLE = "shuttle"  # Short back and forth
@@ -40,6 +40,7 @@ class MotionType(Enum):
 
 class DefensiveReaction(Enum):
     """How defense can react to offensive motion."""
+
     FOLLOW = "follow"  # DB follows receiver
     ROTATE = "rotate"  # Safety rotation
     BUMP = "bump"  # Bump coverage assignments
@@ -49,6 +50,7 @@ class DefensiveReaction(Enum):
 
 class AssignmentType(Enum):
     """Categories of assignments for different play types."""
+
     # Offensive assignments
     RUN_BLOCK = "run_block"
     PASS_BLOCK = "pass_block"
@@ -56,7 +58,7 @@ class AssignmentType(Enum):
     HANDOFF = "handoff"
     FAKE = "fake"
     LEAD_BLOCK = "lead_block"
-    
+
     # Defensive assignments
     RUSH = "rush"
     COVERAGE = "coverage"
@@ -68,11 +70,12 @@ class AssignmentType(Enum):
 @dataclass
 class PreSnapShift:
     """Defines a pre-snap movement for a player using football abstractions."""
+
     player_position: str  # Position name (QB, RB1, WR1, etc.)
     action: PreSnapAction
     target_lane: Optional[str] = None  # Lane.LEFT, Lane.MIDDLE, Lane.RIGHT
     target_depth: Optional[str] = None  # FootballDepth values
-    target_alignment: Optional[str] = None  # FootballAlignment values  
+    target_alignment: Optional[str] = None  # FootballAlignment values
     target_player: Optional[str] = None  # For stacking/bunching
     timing: int = 1  # Order of execution (1 = first, 2 = second, etc.)
 
@@ -80,12 +83,13 @@ class PreSnapShift:
 @dataclass
 class PlayerMotion:
     """Defines motion for a single player using football abstractions."""
+
     player_position: str
     motion_type: str  # "jet", "orbit", "shift", "bunch"
     start_lane: Optional[str] = None  # Starting lane if different from formation
     start_depth: Optional[str] = None  # Starting depth if different
-    end_lane: Optional[str] = None    # Ending lane
-    end_depth: Optional[str] = None   # Ending depth
+    end_lane: Optional[str] = None  # Ending lane
+    end_depth: Optional[str] = None  # Ending depth
     end_alignment: Optional[str] = None  # Final alignment
     speed: str = "normal"  # "slow", "normal", "fast"
 
@@ -93,6 +97,7 @@ class PlayerMotion:
 @dataclass
 class DefensiveMotionReaction:
     """How defense reacts to offensive motion."""
+
     defensive_position: str
     reaction_type: DefensiveReaction
     target_player: Optional[str] = None  # Player to follow/cover
@@ -102,20 +107,21 @@ class DefensiveMotionReaction:
 @dataclass
 class PlayerAssignment:
     """Specific assignment for a player during the play."""
+
     player_position: str
     assignment_type: AssignmentType
     details: Dict[str, Any] = field(default_factory=dict)
-    
+
     # Common assignment properties
     target: Optional[str] = None  # Player to block/cover/follow
-    zone: Optional[str] = None   # Zone responsibility
+    zone: Optional[str] = None  # Zone responsibility
     depth: Optional[int] = None  # Route depth, rush depth, etc.
     direction: Optional[str] = None  # left, right, inside, outside
 
 
 class PositionAssignmentCatalog:
     """Defines available assignments for each position."""
-    
+
     OFFENSIVE_ASSIGNMENTS = {
         "QB": [
             AssignmentType.HANDOFF,
@@ -147,9 +153,9 @@ class PositionAssignmentCatalog:
         "OL": [  # All offensive line positions
             AssignmentType.RUN_BLOCK,
             AssignmentType.PASS_BLOCK,
-        ]
+        ],
     }
-    
+
     DEFENSIVE_ASSIGNMENTS = {
         "DL": [
             AssignmentType.RUSH,
@@ -178,11 +184,13 @@ class PositionAssignmentCatalog:
             AssignmentType.COVERAGE,
             AssignmentType.BLITZ,
             AssignmentType.RUN_FIT,
-        ]
+        ],
     }
-    
+
     @classmethod
-    def get_available_assignments(cls, position: str, is_offense: bool = True) -> List[AssignmentType]:
+    def get_available_assignments(
+        cls, position: str, is_offense: bool = True
+    ) -> List[AssignmentType]:
         """Get available assignments for a specific position."""
         if is_offense:
             # Handle specific OL positions
@@ -202,7 +210,14 @@ class PositionAssignmentCatalog:
             # Handle numbered positions
             elif position.startswith("DE") or position.startswith("DT"):
                 return cls.DEFENSIVE_ASSIGNMENTS["DL"]
-            elif position.startswith("LB") or position in ["MLB", "OLB1", "OLB2", "WILL", "MIKE", "SAM"]:
+            elif position.startswith("LB") or position in [
+                "MLB",
+                "OLB1",
+                "OLB2",
+                "WILL",
+                "MIKE",
+                "SAM",
+            ]:
                 return cls.DEFENSIVE_ASSIGNMENTS["LB"]
             elif position.startswith("CB"):
                 return cls.DEFENSIVE_ASSIGNMENTS["CB"]
@@ -215,64 +230,82 @@ class PositionAssignmentCatalog:
 class FootballPlay:
     """
     Complete football play definition built on formation foundation.
-    
+
     A play inherits a base formation and then applies dynamic modifications:
     1. Pre-snap shifts and adjustments
     2. Motion (with defensive reactions)
     3. Assignment of specific responsibilities to each player
     """
+
     name: str
     label: str
     base_formation: str  # Name of formation to inherit from
     personnel: List[str]  # Expected personnel groupings (inherited from formation)
-    
+
     # Play categorization
     play_type: str  # "run", "pass", "special"
     tags: List[str] = field(default_factory=list)
-    
+
     # Pre-snap modifications
     pre_snap_shifts: List[PreSnapShift] = field(default_factory=list)
     motion: Optional[PlayerMotion] = None
     defensive_reactions: List[DefensiveMotionReaction] = field(default_factory=list)
-    
+
     # Player assignments
     assignments: List[PlayerAssignment] = field(default_factory=list)
-    
+
     # Play execution details
     snap_count: Optional[str] = None  # "on one", "on two", etc.
     audible_options: List[str] = field(default_factory=list)
-    
+
     def validate_assignments(self) -> List[str]:
         """Validate that all assignments are legal for their positions."""
         violations = []
-        
+
         for assignment in self.assignments:
             position = assignment.player_position
             assignment_type = assignment.assignment_type
-            
+
             # Determine if this is offense or defense based on position
-            offensive_positions = ["QB", "RB", "FB", "WR", "TE", "LT", "LG", "C", "RG", "RT"]
-            is_offense = (position in offensive_positions or 
-                         any(position.startswith(pos) for pos in ["QB", "RB", "FB", "WR", "TE"]) or
-                         position in ["LT", "LG", "C", "RG", "RT"])
-            
-            available = PositionAssignmentCatalog.get_available_assignments(position, is_offense)
+            offensive_positions = [
+                "QB",
+                "RB",
+                "FB",
+                "WR",
+                "TE",
+                "LT",
+                "LG",
+                "C",
+                "RG",
+                "RT",
+            ]
+            is_offense = (
+                position in offensive_positions
+                or any(
+                    position.startswith(pos) for pos in ["QB", "RB", "FB", "WR", "TE"]
+                )
+                or position in ["LT", "LG", "C", "RG", "RT"]
+            )
+
+            available = PositionAssignmentCatalog.get_available_assignments(
+                position, is_offense
+            )
             if assignment_type not in available:
                 violations.append(
                     f"{position} cannot perform {assignment_type.value} assignment"
                 )
-        
+
         return violations
-    
+
     def get_formation_modifications(self) -> Dict[str, Dict[str, str]]:
         """
         Calculate final player positions after all pre-snap modifications.
-        
+
         Returns:
             Dictionary mapping player positions to their final lane/depth/alignment
         """
         modifications = {}
-        
+
         # Apply pre-snap shifts in order
         for shift in sorted(self.pre_snap_shifts, key=lambda x: x.timing):
             if shift.target_lane or shift.target_depth or shift.target_alignment:
@@ -284,7 +317,7 @@ class FootballPlay:
                 if shift.target_alignment:
                     player_mods["alignment"] = shift.target_alignment
                 modifications[shift.player_position] = player_mods
-        
+
         # Apply motion end position if applicable
         if self.motion:
             motion_mods = {}
@@ -296,9 +329,9 @@ class FootballPlay:
                 motion_mods["alignment"] = self.motion.end_alignment
             if motion_mods:
                 modifications[self.motion.player_position] = motion_mods
-        
+
         return modifications
-    
+
     def requires_defensive_formation(self) -> bool:
         """Check if this play requires a specific defensive formation."""
         return bool(self.defensive_reactions)
@@ -306,20 +339,24 @@ class FootballPlay:
 
 class PlayExecutor:
     """Executes plays by applying them to formations."""
-    
+
     def __init__(self):
         self.formation_loader = None  # Will be set when needed
-    
-    def execute_play(self, play: FootballPlay, base_formation: FootballFormation,
-                    defensive_formation: Optional[FootballFormation] = None) -> Dict[str, Any]:
+
+    def execute_play(
+        self,
+        play: FootballPlay,
+        base_formation: FootballFormation,
+        defensive_formation: Optional[FootballFormation] = None,
+    ) -> Dict[str, Any]:
         """
         Execute a play by applying all modifications to the base formation.
-        
+
         Args:
             play: The play to execute
             base_formation: Base offensive formation
             defensive_formation: Optional defensive formation for reactions
-            
+
         Returns:
             Dictionary with execution results and final player positions
         """
@@ -329,25 +366,25 @@ class PlayExecutor:
             "final_positions": {},
             "motion_path": None,
             "defensive_reactions": [],
-            "violations": []
+            "violations": [],
         }
-        
+
         # Validate assignments
         violations = play.validate_assignments()
         execution_result["violations"] = violations
-        
+
         if violations:
             return execution_result
-        
+
         # Start with base formation positions
         current_positions = {}
         for position_id, role in base_formation.roles.items():
             current_positions[position_id] = role.coordinate
-        
+
         # Apply pre-snap shifts
         modifications = play.get_formation_modifications()
         current_positions.update(modifications)
-        
+
         # Handle motion
         if play.motion:
             execution_result["motion_path"] = {
@@ -358,18 +395,20 @@ class PlayExecutor:
                 "end_lane": play.motion.end_lane,
                 "end_depth": play.motion.end_depth,
                 "end_alignment": play.motion.end_alignment,
-                "speed": play.motion.speed
+                "speed": play.motion.speed,
             }
-            
+
             # Apply defensive reactions to motion
             if defensive_formation:
                 for reaction in play.defensive_reactions:
-                    execution_result["defensive_reactions"].append({
-                        "defensive_player": reaction.defensive_position,
-                        "reaction": reaction.reaction_type.value,
-                        "target": reaction.target_player
-                    })
-        
+                    execution_result["defensive_reactions"].append(
+                        {
+                            "defensive_player": reaction.defensive_position,
+                            "reaction": reaction.reaction_type.value,
+                            "target": reaction.target_player,
+                        }
+                    )
+
         execution_result["final_positions"] = current_positions
         return execution_result
 
@@ -377,6 +416,7 @@ class PlayExecutor:
 # Route patterns for receivers (common assignment details)
 class RoutePattern(Enum):
     """Standard route patterns for receivers."""
+
     SLANT = "slant"
     HITCH = "hitch"
     OUT = "out"
@@ -394,6 +434,7 @@ class RoutePattern(Enum):
 # Blocking schemes for linemen
 class BlockingScheme(Enum):
     """Standard blocking schemes."""
+
     ZONE = "zone"
     GAP = "gap"
     POWER = "power"

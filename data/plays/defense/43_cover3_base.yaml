@@ -30,25 +30,25 @@ assignments:
     details:
       technique: "contain_rush"
       gap: "C_gap"
-  
+
   - player: DT1
     assignment: rush
     details:
       technique: "penetration"
       gap: "A_gap"
-  
+
   - player: DT2
     assignment: rush
     details:
       technique: "penetration"
       gap: "A_gap"
-  
+
   - player: DE2
     assignment: rush
     details:
       technique: "contain_rush"
       gap: "C_gap"
-  
+
   - player: MLB
     assignment: coverage
     zone: "hook"
@@ -56,7 +56,7 @@ assignments:
       coverage: "zone"
       depth: "8_to_12"
       landmark: "middle"
-  
+
   - player: WLB
     assignment: coverage
     zone: "flat"
@@ -64,7 +64,7 @@ assignments:
       coverage: "zone"
       depth: "0_to_5"
       side: "weak"
-  
+
   - player: SLB
     assignment: coverage
     zone: "flat"
@@ -72,7 +72,7 @@ assignments:
       coverage: "zone"
       depth: "0_to_5"
       side: "strong"
-  
+
   - player: CB1
     assignment: coverage
     zone: "deep_third"
@@ -80,7 +80,7 @@ assignments:
       coverage: "zone"
       depth: "15_plus"
       side: "left"
-  
+
   - player: CB2
     assignment: coverage
     zone: "deep_third"
@@ -88,7 +88,7 @@ assignments:
       coverage: "zone"
       depth: "15_plus"
       side: "right"
-  
+
   - player: FS
     assignment: coverage
     zone: "deep_third"
@@ -96,7 +96,7 @@ assignments:
       coverage: "zone"
       depth: "15_plus"
       landmark: "middle"
-  
+
   - player: SS
     assignment: coverage
     zone: "hook"

@@ -10,47 +10,47 @@ assignments:
   - player: QB
     assignment: route
     details: "Quick pass to slot receiver on bubble route"
-  
+
   - player: RB
     assignment: pass_block
     details: "Check for blitz, help protection"
-  
+
   - player: C
     assignment: pass_block
     details: "Block nose tackle, anchor protection"
-  
+
   - player: LG
     assignment: pass_block
     target: DT_L
     details: "Block left DT, slide protection"
-  
+
   - player: LT
     assignment: pass_block
     target: DE_L
     details: "Block left DE, vertical set"
-  
+
   - player: RG
     assignment: pass_block
     target: DT_R
     details: "Block right DT, slide protection"
-  
+
   - player: RT
     assignment: pass_block
     target: DE_R
     details: "Block right DE, vertical set"
-  
+
   - player: WR1
     assignment: route
     details: "Fade route, occupy corner and safety"
-  
+
   - player: WR2
     assignment: route
     details: "Bubble screen, catch and turn upfield quickly"
-  
+
   - player: WR3
     assignment: run_block
     details: "Block nickelback, create bubble for WR2"
-  
+
   - player: WR4
     assignment: route
     details: "Comeback route, spacing concept"

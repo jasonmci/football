@@ -19,7 +19,7 @@ assignments:
       mesh_point: "deep"
       ball_handling: "firm_handoff"
       fake: "play_action_fake"  # Sell play action
-  
+
   - player: RB1
     assignment: run_block
     direction: right
@@ -28,7 +28,7 @@ assignments:
       vision: "press_double_team"
       target_gap: "C_gap"
       patience: "let_blocks_develop"
-  
+
   - player: FB
     assignment: lead_block
     target: "linebacker"
@@ -37,7 +37,7 @@ assignments:
       scheme: "isolation"
       technique: "shoulder_drive"
       level: "second_level"
-  
+
   # LEFT SIDE - Big on big
   - player: LT
     assignment: run_block
@@ -45,14 +45,14 @@ assignments:
       scheme: "big_on_big"
       technique: "vertical_set"
       target: "defensive_end"
-  
+
   - player: LG
     assignment: run_block
     details:
       scheme: "back_block"
       target: "penetrator"
       help: "center"
-  
+
   # POWER BLOCKING - Double teams and kick outs
   - player: C
     assignment: run_block
@@ -61,7 +61,7 @@ assignments:
       target: "nose_tackle"
       partner: "right_guard"
       technique: "drive_block"
-  
+
   - player: RG
     assignment: run_block
     details:
@@ -70,7 +70,7 @@ assignments:
       partner: "center"
       technique: "drive_block"
       work_to: "linebacker"  # Combo block
-  
+
   - player: RT
     assignment: run_block
     details:
@@ -78,23 +78,23 @@ assignments:
       target: "defensive_tackle"
       partner: "tight_end"
       technique: "drive_block"
-  
+
   - player: TE
     assignment: run_block
     details:
       scheme: "double_team"
-      target: "defensive_tackle"  
+      target: "defensive_tackle"
       partner: "right_tackle"
       technique: "drive_block"
       work_to: "linebacker"
-  
+
   - player: WR1
     assignment: run_block
     details:
       technique: "crack"
       target: "linebacker"
       timing: "aggressive"
-  
+
   - player: WR2
     assignment: run_block
     details:

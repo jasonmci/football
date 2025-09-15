@@ -6,23 +6,33 @@ from typing import List, Dict, Any, Literal
 import yaml
 
 from .schemas import (
-    PreSnapEvent, RoleChange, Team, PlaySpecDTO, MotionSpec, FormationSpecDTO, RoleSpec, Lane, Waypoint,
-    Assignment, PlacementSpec
+    PreSnapEvent,
+    RoleChange,
+    Team,
+    PlaySpecDTO,
+    MotionSpec,
+    FormationSpecDTO,
+    RoleSpec,
+    Waypoint,
+    PlacementSpec,
 )
 
 # Point to repo root / data, not src/data
-REPO_ROOT = Path(__file__).resolve().parents[2]     # .../football
+REPO_ROOT = Path(__file__).resolve().parents[2]  # .../football
 DATA_DIR = Path(os.environ.get("TB_DATA_DIR", str(REPO_ROOT / "data")))
 WIDE_ALIASES = {"wide", "outside"}
 
 FormOrPlay = Literal["formations", "plays"]
 
+
 def _dir_for(kind: FormOrPlay, team: Team) -> Path:
     return DATA_DIR / kind / team
+
 
 def _safe_stem(name: str) -> str:
     # very simple safeguard; you can expand to stricter slug validation if needed
     return name.replace("/", "").replace("\\", "").strip()
+
 
 def list_items(kind: FormOrPlay, team: Team) -> List[str]:
     root = _dir_for(kind, team)
@@ -30,11 +40,15 @@ def list_items(kind: FormOrPlay, team: Team) -> List[str]:
         return []
     return sorted(p.stem for p in root.glob("*.yaml"))
 
+
 def _load_yaml(path: Path) -> Dict[str, Any]:
     with path.open("r", encoding="utf-8") as f:
         return yaml.safe_load(f) or {}
 
-def _norm_align_from_depth_if_needed(pos: str, depth: str | None, align: str | None) -> tuple[str | None, str | None]:
+
+def _norm_align_from_depth_if_needed(
+    pos: str, depth: str | None, align: str | None
+) -> tuple[str | None, str | None]:
     if depth is None:
         return None, align
     d = depth.lower()
@@ -47,8 +61,9 @@ def _norm_align_from_depth_if_needed(pos: str, depth: str | None, align: str | N
         return "line", (align or "tight")
     return depth, align
 
+
 def load_formation(team: Team, name: str) -> FormationSpecDTO:
-    
+
     path = _dir_for("formations", team) / f"{name}.yaml"
     if not path.exists():
         path = _dir_for("formations", team) / f"{name}.yml"
@@ -59,35 +74,49 @@ def load_formation(team: Team, name: str) -> FormationSpecDTO:
 
     aliases_raw = doc.get("aliases", {}) or {}
     if not isinstance(aliases_raw, dict):
-        raise ValueError(f"Formation {team}/{name}: 'aliases' must be a mapping of alias->role")
+        raise ValueError(
+            f"Formation {team}/{name}: 'aliases' must be a mapping of alias->role"
+        )
     aliases = {str(k): str(v) for k, v in aliases_raw.items()}
 
     roles_raw = doc.get("roles")
     if not isinstance(roles_raw, dict) or not roles_raw:
-        raise ValueError(f"Formation {team}/{name}: 'roles' must be a non-empty mapping")
+        raise ValueError(
+            f"Formation {team}/{name}: 'roles' must be a non-empty mapping"
+        )
 
     roles: Dict[str, RoleSpec] = {}
     for rname, r in roles_raw.items():
-        roles[str(rname)] = RoleSpec(pos=r["pos"], lane=r["lane"], depth=r["depth"], align=r.get("align"))
+        roles[str(rname)] = RoleSpec(
+            pos=r["pos"], lane=r["lane"], depth=r["depth"], align=r.get("align")
+        )
 
     # NEW: optional per-role placement
     placement_raw = doc.get("placement", {})
     placement: Dict[str, PlacementSpec] = {}
     if placement_raw is not None:
         if not isinstance(placement_raw, dict):
-            raise ValueError(f"Formation {team}/{name}: 'placement' must be a mapping of role -> { '{x?, y?, dx?, dy?}' }")
+            raise ValueError(
+                f"Formation {team}/{name}: 'placement' must be a mapping of role -> { '{x?, y?, dx?, dy?}' }"
+            )
         for role_name, p in placement_raw.items():
             if role_name not in roles:
-                raise ValueError(f"Formation {team}/{name}: placement refers to unknown role '{role_name}'")
+                raise ValueError(
+                    f"Formation {team}/{name}: placement refers to unknown role '{role_name}'"
+                )
             if p is None:
                 placement[role_name] = PlacementSpec()  # empty = no override
             elif isinstance(p, dict):
                 placement[role_name] = PlacementSpec(
-                    x=p.get("x"), y=p.get("y"),
-                    dx=int(p.get("dx", 0)), dy=int(p.get("dy", 0)),
+                    x=p.get("x"),
+                    y=p.get("y"),
+                    dx=int(p.get("dx", 0)),
+                    dy=int(p.get("dy", 0)),
                 )
             else:
-                raise ValueError(f"Formation {team}/{name}: placement for '{role_name}' must be a mapping")
+                raise ValueError(
+                    f"Formation {team}/{name}: placement for '{role_name}' must be a mapping"
+                )
 
     return FormationSpecDTO(
         name=str(doc.get("name", name)),
@@ -98,6 +127,7 @@ def load_formation(team: Team, name: str) -> FormationSpecDTO:
         placement=placement,
         aliases=aliases,
     )
+
 
 # -------- helpers for play parsing --------
 def _parse_pre_snap(doc: Dict[str, Any]) -> List[PreSnapEvent]:
@@ -124,12 +154,15 @@ def _parse_pre_snap(doc: Dict[str, Any]) -> List[PreSnapEvent]:
             PreSnapEvent(
                 player=str(evt["player"]),
                 type="shift",
-                to=RoleChange(lane=to["lane"], depth=to["depth"])
+                to=RoleChange(lane=to["lane"], depth=to["depth"]),
             )
         )
     return out
 
-def _norm_align_from_depth_if_needed(pos: str, depth: str | None, align: str | None) -> tuple[str | None, str | None]:
+
+def _norm_align_from_depth_if_needed(
+    pos: str, depth: str | None, align: str | None
+) -> tuple[str | None, str | None]:
     if depth is None:
         return None, align
     d = depth.lower()
@@ -142,7 +175,7 @@ def _norm_align_from_depth_if_needed(pos: str, depth: str | None, align: str | N
         return "line", (align or "tight")
     return depth, align
 
-    
+
 def _role_change_map(raw: Any) -> Dict[str, RoleChange]:
     if raw is None:
         return {}
@@ -155,6 +188,7 @@ def _role_change_map(raw: Any) -> Dict[str, RoleChange]:
         out[str(role)] = RoleChange(lane=v["lane"], depth=v["depth"])
     return out
 
+
 def _waypoints(raw_list: Any) -> List[Waypoint]:
     if not isinstance(raw_list, list) or not raw_list:
         raise ValueError("motion.path must be a non-empty list of {lane, depth}")
@@ -165,7 +199,9 @@ def _waypoints(raw_list: Any) -> List[Waypoint]:
         wps.append(Waypoint(lane=w["lane"], depth=w["depth"]))
     return wps
 
+
 # --- plays (with shifts, motions, assignments) ---
+
 
 def load_play(team: Team, name: str) -> PlaySpecDTO:
     path = _dir_for("plays", team) / f"{name}.yaml"
@@ -190,7 +226,9 @@ def load_play(team: Team, name: str) -> PlaySpecDTO:
     motion: MotionSpec | None = None
     if motion_obj is not None:
         if not isinstance(motion_obj, dict):
-            raise ValueError("motion must be an object with keys: player, path[, speed, delay]")
+            raise ValueError(
+                "motion must be an object with keys: player, path[, speed, delay]"
+            )
         if "id" in motion_obj and "player" not in motion_obj:
             raise ValueError("motion.id is deprecated; use 'player'")
         missing = [k for k in ("player", "path") if k not in motion_obj]

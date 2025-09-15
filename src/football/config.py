@@ -1,13 +1,15 @@
 from __future__ import annotations
 from pathlib import Path
-from typing import Any, Dict, Tuple
-import os, yaml
+from typing import Any, Dict
+import os
+import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = Path(os.environ.get("TB_DATA_DIR", str(REPO_ROOT / "data")))
 _PL_PATH = DATA_DIR / "config" / "placement.yaml"
 
 _cache: Dict[str, Any] = {"mtime": None, "maps": None}
+
 
 def get_placement_maps(force_reload: bool = False) -> Dict[str, Any]:
     """

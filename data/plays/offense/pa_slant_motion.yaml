@@ -32,14 +32,14 @@ assignments:
       fake_type: "handoff"
       sell_time: "2_count"
       pass_target: "WR1"
-  
+
   - player: RB1
     assignment: pass_block
     details:
       protection: "scan"
       fake_first: true
       responsibility: "blitzer"
-  
+
   - player: WR1
     assignment: route
     details:
@@ -47,7 +47,7 @@ assignments:
       depth: 5
       leverage: "inside"
       timing: "quick"
-  
+
   - player: WR2
     assignment: route
     details:
@@ -55,7 +55,7 @@ assignments:
       depth: 3
       direction: "opposite"
       leverage: "underneath"
-  
+
   - player: TE
     assignment: route
     details:
@@ -63,14 +63,14 @@ assignments:
       depth: 6
       sit_spot: "soft"
       safety_valve: true
-  
+
   - player: LT
     assignment: pass_block
     details:
       protection: "slide"
       direction: "left"
       sell_run_fake: true
-  
+
   - player: LG
     assignment: run_block
     details:
@@ -78,21 +78,21 @@ assignments:
       direction: "right"
       sell_fake: true
       then_protect: true
-  
+
   - player: C
     assignment: pass_block
     details:
       protection: "slide"
       direction: "left"
       sell_run_fake: true
-  
+
   - player: RG
     assignment: pass_block
     details:
       protection: "slide"
       direction: "left"
       sell_run_fake: true
-  
+
   - player: RT
     assignment: pass_block
     details:

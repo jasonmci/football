@@ -10,43 +10,43 @@ assignments:
   - player: DE_L
     assignment: rush
     details: "Contain rush, set edge"
-  
+
   - player: NT
     assignment: rush
     details: "Rush QB, control A gaps"
-  
+
   - player: DE_R
     assignment: rush
     details: "Contain rush, set edge"
-  
+
   - player: OLB_L
     assignment: rush
     details: "Rush QB, attack B gap"
-  
+
   - player: ILB_L
     assignment: coverage
     details: "Hook zone, cover running back"
-  
+
   - player: ILB_R
     assignment: coverage
     details: "Robber coverage, jump crossing routes"
-  
+
   - player: OLB_R
     assignment: coverage
     details: "Flat coverage, defend dump-offs"
-  
+
   - player: CB_L
     assignment: coverage
     details: "Cover 2 corner, sink on deep routes"
-  
+
   - player: FS
     assignment: coverage
     details: "Cover 2 high safety, deep half left"
-  
+
   - player: SS
     assignment: coverage
     details: "Cover 2 high safety, deep half right"
-  
+
   - player: CB_R
     assignment: coverage
     details: "Cover 2 corner, sink on deep routes"

@@ -1,0 +1,272 @@
+name: "average_defense_config"
+label: "Average Defensive Unit - 4-3 Cover 3"
+formation: base43
+personnel: []
+play_type: defense
+tags: [coverage, cover3, zone, base_defense]
+
+# Player roster with ratings
+players:
+  DE1:
+    name: "Average DE"
+    position: "DE"
+    overall_rating: 74
+    skills:
+      strength: 76
+      pass_rush: 75
+      run_defense: 73
+      tackle: 72
+    traits: []
+
+  DT1:
+    name: "Good DT"
+    position: "DT"
+    overall_rating: 78
+    skills:
+      strength: 82
+      pass_rush: 71
+      run_defense: 81
+      tackle: 79
+    traits: []
+
+  DT2:
+    name: "Below Avg DT"
+    position: "DT"
+    overall_rating: 68
+    skills:
+      strength: 74
+      pass_rush: 64
+      run_defense: 71
+      tackle: 69
+    traits: ["slow_off_blocks"]
+
+  DE2:
+    name: "Average DE"
+    position: "DE"
+    overall_rating: 72
+    skills:
+      strength: 73
+      pass_rush: 74
+      run_defense: 71
+      tackle: 70
+    traits: []
+
+  OLB1:
+    name: "Good OLB"
+    position: "OLB"
+    overall_rating: 77
+    skills:
+      strength: 75
+      pass_rush: 78
+      coverage: 76
+      tackle: 79
+    traits: []
+
+  MLB:
+    name: "Average MLB"
+    position: "MLB"
+    overall_rating: 74
+    skills:
+      strength: 76
+      awareness: 78
+      coverage: 72
+      tackle: 77
+    traits: []
+
+  OLB2:
+    name: "Below Avg OLB"
+    position: "OLB"
+    overall_rating: 66
+    skills:
+      strength: 68
+      pass_rush: 65
+      coverage: 64
+      tackle: 71
+    traits: ["missed_tackle_prone"]
+
+  CB1:
+    name: "Good CB"
+    position: "CB"
+    overall_rating: 79
+    skills:
+      coverage: 82
+      hands: 76
+      speed: 84
+      agility: 78
+    traits: []
+
+  CB2:
+    name: "Below Avg CB"
+    position: "CB"
+    overall_rating: 67
+    skills:
+      coverage: 68
+      hands: 64
+      speed: 74
+      agility: 69
+    traits: ["burned_deep"]
+
+  FS:
+    name: "Average FS"
+    position: "FS"
+    overall_rating: 73
+    skills:
+      coverage: 75
+      hands: 71
+      awareness: 77
+      tackle: 72
+    traits: []
+
+  SS:
+    name: "Average SS"
+    position: "SS"
+    overall_rating: 75
+    skills:
+      coverage: 72
+      hands: 74
+      tackle: 78
+      strength: 76
+    traits: []
+
+# Same pre-snap adjustments
+pre_snap_shifts:
+  - player: DT1
+    action: move_tight
+    coordinate:
+      x: -1
+      y: 0
+    timing: 1
+  - player: DT2
+    action: move_tight
+    coordinate:
+      x: 1
+      y: 0
+    timing: 1
+
+motion: null
+defensive_reactions: []
+
+# Same assignments as elite defense
+assignments:
+  - player: DE1
+    assignment: rush
+    details:
+      technique: "contain_rush"
+      gap: "C_gap"
+      responsibility: "force_inside"
+
+  - player: DT1
+    assignment: rush
+    details:
+      technique: "penetration"
+      gap: "A_gap"
+      responsibility: "shoot_gap"
+
+  - player: DT2
+    assignment: rush
+    details:
+      technique: "two_gap"
+      gap: "A_gap"
+      responsibility: "control_gaps"
+
+  - player: DE2
+    assignment: rush
+    details:
+      technique: "contain_rush"
+      gap: "C_gap"
+      responsibility: "force_inside"
+
+  - player: OLB1
+    assignment: coverage
+    details:
+      zone: "flat_left"
+      depth: "short"
+      technique: "pattern_match"
+
+  - player: MLB
+    assignment: coverage
+    details:
+      zone: "middle_hook"
+      depth: "intermediate"
+      technique: "rob_routes"
+      keys: ["tight_end", "running_back"]
+
+  - player: OLB2
+    assignment: coverage
+    details:
+      zone: "flat_right"
+      depth: "short"
+      technique: "pattern_match"
+
+  - player: CB1
+    assignment: coverage
+    details:
+      zone: "deep_third_left"
+      depth: "deep"
+      technique: "zone_coverage"
+      responsibility: "no_fly_zone"
+
+  - player: CB2
+    assignment: coverage
+    details:
+      zone: "deep_third_right"
+      depth: "deep"
+      technique: "zone_coverage"
+      responsibility: "no_fly_zone"
+
+  - player: FS
+    assignment: coverage
+    details:
+      zone: "deep_third_middle"
+      depth: "deep"
+      technique: "center_field"
+      responsibility: "last_line"
+
+  - player: SS
+    assignment: coverage
+    details:
+      zone: "strong_side_support"
+      depth: "intermediate"
+      technique: "run_support"
+      keys: ["tight_end", "fullback"]
+
+# Success criteria for this defense (same standards)
+success_metrics:
+  stop_threshold: 3
+  tackle_for_loss: 0
+  big_stop_threshold: -2
+
+# Expected performance vs different plays (worse than elite)
+expected_vs_plays:
+  trap:
+    advantage: -1    # Struggles vs trap (technique issues)
+    avg_yards_allowed: 6.8
+  inside_zone:
+    advantage: 0     # Neutral vs inside zone
+    avg_yards_allowed: 5.2
+  outside_zone:
+    advantage: -2    # More vulnerable to outside zone
+    avg_yards_allowed: 7.9
+  slant:
+    advantage: +1    # Still decent vs short routes
+    completion_rate: 74
+  deep_pass:
+    advantage: +1    # Less effective vs deep passes
+    completion_rate: 45
+
+# Pressure packages available (same schemes, less effective)
+pressure_packages:
+  base_rush:
+    rushers: 4
+    coverage_players: 7
+    pressure_rating: 2
+  
+  mike_blitz:
+    rushers: 5
+    coverage_players: 6
+    pressure_rating: 3
+    
+  double_a_gap:
+    rushers: 6
+    coverage_players: 5
+    pressure_rating: 4

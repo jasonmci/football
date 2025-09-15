@@ -23,7 +23,7 @@ assignments:
     details:
       mesh_point: "extended"  # Shotgun mesh is deeper
       ball_handling: "secure_exchange"
-  
+
   - player: RB1
     assignment: run_block
     direction: left
@@ -32,7 +32,7 @@ assignments:
       vision: "find_trap_hole"
       target_gap: "A_gap"
       patience: "moderate"  # Can wait slightly longer in shotgun
-  
+
   # RIGHT SIDE - Slide protection away from trap
   - player: RT
     assignment: run_block
@@ -40,7 +40,7 @@ assignments:
       scheme: "big_on_big"
       technique: "vertical_set"
       target: "defensive_end"
-  
+
   # TRAP BLOCKING SCHEME (mirrored)
   - player: RG
     assignment: run_block
@@ -50,14 +50,14 @@ assignments:
       target: "trap_defender"
       technique: "trap_block"
       timing: "aggressive_arrival"  # Shotgun allows better timing
-  
+
   - player: C
     assignment: run_block
     details:
       scheme: "slide_right"
       target: "nose_tackle"
       help: "left_guard"
-  
+
   # LEFT GUARD - intentionally lets DT penetrate
   - player: LG
     assignment: run_block
@@ -66,14 +66,14 @@ assignments:
       technique: "invite_penetration"
       target: "defensive_tackle"
       special: "controlled_release"  # Let DT upfield
-  
+
   - player: LT
     assignment: run_block
     details:
       scheme: "slide_left"
       technique: "vertical_set"
       target: "defensive_end"
-  
+
   # RECEIVERS - Stalk blocking in space
   - player: WR1
     assignment: run_block
@@ -81,14 +81,14 @@ assignments:
       technique: "stalk"
       target: "corner"
       level: "perimeter"
-  
+
   - player: WR2
     assignment: run_block
     details:
-      technique: "stalk" 
+      technique: "stalk"
       target: "safety"
       level: "perimeter"
-  
+
   - player: WR3
     assignment: run_block
     details:

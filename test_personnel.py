@@ -19,11 +19,11 @@ from football2.football.positions import ALL_POSITIONS, FootballFormation
 
 def test_personnel_validation():
     """Test that personnel validation catches mismatches."""
-    
+
     print("🧪 Testing personnel validation...\n")
-    
+
     loader = FormationLoader()
-    
+
     # Test 1: Formation claiming "11" but actually "10"
     print("Test 1: Formation claims '11' but has 1 RB, 0 TE, 4 WR (should fail)")
     try:
@@ -40,19 +40,19 @@ def test_personnel_validation():
             "RG": PlayerRole("RG", ALL_POSITIONS["RG"], Lane.MIDDLE, "line"),
             "RT": PlayerRole("RT", ALL_POSITIONS["RT"], Lane.RIGHT, "line"),
         }
-        
+
         # Claims "11" (1 RB, 1 TE) but actually has "10" (1 RB, 0 TE)
         formation = FootballFormation("test_mismatch", roles, ["11"])
         violations = loader.validator.validate_formation(formation)
-        
+
         if violations:
             print(f"   ✅ Correctly caught violations: {violations}")
         else:
-            print(f"   ❌ Should have caught personnel mismatch!")
-            
+            print("   ❌ Should have caught personnel mismatch!")
+
     except Exception as e:
         print(f"   ✅ Correctly rejected formation: {e}")
-    
+
     # Test 2: Formation with correct "00" personnel (should pass)
     print("\nTest 2: Formation correctly declares '00' (0 RB, 0 TE, 5 WR)")
     try:
@@ -69,27 +69,27 @@ def test_personnel_validation():
             "RG": PlayerRole("RG", ALL_POSITIONS["RG"], Lane.MIDDLE, "line"),
             "RT": PlayerRole("RT", ALL_POSITIONS["RT"], Lane.RIGHT, "line"),
         }
-        
+
         formation = FootballFormation("test_empty", roles, ["00"])
         violations = loader.validator.validate_formation(formation)
-        
+
         if not violations:
-            print(f"   ✅ Correctly accepted formation")
+            print("   ✅ Correctly accepted formation")
         else:
             print(f"   ❌ Should have accepted formation: {violations}")
-            
+
     except Exception as e:
         print(f"   ❌ Unexpected error: {e}")
-    
+
     # Test 3: Check that our actual formations have correct personnel
     print("\nTest 3: Checking actual formation personnel...")
-    
+
     test_files = [
         ("data/formations/offense/empty_backfield.yaml", "00", "0 RB, 0 TE, 5 WR"),
         ("data/formations/offense/spread_10.yaml", "10", "1 RB, 0 TE, 4 WR"),
         ("data/formations/offense/singleback_11.yaml", "11", "1 RB, 1 TE, 3 WR"),
     ]
-    
+
     for file_path, expected_personnel, description in test_files:
         try:
             formation = loader.load_formation(file_path)

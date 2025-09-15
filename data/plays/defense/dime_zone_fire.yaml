@@ -1,0 +1,144 @@
+name: dime_zone_fire
+label: "Dime Zone Fire (6 DB Blitz)"
+formation: dime
+personnel: []
+play_type: defense
+tags: [blitz, zone_fire, pressure, coverage, third_down]
+
+# Pre-snap movements
+pre_snap_shifts:
+  - player: SS
+    action: move_up
+    coordinate:
+      x: -2
+      y: 8
+    timing: 1
+  - player: NCB1
+    action: move_up
+    coordinate:
+      x: 3
+      y: 5
+    timing: 2
+
+motion: null
+defensive_reactions: []
+
+# Zone fire blitz - pressure with zone coverage behind
+assignments:
+  - player: DE1
+    assignment: rush
+    details:
+      technique: "speed_rush"
+      gap: "C_gap"
+      target: "quarterback"
+
+  - player: DT1
+    assignment: coverage
+    zone: "hook"
+    details:
+      coverage: "zone"
+      depth: "8_to_15"
+      drop_to_coverage: true
+      zone_fire: true
+
+  - player: DT2
+    assignment: rush
+    details:
+      technique: "interior_rush"
+      gap: "A_gap"
+      target: "pocket"
+
+  - player: DE2
+    assignment: coverage
+    zone: "hook"
+    details:
+      coverage: "zone"
+      depth: "8_to_15"
+      drop_to_coverage: true
+      zone_fire: true
+
+  - player: MLB
+    assignment: coverage
+    zone: "middle_hole"
+    details:
+      coverage: "zone"
+      depth: "5_to_12"
+      position: "center"
+
+  - player: WLB
+    assignment: blitz
+    details:
+      gap: "B_gap"
+      timing: "snap"
+      side: "weak"
+      target: "backfield"
+
+  - player: SLB
+    assignment: blitz
+    details:
+      gap: "B_gap"
+      timing: "snap"
+      side: "strong"
+      target: "backfield"
+
+  - player: CB1
+    assignment: coverage
+    zone: "deep_third"
+    details:
+      coverage: "zone"
+      depth: "18_plus"
+      side: "left"
+      position: "deep"
+
+  - player: CB2
+    assignment: coverage
+    zone: "deep_third"
+    details:
+      coverage: "zone"
+      depth: "18_plus"
+      side: "right"
+      position: "deep"
+
+  - player: NCB1
+    assignment: blitz
+    details:
+      gap: "A_gap"
+      timing: "delayed"
+      target: "quarterback"
+      slot_blitzer: true
+
+  - player: NCB2
+    assignment: coverage
+    zone: "flat"
+    details:
+      coverage: "zone"
+      depth: "0_to_8"
+      side: "strong"
+
+  - player: SS
+    assignment: blitz
+    details:
+      gap: "B_gap"
+      timing: "snap"
+      target: "backfield"
+      safety_blitzer: true
+
+  - player: FS
+    assignment: coverage
+    zone: "deep_middle"
+    details:
+      coverage: "zone"
+      depth: "18_plus"
+      position: "center_field"
+      robber: true
+
+snap_count: "on movement"
+audible_options: ["check_to_cover_2", "all_out_blitz"]
+
+# Zone fire advantages:
+# 1. Maximum pressure with 6 rushers
+# 2. Zone coverage behind prevents big plays
+# 3. Multiple gap pressures overload protection
+# 4. Excellent vs 3rd and medium/long
+# 5. Forces quick decisions under pressure
+tactical_advantages: ["max_pressure", "gap_overload", "zone_coverage", "third_down_stopper", "protection_beater"]

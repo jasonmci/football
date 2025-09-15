@@ -11,15 +11,16 @@ DefenseDepth = Literal["line", "box", "overhang", "deep"]
 Depth = Union[OffenseDepth, DefenseDepth]
 
 Position = Literal[
-    "QB", "RB", "FB", "WR", "TE", "C", "RG", "LG", "RT", "LT",
-    "DL", "LB", "CB", "S"
+    "QB", "RB", "FB", "WR", "TE", "C", "RG", "LG", "RT", "LT", "DL", "LB", "CB", "S"
 ]  # extend if you add more later
+
 
 class RoleSpec(BaseModel):
     pos: str
     lane: Lane
-    depth: Depth          # OffenseDepth | DefenseDepth (as you set earlier)
+    depth: Depth  # OffenseDepth | DefenseDepth (as you set earlier)
     align: Optional[Align] = None
+
 
 # NEW: per-role placement overrides for a formation (x/y absolute; dx/dy offsets)
 class PlacementSpec(BaseModel):
@@ -27,6 +28,7 @@ class PlacementSpec(BaseModel):
     y: Optional[int] = None
     dx: int = 0
     dy: int = 0
+
 
 class FormationSpecDTO(BaseModel):
     name: str
@@ -36,6 +38,7 @@ class FormationSpecDTO(BaseModel):
     roles: Dict[str, RoleSpec] = Field(default_factory=dict)
     placement: Dict[str, PlacementSpec] = Field(default_factory=dict)
     aliases: Dict[str, str] = Field(default_factory=dict)  # optional, for RB→RB1 etc.
+
 
 class RoleChange(BaseModel):
     lane: Optional[Lane] = None
@@ -51,6 +54,7 @@ class ShiftSegment(BaseModel):
 
 # Shifts: instantaneous “re-spotting” before motion
 
+
 # NEW: event-based pre-snap
 class PreSnapEvent(BaseModel):
     player: str
@@ -64,11 +68,13 @@ class Waypoint(BaseModel):
     depth: Depth
     align: Optional[Align] = None  # NEW (optional)
 
+
 class MotionSpec(BaseModel):
-    player: str                    # role name
-    path: List[Waypoint]       # lane/depth waypoints
-    speed: int = 1             # tiles/frame (used by resolver later)
-    delay: int = 0             # frames to wait before starting (optional)
+    player: str  # role name
+    path: List[Waypoint]  # lane/depth waypoints
+    speed: int = 1  # tiles/frame (used by resolver later)
+    delay: int = 0  # frames to wait before starting (optional)
+
 
 # Concrete output frames
 class PlayerFrame(BaseModel):
@@ -78,9 +84,11 @@ class PlayerFrame(BaseModel):
     x: int
     y: int
 
+
 class PlayFramesDTO(BaseModel):
     name: str
     frames: List[List[PlayerFrame]]
+
 
 # Play spec (pre-snap only now)
 class PlaySpecDTO(BaseModel):
@@ -88,32 +96,38 @@ class PlaySpecDTO(BaseModel):
     team: Team
     formation: str
     pre_snap: List[PreSnapEvent] = Field(default_factory=list)
-    motion: Optional[MotionSpec] = None   # single offense motion (or None for no motion)
+    motion: Optional[MotionSpec] = None  # single offense motion (or None for no motion)
+
 
 class RouteAssignment(BaseModel):
     kind: Literal["route"]
     path: List[Waypoint]
     speed: int = 1
 
+
 class BlockAssignment(BaseModel):
     kind: Literal["block"]
-    technique: Optional[str] = None   # e.g., "zone", "screen", "reach"
-    target: Optional[str] = None      # optional role hint (e.g., "CB_right")
+    technique: Optional[str] = None  # e.g., "zone", "screen", "reach"
+    target: Optional[str] = None  # optional role hint (e.g., "CB_right")
+
 
 class ManAssignment(BaseModel):
     kind: Literal["man"]
     target_role: str
 
+
 class ZoneAssignment(BaseModel):
     kind: Literal["zone"]
     lane: Lane
     depth: Depth
-    radius: int = 1                   # abstract “area” size
+    radius: int = 1  # abstract “area” size
+
 
 Assignment = Annotated[
     Union[RouteAssignment, BlockAssignment, ManAssignment, ZoneAssignment],
     Field(discriminator="kind"),
 ]
+
 
 # src/football/schemas.py
 class LogicalPlayerFrame(BaseModel):
@@ -123,6 +137,7 @@ class LogicalPlayerFrame(BaseModel):
     lane: Lane
     depth: Depth
     align: Optional[Align] = None
+
 
 class PlayLogicalFramesDTO(BaseModel):
     name: str

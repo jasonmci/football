@@ -20,7 +20,7 @@ counter_play = offensive_plays.get('counter_right')
 if counter_play:
     print(f'🔄 COUNTER PLAY ANALYSIS: {counter_play.label}')
     print('=' * 50)
-    
+
     # Show assignments with tactical significance
     for assign in counter_play.assignments:
         details = assign.details or {}
@@ -33,22 +33,22 @@ if counter_play:
             extra = ' 🎯 (CRACK!)'
         elif assign.assignment_type.value == 'lead_block':
             extra = ' 🎯 (LEAD!)'
-        
+
         scheme = details.get('scheme', '')
         technique = details.get('technique', '')
         print(f'  {assign.player_position}: {assign.assignment_type.value} {scheme} {technique}{extra}')
-    
+
     # Test against a basic defense
     basic_def = list(defensive_plays.values())[0]  # Get any defense
     print(f'\n🛡️ VS {basic_def.label}')
-    
+
     analyzer = PlayAnalyzer()
     analysis = analyzer.analyze_play_matchup(counter_play, basic_def)
-    
+
     print(f'\nTactical Analysis: {analysis.net_impact:+d} net impact')
     for adv in analysis.advantages:
         print(f'✅ {adv.description} ({adv.impact:+d})')
-    
+
     # Show resolution
     engine = PlayResolutionEngine(seed=42)
     result = engine.resolve_play(counter_play, basic_def)

@@ -1,0 +1,243 @@
+name: "off_tackle_config"
+label: "Off Tackle Right (Power O)"
+formation: strong_i
+personnel: ["21"]
+play_type: run
+tags: [run, off_tackle, power, gap_scheme]
+
+# Player roster with ratings
+players:
+  QB:
+    name: "Power QB"
+    position: "QB"
+    overall_rating: 79
+    skills:
+      awareness: 82
+      hands: 81
+      strength: 84
+    traits: ["tough"]
+
+  RB1:
+    name: "Power Back"
+    position: "RB"
+    overall_rating: 88
+    skills:
+      strength: 92
+      agility: 82
+      speed: 85
+      acceleration: 87
+    traits: ["power_runner", "secure_hands", "breaks_tackles"]
+
+  FB:
+    name: "Lead FB"
+    position: "FB"
+    overall_rating: 85
+    skills:
+      strength: 94
+      run_blocking: 88
+      tackle: 82
+    traits: ["road_grader", "lead_blocker"]
+
+  WR1:
+    name: "Physical WR"
+    position: "WR"
+    overall_rating: 77
+    skills:
+      hands: 78
+      route_running: 79
+      speed: 82
+      run_blocking: 80
+    traits: ["physical"]
+
+  WR2:
+    name: "Deep Threat WR"
+    position: "WR"
+    overall_rating: 81
+    skills:
+      hands: 82
+      route_running: 80
+      speed: 89
+      agility: 85
+    traits: ["deep_threat"]
+
+  TE:
+    name: "Blocking TE"
+    position: "TE"
+    overall_rating: 86
+    skills:
+      hands: 76
+      route_running: 71
+      run_blocking: 92
+      strength: 91
+    traits: ["road_grader", "inline_blocker"]
+
+  LT:
+    name: "Power LT"
+    position: "LT"
+    overall_rating: 87
+    skills:
+      strength: 91
+      pass_blocking: 85
+      run_blocking: 91
+    traits: ["anchor", "powerful"]
+
+  LG:
+    name: "Pulling LG"
+    position: "LG"
+    overall_rating: 84
+    skills:
+      strength: 89
+      pass_blocking: 80
+      run_blocking: 89
+      agility: 78
+    traits: ["mobile", "pulling_guard"]
+
+  C:
+    name: "Power C"
+    position: "C"
+    overall_rating: 83
+    skills:
+      strength: 87
+      pass_blocking: 81
+      run_blocking: 88
+      awareness: 89
+    traits: ["smart", "powerful"]
+
+  RG:
+    name: "Power RG"
+    position: "RG"
+    overall_rating: 85
+    skills:
+      strength: 91
+      pass_blocking: 81
+      run_blocking: 90
+    traits: ["powerful"]
+
+  RT:
+    name: "Power RT"
+    position: "RT"
+    overall_rating: 86
+    skills:
+      strength: 92
+      pass_blocking: 82
+      run_blocking: 92
+    traits: ["powerful", "anchor"]
+
+# Pre-snap shifts
+pre_snap_shifts:
+  - player: FB
+    action: align_behind_qb
+    coordinate:
+      x: 0
+      y: 1
+    timing: 1
+
+motion: null
+
+# Power O assignments - pulling guard leads through hole
+assignments:
+  - player: QB
+    assignment: handoff
+    target: RB1
+    details:
+      mesh_point: "power_handoff"
+      ball_handling: "firm_mesh"
+      footwork: "reverse_pivot"
+
+  - player: RB1
+    assignment: power_run
+    direction: right
+    details:
+      technique: "follow_lead"
+      vision: "trust_blocks"
+      target_gap: "C_gap"
+      patience: "moderate"  # Let blocks develop
+
+  - player: FB
+    assignment: lead_block
+    target: "linebacker"
+    direction: right
+    details:
+      scheme: "iso_block"
+      technique: "drive_block"
+
+  # LEFT SIDE - Big on big
+  - player: LT
+    assignment: run_block
+    details:
+      scheme: "big_on_big"
+      technique: "base_block"
+      target: "defensive_end"
+
+  # KEY PLAY - PULLING GUARD
+  - player: LG
+    assignment: pull_block
+    direction: right
+    details:
+      scheme: "pull_and_kick"
+      technique: "pull_right"
+      target: "first_threat"  # Kick out first defender
+
+  - player: C
+    assignment: run_block
+    details:
+      scheme: "back_block"
+      technique: "slide_left"
+      target: "nose_tackle"
+
+  - player: RG
+    assignment: run_block
+    details:
+      scheme: "drive_block"
+      technique: "double_team"
+      target: "defensive_tackle"
+
+  - player: RT
+    assignment: run_block
+    details:
+      scheme: "drive_block"
+      technique: "down_block"
+      target: "defensive_tackle"
+
+  - player: TE
+    assignment: run_block
+    details:
+      scheme: "down_block"
+      technique: "seal_inside"
+      target: "defensive_end"
+
+  # WRs run basic routes
+  - player: WR1
+    assignment: route
+    details:
+      route: "slant"
+      depth: 6
+      timing: "quick"
+
+  - player: WR2
+    assignment: route
+    details:
+      route: "comeback"
+      depth: 14
+      timing: "intermediate"
+
+# Success criteria
+success_metrics:
+  explosive_gain_threshold: 15  # Power can move the pile
+  success_threshold: 4          # 4+ yards is successful
+  big_play_threshold: 8         # 8+ yards is big gain
+
+# Expected outcomes vs different defenses
+expected_vs_defenses:
+  base43:
+    advantage: +2  # Power O excellent vs base 4-3
+    avg_yards: 6.8
+  nickel:
+    advantage: +3  # Great vs lighter boxes
+    avg_yards: 8.1
+  bear46:
+    advantage: 0   # Neutral vs 8-man front
+    avg_yards: 4.5
+  goalline:
+    advantage: +1  # Still effective in short yardage
+    avg_yards: 3.8

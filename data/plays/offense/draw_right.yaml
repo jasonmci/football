@@ -1,0 +1,114 @@
+name: draw_right
+label: "Draw Right (11 Shotgun)"
+formation: shotgun_11
+personnel: ["11"]
+play_type: run
+tags: [run, draw, misdirection, delayed_handoff]
+
+# Pre-snap shifts (none for basic draw)
+pre_snap_shifts: []
+
+motion:
+  player: WR2
+  path:
+    - from: {lane: "left", depth: "wide"}
+    - to: {lane: "right", depth: "slot"}
+  timing: "pre_snap"
+
+# Draw play assignments - sell pass first, then handoff
+assignments:
+  - player: QB
+    assignment: draw_fake
+    target: RB1
+    details:
+      technique: "sell_pass_first"
+      mesh_point: "delayed"
+      ball_handling: "draw_handoff"
+      fake_duration: 1.5
+
+  - player: RB1
+    assignment: run
+    direction: "best_gap"
+    details:
+      technique: "patient_setup"
+      vision: "read_blocks"
+      target_gap: "any_open"
+      patience: "high"  # Wait for blocks to develop
+
+  # O-Line sells pass protection first, then converts to run blocking
+  - player: LT
+    assignment: run_block
+    details:
+      scheme: "pass_to_run"
+      technique: "pass_set_convert"
+      target: "defensive_end"
+
+  - player: LG
+    assignment: run_block
+    details:
+      scheme: "pass_to_run"
+      technique: "slide_convert"
+      target: "defensive_tackle"
+
+  - player: C
+    assignment: run_block
+    details:
+      scheme: "pass_to_run"
+      technique: "slide_convert"
+      target: "nose_tackle"
+
+  - player: RG
+    assignment: run_block
+    details:
+      scheme: "pass_to_run"
+      technique: "slide_convert"
+      target: "defensive_tackle"
+
+  - player: RT
+    assignment: run_block
+    details:
+      scheme: "pass_to_run"
+      technique: "pass_set_convert"
+      target: "defensive_end"
+
+  - player: TE
+    assignment: route
+    details:
+      route: "drag"
+      depth: 8
+      timing: "intermediate"
+      sell_route: true  # Help sell pass fake
+
+  # WRs run routes to sell pass
+  - player: WR1
+    assignment: route
+    details:
+      route: "go"
+      depth: 20
+      timing: "deep"
+      sell_route: true
+
+  - player: WR2
+    assignment: route
+    details:
+      route: "comeback"
+      depth: 12
+      timing: "intermediate"
+      sell_route: true
+
+# Execution notes
+execution:
+  key_timing: "QB must sell pass for 1.5 seconds before handoff"
+  success_factors: ["Pass rush aggression", "LB dropping to coverage", "RB patience"]
+  failure_points: ["Early handoff", "Poor pass fake", "RB hits hole too soon"]
+
+# Tactical advantages
+advantages:
+  - "Effective vs aggressive pass rush"
+  - "Works well vs zone coverage"
+  - "Good vs lighter box (nickel/dime)"
+  
+disadvantages:
+  - "Vulnerable to disciplined rush lanes"
+  - "Struggles vs heavy blitz"
+  - "Timing dependent"

@@ -19,11 +19,11 @@ from football2.football.positions import ALL_POSITIONS, FootballFormation
 
 def test_validation_rules():
     """Test that our validation rules properly catch violations."""
-    
+
     print("🧪 Testing formation validation rules...\n")
-    
+
     loader = FormationLoader()
-    
+
     # Test 1: Too many safeties
     print("Test 1: Formation with 3 safeties (should fail)")
     try:
@@ -40,18 +40,18 @@ def test_validation_rules():
             "S2": PlayerRole("S2", ALL_POSITIONS["S"], Lane.MIDDLE, "deep"),
             "S3": PlayerRole("S3", ALL_POSITIONS["S"], Lane.RIGHT, "deep"),  # Too many!
         }
-        
+
         formation = FootballFormation("test_bad", roles)
         violations = loader.validator.validate_formation(formation)
-        
+
         if violations:
             print(f"   ✅ Correctly caught violations: {violations}")
         else:
-            print(f"   ❌ Should have caught too many safeties!")
-            
+            print("   ❌ Should have caught too many safeties!")
+
     except Exception as e:
         print(f"   ✅ Correctly rejected formation: {e}")
-    
+
     # Test 2: Formation with no QB (defensive - should pass)
     print("\nTest 2: Defensive formation with no QB (should pass)")
     try:
@@ -68,18 +68,18 @@ def test_validation_rules():
             "S1": PlayerRole("S1", ALL_POSITIONS["S"], Lane.LEFT, "deep"),
             "S2": PlayerRole("S2", ALL_POSITIONS["S"], Lane.MIDDLE, "deep"),
         }
-        
+
         formation = FootballFormation("test_defense", roles)
         violations = loader.validator.validate_formation(formation)
-        
+
         if not violations:
-            print(f"   ✅ Correctly accepted defensive formation")
+            print("   ✅ Correctly accepted defensive formation")
         else:
             print(f"   ❌ Should have accepted defensive formation: {violations}")
-            
+
     except Exception as e:
         print(f"   ❌ Unexpected error: {e}")
-    
+
     # Test 3: Offensive formation with no QB (should fail)
     print("\nTest 3: Offensive formation with no QB (should fail)")
     try:
@@ -96,15 +96,15 @@ def test_validation_rules():
             "WR3": PlayerRole("WR3", ALL_POSITIONS["WR"], Lane.LEFT, "line"),
             "WR4": PlayerRole("WR4", ALL_POSITIONS["WR"], Lane.RIGHT, "line"),
         }
-        
+
         formation = FootballFormation("test_no_qb", roles)
         violations = loader.validator.validate_formation(formation)
-        
+
         if violations:
             print(f"   ✅ Correctly caught violations: {violations}")
         else:
-            print(f"   ❌ Should have caught missing QB!")
-            
+            print("   ❌ Should have caught missing QB!")
+
     except Exception as e:
         print(f"   ✅ Correctly rejected formation: {e}")
 

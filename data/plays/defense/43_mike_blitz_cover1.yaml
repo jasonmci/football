@@ -24,60 +24,60 @@ assignments:
     details:
       technique: "speed_rush"
       contain: true
-  
+
   - player: DT1
     assignment: rush
     details:
       technique: "bull_rush"
       gap: "B_gap"
-  
+
   - player: DT2
     assignment: rush
     details:
       technique: "bull_rush"
       gap: "B_gap"
-  
+
   - player: DE2
     assignment: rush
     details:
       technique: "speed_rush"
       contain: true
-  
+
   - player: MLB
     assignment: blitz
     details:
       gap: "A_gap"
       timing: "snap_plus_one"
       target: "quarterback"
-  
+
   - player: WLB
     assignment: coverage
     details:
       coverage: "zone"
       zone: "hook"
       depth: "5_to_10"
-  
+
   - player: SLB
     assignment: coverage
     details:
       coverage: "zone"
       zone: "hook"
       depth: "5_to_10"
-  
+
   - player: CB1
     assignment: coverage
     target: "WR1"
     details:
       coverage: "man"
       technique: "press"
-  
+
   - player: CB2
     assignment: coverage
     target: "WR2"
     details:
       coverage: "man"
       technique: "press"
-  
+
   - player: FS
     assignment: coverage
     zone: "deep_middle"
@@ -85,7 +85,7 @@ assignments:
       coverage: "zone"
       depth: "15_plus"
       help: "over_the_top"
-  
+
   - player: SS
     assignment: coverage
     target: "TE"

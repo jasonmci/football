@@ -37,49 +37,49 @@ assignments:
       technique: "crash_inside"
       gap: "B_gap"
       run_fit: true
-  
+
   - player: DT1
     assignment: rush
     details:
       technique: "penetration"
       gap: "A_gap"
       run_fit: true
-  
+
   - player: NT
     assignment: rush
     details:
       technique: "two_gap"
       gap: "A_gap"
       run_fit: true
-  
+
   - player: DT2
     assignment: rush
     details:
       technique: "penetration"
       gap: "A_gap"
       run_fit: true
-  
+
   - player: DE2
     assignment: rush
     details:
       technique: "crash_inside"
       gap: "B_gap"
       run_fit: true
-  
+
   - player: MLB
     assignment: blitz
     details:
       gap: "A_gap"
       timing: "snap"
       run_fit: true
-  
+
   - player: WLB
     assignment: run_fit
     details:
       gap: "C_gap"
       side: "weak"
       scrape: true
-  
+
   - player: CB1
     assignment: coverage
     target: "WR1"
@@ -87,7 +87,7 @@ assignments:
       coverage: "man"
       technique: "press"
       run_support: true
-  
+
   - player: CB2
     assignment: coverage
     target: "WR2"
@@ -95,7 +95,7 @@ assignments:
       coverage: "man"
       technique: "press"
       run_support: true
-  
+
   - player: FS
     assignment: coverage
     zone: "deep_middle"
@@ -103,7 +103,7 @@ assignments:
       coverage: "zone"
       depth: "15_plus"
       help: "over_the_top"
-  
+
   - player: SS
     assignment: blitz
     details:

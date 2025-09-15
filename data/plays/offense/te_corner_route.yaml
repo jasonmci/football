@@ -1,0 +1,122 @@
+name: te_corner_route
+label: "TE Corner Route (Play Action)"
+formation: strong_i
+personnel: ["21"]
+play_type: pass
+tags: [pass, play_action, tight_end, corner_route, red_zone]
+
+# Pre-snap shifts
+pre_snap_shifts: []
+
+motion: null
+
+# Play action with TE corner route
+assignments:
+  - player: QB
+    assignment: play_action_pass
+    target: TE
+    details:
+      fake_direction: "right"
+      fake_duration: 1.0
+      read_progression: ["TE", "WR1", "FB", "WR2"]
+      pocket_presence: "step_up"
+      release_timing: "intermediate"
+
+  - player: RB1
+    assignment: play_action_fake
+    direction: right
+    details:
+      technique: "sell_handoff"
+      fake_duration: 1.0
+      convert_to_protection: true
+
+  - player: FB
+    assignment: play_action_fake
+    details:
+      technique: "sell_lead_block"
+      fake_duration: 0.8
+      convert_to_route: true
+      route: "checkdown"
+
+  # O-Line sells run first, then pass pro
+  - player: LT
+    assignment: run_to_pass_block
+    details:
+      scheme: "play_action"
+      technique: "run_fake_to_pass"
+      target: "defensive_end"
+
+  - player: LG
+    assignment: run_to_pass_block
+    details:
+      scheme: "play_action"
+      technique: "run_fake_to_pass"
+      target: "defensive_tackle"
+
+  - player: C
+    assignment: run_to_pass_block
+    details:
+      scheme: "play_action"
+      technique: "run_fake_to_pass"
+      target: "nose_tackle"
+
+  - player: RG
+    assignment: run_to_pass_block
+    details:
+      scheme: "play_action"
+      technique: "run_fake_to_pass"
+      target: "defensive_tackle"
+
+  - player: RT
+    assignment: run_to_pass_block
+    details:
+      scheme: "play_action"
+      technique: "run_fake_to_pass"
+      target: "defensive_end"
+
+  # PRIMARY TARGET - TE runs corner route
+  - player: TE
+    assignment: route
+    details:
+      route: "corner"
+      depth: 16
+      timing: "intermediate"
+      break_point: 12
+      leverage_coverage: true
+      red_zone_specialist: true
+
+  # COMPLEMENTARY ROUTES
+  - player: WR1
+    assignment: route
+    details:
+      route: "post"
+      depth: 18
+      timing: "intermediate"
+      clear_middle: true
+
+  - player: WR2
+    assignment: route
+    details:
+      route: "out"
+      depth: 14
+      timing: "intermediate"
+      back_shoulder: true
+
+# Execution notes
+execution:
+  key_timing: "Play action fake must freeze linebackers"
+  success_factors: ["Strong PA fake", "TE leverage on coverage", "OL sells run"]
+  failure_points: ["Poor PA fake", "TE doesn't get separation", "LB doesn't bite"]
+
+# Tactical advantages
+advantages:
+  - "Play action freezes linebackers"
+  - "TE corner route vs LB mismatch"
+  - "Excellent in red zone"
+  - "Good vs run-stopping defenses"
+  
+disadvantages:
+  - "Vulnerable to Cover 2"
+  - "Slower developing"
+  - "Requires good PA fake"
+  - "TE may lack speed vs safeties"

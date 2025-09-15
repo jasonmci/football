@@ -1,0 +1,251 @@
+name: "te_passing_config"
+label: "TE Seam/Corner Route Combo"
+formation: singleback_12
+personnel: ["12"]
+play_type: pass
+tags: [pass, tight_end, seam, mismatch, play_action]
+
+# Player roster with ratings  
+players:
+  QB:
+    name: "Accurate QB"
+    position: "QB"
+    overall_rating: 86
+    skills:
+      awareness: 89
+      hands: 84
+      accuracy: 91
+    traits: ["accurate", "smart"]
+
+  RB1:
+    name: "Pass Pro RB"
+    position: "RB"
+    overall_rating: 80
+    skills:
+      strength: 78
+      agility: 82
+      speed: 84
+      pass_blocking: 79
+    traits: ["pass_protector"]
+
+  WR1:
+    name: "Slot WR"
+    position: "WR"
+    overall_rating: 84
+    skills:
+      hands: 87
+      route_running: 89
+      speed: 86
+      agility: 88
+    traits: ["route_runner", "reliable"]
+
+  WR2:
+    name: "Outside WR"
+    position: "WR"
+    overall_rating: 82
+    skills:
+      hands: 83
+      route_running: 84
+      speed: 88
+      agility: 85
+    traits: ["deep_threat"]
+
+  TE1:
+    name: "Receiving TE"
+    position: "TE"
+    overall_rating: 87
+    skills:
+      hands: 89
+      route_running: 85
+      speed: 82
+      run_blocking: 81
+      strength: 86
+    traits: ["mismatch_creator", "reliable", "red_zone_threat"]
+
+  TE2:
+    name: "Blocking TE"
+    position: "TE"
+    overall_rating: 79
+    skills:
+      hands: 73
+      route_running: 71
+      run_blocking: 87
+      strength: 89
+    traits: ["inline_blocker"]
+
+  LT:
+    name: "Pass Pro LT"
+    position: "LT"
+    overall_rating: 88
+    skills:
+      strength: 86
+      pass_blocking: 92
+      run_blocking: 84
+    traits: ["anchor", "pass_protector"]
+
+  LG:
+    name: "Pass Pro LG"
+    position: "LG"
+    overall_rating: 81
+    skills:
+      strength: 83
+      pass_blocking: 84
+      run_blocking: 79
+    traits: ["pass_protector"]
+
+  C:
+    name: "Smart C"
+    position: "C"
+    overall_rating: 84
+    skills:
+      strength: 81
+      pass_blocking: 87
+      run_blocking: 82
+      awareness: 91
+    traits: ["smart", "line_calls"]
+
+  RG:
+    name: "Pass Pro RG"
+    position: "RG"
+    overall_rating: 82
+    skills:
+      strength: 84
+      pass_blocking: 85
+      run_blocking: 80
+    traits: ["pass_protector"]
+
+  RT:
+    name: "Pass Pro RT"
+    position: "RT"
+    overall_rating: 85
+    skills:
+      strength: 87
+      pass_blocking: 88
+      run_blocking: 83
+    traits: ["pass_protector"]
+
+# Pre-snap shifts
+pre_snap_shifts: []
+
+motion:
+  player: TE1
+  path:
+    - lane: "right"
+      depth: "line"
+    - lane: "right"
+      depth: "slot"
+  timing: "pre_snap"
+
+# TE-focused passing assignments
+assignments:
+  - player: QB
+    assignment: pass
+    target: TE1
+    details:
+      read_progression: ["TE1", "WR1", "RB1", "WR2"]
+      pocket_presence: "step_up"
+      release_timing: "intermediate"
+
+  - player: RB1
+    assignment: pass_protect
+    details:
+      scheme: "scan_protection"
+      technique: "check_blitz"
+      hot_route_target: true
+
+  # O-Line in pass protection
+  - player: LT
+    assignment: pass_protect
+    details:
+      scheme: "big_on_big"
+      technique: "pass_set"
+      target: "defensive_end"
+
+  - player: LG
+    assignment: pass_protect
+    details:
+      scheme: "slide_protection"
+      technique: "pass_set"
+      target: "defensive_tackle"
+
+  - player: C
+    assignment: pass_protect
+    details:
+      scheme: "slide_protection"
+      technique: "pass_set"
+      target: "nose_tackle"
+      make_calls: true
+
+  - player: RG
+    assignment: pass_protect
+    details:
+      scheme: "slide_protection"
+      technique: "pass_set"
+      target: "defensive_tackle"
+
+  - player: RT
+    assignment: pass_protect
+    details:
+      scheme: "big_on_big"
+      technique: "pass_set"
+      target: "defensive_end"
+
+  - player: TE2
+    assignment: pass_protect
+    details:
+      scheme: "chip_and_release"
+      technique: "chip_block"
+      target: "outside_linebacker"
+
+  # PRIMARY TARGET - TE1 runs seam
+  - player: TE1
+    assignment: route
+    details:
+      route: "seam"
+      depth: 18
+      timing: "intermediate"
+      option_routes: ["corner", "comeback"]
+      vs_coverage: 
+        zone: "seam"
+        man: "corner"
+
+  # SECONDARY READS
+  - player: WR1
+    assignment: route
+    details:
+      route: "dig"
+      depth: 12
+      timing: "intermediate"
+
+  - player: WR2
+    assignment: route
+    details:
+      route: "comeback"
+      depth: 15
+      timing: "intermediate"
+
+# Success criteria for passing play
+success_metrics:
+  explosive_gain_threshold: 20  # 20+ yards is explosive
+  success_threshold: 8          # 8+ yards is successful
+  big_play_threshold: 15        # 15+ yards is big gain
+  completion_threshold: 65      # 65%+ completion is good
+
+# Expected outcomes vs different defenses
+expected_vs_defenses:
+  base43:
+    advantage: +3  # TE creates mismatch vs LB
+    completion_rate: 78
+    avg_yards: 11.2
+  nickel:
+    advantage: +2  # Still good mismatch
+    completion_rate: 74
+    avg_yards: 10.1
+  dime:
+    advantage: +1  # More DBs but TE still bigger
+    completion_rate: 71
+    avg_yards: 9.4
+  cover2:
+    advantage: +4  # Seam attacks Cover 2 hole
+    completion_rate: 82
+    avg_yards: 13.7
