@@ -13,7 +13,7 @@ def test_yaml_loader():
 
 def test_load_all_formations():
     """Test loading all formations from the directory."""
-    from football.yaml_loader import load_all_formations
+    from src.football.yaml_loader import load_all_formations
 
     all_formations = load_all_formations("data/formations")
     assert "offense" in all_formations

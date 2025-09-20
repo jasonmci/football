@@ -5,9 +5,9 @@ Formation library summary - shows the strategic diversity of our formations.
 
 import sys
 from pathlib import Path
-from football2.football.yaml_loader import load_all_formations
+from football.yaml_loader import load_all_formations
 
-# Add the src directory to the path so we can import football2
+# Add the src directory to the path so we can import football
 src_path = Path(__file__).parent / "src"
 if str(src_path) not in sys.path:
     sys.path.insert(0, str(src_path))

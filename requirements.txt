@@ -2,7 +2,6 @@ black==25.1.0
 click==8.2.1
 coverage==7.10.4
 flake8==7.3.0
--e git+https://github.com/jasonmci/football.git@aab9a44cc8566aff014c62aa6c0ad9fb77d56ac2#egg=football
 iniconfig==2.0.0
 mccabe==0.7.0
 mypy==1.11.2

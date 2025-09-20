@@ -7,7 +7,7 @@ Loads plays that inherit from formations and include dynamic modifications.
 import yaml
 from typing import Dict, List, Optional, Any
 from pathlib import Path
-from ..core.game_board import Coordinate
+from core.game_board import Coordinate
 from .plays import (
     FootballPlay,
     PreSnapShift,

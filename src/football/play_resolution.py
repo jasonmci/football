@@ -6,14 +6,14 @@ import sys
 import os
 
 # Add our football system
-from football2.dice_engine import roll_core
-from football2.football.plays import FootballPlay
-from football2.football.matchup_analyzer import (
+from football.dice_engine import roll_core
+from football.football.plays import FootballPlay
+from football.football.matchup_analyzer import (
     FormationMatchupAnalyzer,
     MatchupResult,
     MatchupAdvantage,
 )
-from football2.football.play_analyzer import (
+from football.football.play_analyzer import (
     PlayAnalyzer,
     PlayAnalysis,
 )
