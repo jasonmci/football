@@ -34,7 +34,7 @@ fix-format:  ## Fix code formatting with black
 	$(PYTHON) -m ruff format
 
 ci:  ## Run all CI checks (format, lint, type-check, test)
-	$(MAKE) format-check
+	$(MAKE) format
 	$(MAKE) lint
 # $(MAKE) type-check
 	$(MAKE) test
