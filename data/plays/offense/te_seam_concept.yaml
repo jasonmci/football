@@ -86,7 +86,7 @@ assignments:
       route: "seam"
       depth: 18
       timing: "intermediate"
-      option_routes: 
+      option_routes:
         vs_zone: "seam"
         vs_man: "corner"
         vs_cover2: "seam_split"
@@ -121,7 +121,7 @@ advantages:
   - "Seam attacks Cover 2 hole"
   - "Good vs zone coverage"
   - "Multiple underneath options"
-  
+
 disadvantages:
   - "Vulnerable to Cover 1 robber"
   - "Struggles vs Cover 3"

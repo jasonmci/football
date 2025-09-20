@@ -5,7 +5,7 @@ personnel: ["12"]
 play_type: pass
 tags: [pass, tight_end, seam, mismatch, play_action]
 
-# Player roster with ratings  
+# Player roster with ratings
 players:
   QB:
     name: "Accurate QB"
@@ -205,7 +205,7 @@ assignments:
       depth: 18
       timing: "intermediate"
       option_routes: ["corner", "comeback"]
-      vs_coverage: 
+      vs_coverage:
         zone: "seam"
         man: "corner"
 

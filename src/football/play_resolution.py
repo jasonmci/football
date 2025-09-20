@@ -6,14 +6,14 @@ import sys
 import os
 
 # Add our football system
-from football.dice_engine import roll_core
-from football.football.plays import FootballPlay
-from football.football.matchup_analyzer import (
+from .dice_engine import roll_core
+from .plays import FootballPlay
+from .matchup_analyzer import (
     FormationMatchupAnalyzer,
     MatchupResult,
     MatchupAdvantage,
 )
-from football.football.play_analyzer import (
+from .play_analyzer import (
     PlayAnalyzer,
     PlayAnalysis,
 )
@@ -473,12 +473,22 @@ class PlayResolutionEngine:
             PlayOutcome.EXPLOSIVE_SUCCESS: (
                 f"🚀 EXPLOSIVE PLAY! {offense.label} breaks through for {yards} yards!"
             ),
-            PlayOutcome.BIG_SUCCESS: f"💪 Big gain! {offense.label} powers for {yards} yards.",
-            PlayOutcome.SUCCESS: f"✅ Successful execution. {offense.label} gains {yards} yards.",
-            PlayOutcome.MODERATE_GAIN: f"➡️ Modest gain. {offense.label} picks up {yards} yards.",
+            PlayOutcome.BIG_SUCCESS: (
+                f"💪 Big gain! {offense.label} powers for {yards} yards."
+            ),
+            PlayOutcome.SUCCESS: (
+                f"✅ Successful execution. {offense.label} gains {yards} yards."
+            ),
+            PlayOutcome.MODERATE_GAIN: (
+                f"➡️ Modest gain. {offense.label} picks up {yards} yards."
+            ),
             PlayOutcome.NO_GAIN: f"🛑 No gain. {defense.label} holds the line.",
-            PlayOutcome.LOSS: f"📉 Loss of {abs(yards)} yards. {defense.label} wins the battle.",
-            PlayOutcome.BIG_LOSS: f"💥 BIG LOSS! {defense.label} forces {abs(yards)} yard loss!",
+            PlayOutcome.LOSS: (
+                f"📉 Loss of {abs(yards)} yards. {defense.label} wins the battle."
+            ),
+            PlayOutcome.BIG_LOSS: (
+                f"💥 BIG LOSS! {defense.label} forces {abs(yards)} yard loss!"
+            ),
             PlayOutcome.TURNOVER: f"🔄 TURNOVER! {defense.label} forces a turnover!",
         }
 

@@ -260,12 +260,12 @@ pressure_packages:
     rushers: 4
     coverage_players: 7
     pressure_rating: 3
-  
+
   mike_blitz:
     rushers: 5
     coverage_players: 6
     pressure_rating: 4
-    
+
   double_a_gap:
     rushers: 6
     coverage_players: 5

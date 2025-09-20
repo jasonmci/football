@@ -8,7 +8,7 @@ tags: [rpo, bubble, screen, quick_game, dual_option]
 # Pre-snap shifts
 pre_snap_shifts: []
 
-motion: 
+motion:
   player: WR3
   action: "bubble_motion"
   timing: "pre_snap"

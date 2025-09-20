@@ -15,7 +15,6 @@ Demonstrates how different offensive and defensive strategies clash.
 """
 
 
-
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 

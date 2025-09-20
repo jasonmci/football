@@ -211,12 +211,12 @@ assignments:
 # Success criteria for this specific play
 success_metrics:
   explosive_gain_threshold: 15  # 15+ yards is explosive for trap
-  success_threshold: 4          # 4+ yards is successful 
+  success_threshold: 4          # 4+ yards is successful
   big_play_threshold: 8         # 8+ yards is big gain
 
 # Expected outcomes vs different defenses
 expected_vs_defenses:
-  base43: 
+  base43:
     advantage: +2  # Trap works well vs base 4-3
     avg_yards: 6.2
   nickel:

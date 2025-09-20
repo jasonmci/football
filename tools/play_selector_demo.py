@@ -179,7 +179,9 @@ class PlaySelectorDemo:
 
         print(f"\n{'='*60}")
         print(
-            f"DEMO SIMULATION: {offensive_play.replace('_', ' ').title()} vs {defensive_play.replace('_', ' ').title()}"
+            f"DEMO SIMULATION: "
+            f"{offensive_play.replace('_', ' ').title()} vs "
+            f"{defensive_play.replace('_', ' ').title()}"
         )
         print(f"{'='*60}")
 

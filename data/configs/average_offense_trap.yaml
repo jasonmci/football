@@ -213,7 +213,7 @@ success_metrics:
 
 # Expected outcomes vs different defenses (worse than elite)
 expected_vs_defenses:
-  base43: 
+  base43:
     advantage: +1  # Less advantage vs base 4-3
     avg_yards: 4.8
   nickel:
