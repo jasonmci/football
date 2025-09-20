@@ -19,7 +19,6 @@ from types import SimpleNamespace
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 
-
 def create_offensive_plays():
     """Create offensive plays with player assignments."""
     return {

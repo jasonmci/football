@@ -7,11 +7,14 @@ game situation, field position, and opponent formations.
 """
 
 import sys
-sys.path.append('src')
+
+sys.path.append("src")
 
 from football2.football.play_caller import (
-    IntelligentPlayCaller, GameContext, GameSituation,
-    FieldPosition
+    IntelligentPlayCaller,
+    GameContext,
+    GameSituation,
+    FieldPosition,
 )
 
 
@@ -33,7 +36,7 @@ def test_game_scenarios():
         field_position=FieldPosition.OWN_TERRITORY,
         time_remaining=3600,  # Full game
         score_differential=0,
-        situation=GameSituation.FIRST_DOWN
+        situation=GameSituation.FIRST_DOWN,
     )
 
     recommendation = play_caller.get_full_recommendation(context, "base43")
@@ -43,7 +46,7 @@ def test_game_scenarios():
     print(f"Confidence: {recommendation['top_recommendation']['confidence']:.1%}")
     print(f"Risk Level: {recommendation['top_recommendation']['risk_level']}")
     print("Reasoning:")
-    for reason in recommendation['top_recommendation']['reasoning']:
+    for reason in recommendation["top_recommendation"]["reasoning"]:
         print(f"  • {reason}")
 
     # Scenario 2: Third and long
@@ -55,7 +58,7 @@ def test_game_scenarios():
         field_position=FieldPosition.MIDFIELD,
         time_remaining=1800,
         score_differential=0,
-        situation=GameSituation.LONG_YARDAGE
+        situation=GameSituation.LONG_YARDAGE,
     )
 
     recommendation = play_caller.get_full_recommendation(context, "nickel")
@@ -65,7 +68,7 @@ def test_game_scenarios():
     print(f"Confidence: {recommendation['top_recommendation']['confidence']:.1%}")
     print(f"Risk Level: {recommendation['top_recommendation']['risk_level']}")
     print("Reasoning:")
-    for reason in recommendation['top_recommendation']['reasoning']:
+    for reason in recommendation["top_recommendation"]["reasoning"]:
         print(f"  • {reason}")
 
     # Scenario 3: Goal line
@@ -77,7 +80,7 @@ def test_game_scenarios():
         field_position=FieldPosition.GOAL_LINE,
         time_remaining=600,
         score_differential=-3,  # Trailing by 3
-        situation=GameSituation.GOAL_LINE
+        situation=GameSituation.GOAL_LINE,
     )
 
     recommendation = play_caller.get_full_recommendation(context, "goalline_defense")
@@ -87,7 +90,7 @@ def test_game_scenarios():
     print(f"Confidence: {recommendation['top_recommendation']['confidence']:.1%}")
     print(f"Risk Level: {recommendation['top_recommendation']['risk_level']}")
     print("Reasoning:")
-    for reason in recommendation['top_recommendation']['reasoning']:
+    for reason in recommendation["top_recommendation"]["reasoning"]:
         print(f"  • {reason}")
 
     # Scenario 4: Two-minute drill
@@ -99,7 +102,7 @@ def test_game_scenarios():
         field_position=FieldPosition.OPPONENT_TERRITORY,
         time_remaining=90,  # 1:30 left
         score_differential=-7,  # Trailing by 7
-        situation=GameSituation.TWO_MINUTE_DRILL
+        situation=GameSituation.TWO_MINUTE_DRILL,
     )
 
     recommendation = play_caller.get_full_recommendation(context, "prevent_defense")
@@ -109,7 +112,7 @@ def test_game_scenarios():
     print(f"Confidence: {recommendation['top_recommendation']['confidence']:.1%}")
     print(f"Risk Level: {recommendation['top_recommendation']['risk_level']}")
     print("Reasoning:")
-    for reason in recommendation['top_recommendation']['reasoning']:
+    for reason in recommendation["top_recommendation"]["reasoning"]:
         print(f"  • {reason}")
 
 
@@ -127,7 +130,7 @@ def show_all_formation_options():
         ("Long Yardage", GameSituation.LONG_YARDAGE),
         ("Goal Line", GameSituation.GOAL_LINE),
         ("Red Zone", GameSituation.RED_ZONE),
-        ("Two-Minute", GameSituation.TWO_MINUTE_DRILL)
+        ("Two-Minute", GameSituation.TWO_MINUTE_DRILL),
     ]
 
     for name, situation in scenarios:
@@ -137,7 +140,7 @@ def show_all_formation_options():
             field_position=FieldPosition.MIDFIELD,
             time_remaining=1800,
             score_differential=0,
-            situation=situation
+            situation=situation,
         )
 
         formations = play_caller.suggest_formation(context)
@@ -160,14 +163,14 @@ def test_matchup_awareness():
         field_position=FieldPosition.MIDFIELD,
         time_remaining=1800,
         score_differential=0,
-        situation=GameSituation.MEDIUM_YARDAGE
+        situation=GameSituation.MEDIUM_YARDAGE,
     )
 
     defenses = ["base43", "nickel", "dime", "bear46"]
 
     for defense in defenses:
         recommendation = play_caller.get_full_recommendation(context, defense)
-        top_rec = recommendation['top_recommendation']
+        top_rec = recommendation["top_recommendation"]
 
         print(f"vs {defense.upper().replace('_', ' ')}:")
         print(f"  Formation: {top_rec['formation']}")

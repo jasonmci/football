@@ -15,7 +15,7 @@ from football2.football.yaml_loader import FormationLoader
 from football2.football.play_resolution import PlayResolutionEngine
 from football2.football.play_analyzer import PlayAnalyzer
 
-sys.path.append('src')
+sys.path.append("src")
 print("🚀 Starting advanced resolution test...")
 print("✅ All imports successful")
 
@@ -38,7 +38,9 @@ def test_matchup():
     offensive_plays = play_loader.load_plays_from_directory(offense_dir)
     defensive_plays = play_loader.load_plays_from_directory(defense_dir)
 
-    print(f"Loaded {len(offensive_plays)} offensive and {len(defensive_plays)} defensive plays")
+    print(
+        f"Loaded {len(offensive_plays)} offensive and {len(defensive_plays)} defensive plays"
+    )
 
     if not offensive_plays or not defensive_plays:
         print("❌ No plays found")
@@ -110,19 +112,33 @@ def test_matchup():
     engine = PlayResolutionEngine(seed=42)
 
     scenarios = [
-        {"down": 1, "distance": 10, "field_position": 50, "desc": "1st & 10 at midfield"},
-        {"down": 3, "distance": 3, "field_position": 15, "desc": "3rd & short in red zone"},
+        {
+            "down": 1,
+            "distance": 10,
+            "field_position": 50,
+            "desc": "1st & 10 at midfield",
+        },
+        {
+            "down": 3,
+            "distance": 3,
+            "field_position": 15,
+            "desc": "3rd & short in red zone",
+        },
     ]
 
     for scenario in scenarios:
         result = engine.resolve_play(off_play, def_play, scenario)
         print(f"\n  {scenario['desc']}:")
         print(f"    Outcome: {result.outcome.value} ({result.yards_gained:+d} yards)")
-        print(f"    Dice: {result.dice_roll} + Modifiers: {result.total_modifier} = {result.final_total}")
+        print(
+            f"    Dice: {result.dice_roll} + Modifiers: {result.total_modifier} = {result.final_total}"
+        )
         print(f"    Description: {result.description}")
 
         # Show key modifiers
-        key_mods = [f"{k}: {v:+d}" for k, v in result.details["modifiers"].items() if v != 0]
+        key_mods = [
+            f"{k}: {v:+d}" for k, v in result.details["modifiers"].items() if v != 0
+        ]
         if key_mods:
             print(f"    Key Modifiers: {', '.join(key_mods[:3])}")
 
@@ -170,7 +186,9 @@ if __name__ == "__main__":
 
         print("\n\n🎮 SUMMARY: THE MISSING PIECE")
         print("=" * 50)
-        print("Your football engine now analyzes the actual TACTICS that create advantages:")
+        print(
+            "Your football engine now analyzes the actual TACTICS that create advantages:"
+        )
         print("\n✅ What we've built:")
         print("• PlayAnalyzer examines every player assignment")
         print("• Identifies tactical advantages (pulling guards, blitzes, etc.)")
@@ -187,4 +205,5 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"❌ Error: {e}")
         import traceback
+
         traceback.print_exc()

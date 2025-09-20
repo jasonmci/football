@@ -40,23 +40,31 @@ def test_all_formation_validation():
                     position_counts[pos_name] = position_counts.get(pos_name, 0) + 1
 
                 if side == "offense":
-                    rb_count = position_counts.get("RB", 0) + position_counts.get("FB", 0)
+                    rb_count = position_counts.get("RB", 0) + position_counts.get(
+                        "FB", 0
+                    )
                     te_count = position_counts.get("TE", 0)
                     wr_count = position_counts.get("WR", 0)
 
                     actual_personnel = f"{rb_count}{te_count}"
-                    declared_personnel = formation.personnel[0] if formation.personnel else "??"
+                    declared_personnel = (
+                        formation.personnel[0] if formation.personnel else "??"
+                    )
 
                     status = "✅" if actual_personnel == declared_personnel else "❌"
 
-                    print(f"  {status} {name:15} | {declared_personnel} | {rb_count}RB {te_count}TE {wr_count}WR")
+                    print(
+                        f"  {status} {name:15} | {declared_personnel} | {rb_count}RB {te_count}TE {wr_count}WR"
+                    )
                 else:
                     # Defensive formations
                     dl_count = position_counts.get("DL", 0)
                     lb_count = position_counts.get("LB", 0)
-                    db_count = (position_counts.get("CB", 0) +
-                               position_counts.get("S", 0) +
-                               position_counts.get("NB", 0))
+                    db_count = (
+                        position_counts.get("CB", 0)
+                        + position_counts.get("S", 0)
+                        + position_counts.get("NB", 0)
+                    )
 
                     print(f"  ✅ {name:15} | {dl_count}DL {lb_count}LB {db_count}DB")
 
@@ -73,6 +81,7 @@ def test_all_formation_validation():
     except Exception as e:
         print(f"❌ Validation failed: {e}")
         import traceback
+
         traceback.print_exc()
 
 

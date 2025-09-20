@@ -11,7 +11,7 @@ from pathlib import Path
 from football2.football.play_loader import PlayLoader
 from football2.football.yaml_loader import FormationLoader
 
-sys.path.append('src')
+sys.path.append("src")
 
 
 def test_motion_abstraction():
@@ -23,10 +23,7 @@ def test_motion_abstraction():
     play_loader = PlayLoader(formation_loader)
 
     # Load plays with motion
-    motion_plays = [
-        "pa_slant_motion.yaml",
-        "smash_concept_motion.yaml"
-    ]
+    motion_plays = ["pa_slant_motion.yaml", "smash_concept_motion.yaml"]
 
     for play_file in motion_plays:
         play_path = Path("data/plays/offense") / play_file
@@ -81,7 +78,9 @@ def test_clean_offensive_plays():
 
     clean_count = 0
     for play_name, play in offense_plays.items():
-        has_def_reactions = hasattr(play, 'defensive_reactions') and play.defensive_reactions
+        has_def_reactions = (
+            hasattr(play, "defensive_reactions") and play.defensive_reactions
+        )
         if not has_def_reactions:
             clean_count += 1
         else:

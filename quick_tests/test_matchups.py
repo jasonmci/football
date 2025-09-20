@@ -7,9 +7,13 @@ showing how the system can provide tactical insights for board game play.
 """
 
 import sys
-sys.path.append('src')
 
-from football2.football.matchup_analyzer import FormationMatchupAnalyzer, MatchupAdvantage
+sys.path.append("src")
+
+from football2.football.matchup_analyzer import (
+    FormationMatchupAnalyzer,
+    MatchupAdvantage,
+)
 
 
 def print_advantage(advantage: MatchupAdvantage) -> str:
@@ -19,7 +23,7 @@ def print_advantage(advantage: MatchupAdvantage) -> str:
         MatchupAdvantage.MINOR_ADVANTAGE: "🟢",
         MatchupAdvantage.NEUTRAL: "⚪",
         MatchupAdvantage.MINOR_DISADVANTAGE: "🔴",
-        MatchupAdvantage.MAJOR_DISADVANTAGE: "🔴🔴"
+        MatchupAdvantage.MAJOR_DISADVANTAGE: "🔴🔴",
     }
     return f"{symbols[advantage]} {advantage.name.replace('_', ' ')}"
 
@@ -84,10 +88,24 @@ def create_matchup_matrix():
     """Create a complete matchup matrix showing all combinations."""
     analyzer = FormationMatchupAnalyzer()
 
-    offensive_formations = ["empty_backfield", "spread_10", "i_form", "strong_i",
-                           "pistol_11", "shotgun_11", "singleback_11"]
-    defensive_formations = ["34_defense", "dime", "prevent_defense", "goalline_defense",
-                           "base43", "nickel", "bear46"]
+    offensive_formations = [
+        "empty_backfield",
+        "spread_10",
+        "i_form",
+        "strong_i",
+        "pistol_11",
+        "shotgun_11",
+        "singleback_11",
+    ]
+    defensive_formations = [
+        "34_defense",
+        "dime",
+        "prevent_defense",
+        "goalline_defense",
+        "base43",
+        "nickel",
+        "bear46",
+    ]
 
     print("\n\n📊 COMPLETE MATCHUP MATRIX")
     print("=" * 60)
@@ -113,7 +131,7 @@ def create_matchup_matrix():
                 MatchupAdvantage.MINOR_ADVANTAGE: "🟢",
                 MatchupAdvantage.NEUTRAL: "⚪",
                 MatchupAdvantage.MINOR_DISADVANTAGE: "🔴",
-                MatchupAdvantage.MAJOR_DISADVANTAGE: "🔴🔴"
+                MatchupAdvantage.MAJOR_DISADVANTAGE: "🔴🔴",
             }[result.overall_advantage]
             row += symbol.ljust(10)
         print(row)
@@ -128,28 +146,50 @@ def show_formation_profiles():
 
     print("\n🏃 OFFENSIVE FORMATIONS:")
     print("-" * 25)
-    offensive_formations = ["empty_backfield", "spread_10", "i_form", "strong_i",
-                           "pistol_11", "shotgun_11", "singleback_11"]
+    offensive_formations = [
+        "empty_backfield",
+        "spread_10",
+        "i_form",
+        "strong_i",
+        "pistol_11",
+        "shotgun_11",
+        "singleback_11",
+    ]
 
     for formation in offensive_formations:
         profile = analyzer.get_formation_summary(formation, is_offense=True)
         if profile:
             print(f"\n{profile['name'].upper().replace('_', ' ')}")
-            print(f"  Run Block: {profile['run_blocking']}/5  Pass Pro: {profile['pass_protection']}/5")
-            print(f"  Routes: {profile['route_diversity']}/5     Misdirect: {profile['misdirection']}/5")
+            print(
+                f"  Run Block: {profile['run_blocking']}/5  Pass Pro: {profile['pass_protection']}/5"
+            )
+            print(
+                f"  Routes: {profile['route_diversity']}/5     Misdirect: {profile['misdirection']}/5"
+            )
             print(f"  Best For: {', '.join(profile['optimal_plays'])}")
 
     print("\n\n🛡️  DEFENSIVE FORMATIONS:")
     print("-" * 25)
-    defensive_formations = ["34_defense", "dime", "prevent_defense", "goalline_defense",
-                           "base43", "nickel", "bear46"]
+    defensive_formations = [
+        "34_defense",
+        "dime",
+        "prevent_defense",
+        "goalline_defense",
+        "base43",
+        "nickel",
+        "bear46",
+    ]
 
     for formation in defensive_formations:
         profile = analyzer.get_formation_summary(formation, is_offense=False)
         if profile:
             print(f"\n{profile['name'].upper().replace('_', ' ')}")
-            print(f"  Run Def: {profile['run_defense']}/5    Pass Rush: {profile['pass_rush']}/5")
-            print(f"  Coverage: {profile['pass_coverage']}/5   Gap Ctrl: {profile['gap_control']}/5")
+            print(
+                f"  Run Def: {profile['run_defense']}/5    Pass Rush: {profile['pass_rush']}/5"
+            )
+            print(
+                f"  Coverage: {profile['pass_coverage']}/5   Gap Ctrl: {profile['gap_control']}/5"
+            )
             print(f"  Counters: {', '.join(profile['counters'])}")
 
 

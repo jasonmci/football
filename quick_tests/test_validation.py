@@ -16,7 +16,6 @@ if str(src_path) not in sys.path:
     sys.path.insert(0, str(src_path))
 
 
-
 def test_validation_rules():
     """Test that our validation rules properly catch violations."""
 

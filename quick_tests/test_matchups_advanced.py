@@ -7,7 +7,8 @@ strategic advantages and tactical decision-making for board game play.
 """
 
 import sys
-sys.path.append('src')
+
+sys.path.append("src")
 
 from pathlib import Path
 from football2.football.play_loader import PlayLoader
@@ -33,7 +34,9 @@ def load_all_plays():
 def analyze_formation_matchup(off_play, def_play, analyzer):
     """Analyze the formation matchup between offensive and defensive plays."""
     try:
-        matchup = analyzer.analyze_matchup(off_play.base_formation, def_play.base_formation)
+        matchup = analyzer.analyze_matchup(
+            off_play.base_formation, def_play.base_formation
+        )
         return matchup
     except ValueError:
         return None
@@ -54,36 +57,36 @@ def test_strategic_matchups():
             "name": "POWER vs RUN DEFENSE",
             "offense": "power_left",
             "defense": "bear46_run_commit",
-            "scenario": "Goal line situation - offense needs 2 yards"
+            "scenario": "Goal line situation - offense needs 2 yards",
         },
         # Quick passing vs pressure
         {
             "name": "QUICK PASS vs BLITZ",
             "offense": "empty_slants",
             "defense": "nickel_doubleA_cover2",
-            "scenario": "3rd and 8 - offense needs first down"
+            "scenario": "3rd and 8 - offense needs first down",
         },
         # Deep passing vs coverage
         {
             "name": "DEEP SHOTS vs PREVENT",
             "offense": "four_verts",
             "defense": "prevent_quarters",
-            "scenario": "2-minute drill - offense down by 7"
+            "scenario": "2-minute drill - offense down by 7",
         },
         # Motion vs reaction
         {
             "name": "MOTION vs ADJUSTMENT",
             "offense": "smash_concept_motion",
             "defense": "nickel_zone_blitz_showA",
-            "scenario": "Red zone - offense at 15-yard line"
+            "scenario": "Red zone - offense at 15-yard line",
         },
         # Balanced vs balanced
         {
             "name": "BALANCED ATTACK vs BASE",
             "offense": "inside_zone_right",
             "defense": "43_cover3_base",
-            "scenario": "1st and 10 - feeling out the defense"
-        }
+            "scenario": "1st and 10 - feeling out the defense",
+        },
     ]
 
     for i, scenario in enumerate(matchup_scenarios, 1):
@@ -91,8 +94,8 @@ def test_strategic_matchups():
         print("-" * 45)
         print(f"📍 Scenario: {scenario['scenario']}")
 
-        off_play = offense_plays.get(scenario['offense'])
-        def_play = defense_plays.get(scenario['defense'])
+        off_play = offense_plays.get(scenario["offense"])
+        def_play = defense_plays.get(scenario["defense"])
 
         if not off_play or not def_play:
             print(f"❌ Missing play: {scenario['offense']} or {scenario['defense']}")
@@ -110,7 +113,7 @@ def test_strategic_matchups():
                 1: "🟢 MINOR ADV",
                 0: "⚪ NEUTRAL",
                 -1: "🔴 MINOR DIS",
-                -3: "🔴🔴 MAJOR DIS"
+                -3: "🔴🔴 MAJOR DIS",
             }
 
             run_adv = advantage_symbols.get(matchup.run_advantage.value, "❓")
@@ -134,17 +137,25 @@ def test_strategic_matchups():
         off_assignments = {}
         for assignment in off_play.assignments:
             assignment_type = assignment.assignment_type.value
-            off_assignments[assignment_type] = off_assignments.get(assignment_type, 0) + 1
+            off_assignments[assignment_type] = (
+                off_assignments.get(assignment_type, 0) + 1
+            )
 
-        print(f"   Offense: {', '.join([f'{k}({v})' for k, v in off_assignments.items()])}")
+        print(
+            f"   Offense: {', '.join([f'{k}({v})' for k, v in off_assignments.items()])}"
+        )
 
         # Defensive play analysis
         def_assignments = {}
         for assignment in def_play.assignments:
             assignment_type = assignment.assignment_type.value
-            def_assignments[assignment_type] = def_assignments.get(assignment_type, 0) + 1
+            def_assignments[assignment_type] = (
+                def_assignments.get(assignment_type, 0) + 1
+            )
 
-        print(f"   Defense: {', '.join([f'{k}({v})' for k, v in def_assignments.items()])}")
+        print(
+            f"   Defense: {', '.join([f'{k}({v})' for k, v in def_assignments.items()])}"
+        )
 
         # Pre-snap dynamics
         pre_snap_info = []

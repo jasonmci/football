@@ -13,8 +13,7 @@ from football2.football.yaml_loader import FormationLoader
 from football2.football.plays import PlayExecutor, PositionAssignmentCatalog
 
 
-sys.path.append('src')
-
+sys.path.append("src")
 
 
 def test_play_loading():
@@ -49,11 +48,15 @@ def test_play_loading():
 
             # Show motion
             if play.motion:
-                print(f"   Motion: {play.motion.player_position} ({play.motion.motion_type})")
+                print(
+                    f"   Motion: {play.motion.player_position} ({play.motion.motion_type})"
+                )
                 if play.defensive_reactions:
                     print(f"   Defensive Reactions: {len(play.defensive_reactions)}")
                     for reaction in play.defensive_reactions:
-                        print(f"     • {reaction.defensive_position}: {reaction.reaction_type.value}")
+                        print(
+                            f"     • {reaction.defensive_position}: {reaction.reaction_type.value}"
+                        )
 
             # Show assignments by category
             assignments_by_type = {}
@@ -90,7 +93,9 @@ def test_play_execution():
 
     try:
         # Load a formation
-        offensive_formations = formation_loader.load_formations_directory("data/formations/offense")
+        offensive_formations = formation_loader.load_formations_directory(
+            "data/formations/offense"
+        )
         shotgun_formation = offensive_formations.get("shotgun_11")
 
         if not shotgun_formation:
@@ -112,20 +117,22 @@ def test_play_execution():
             print(f"   Play: {result['play_name']}")
             print(f"   Base Formation: {result['base_formation']}")
 
-            if result['violations']:
+            if result["violations"]:
                 print(f"   ⚠️  Violations: {result['violations']}")
             else:
                 print("   ✅ Clean execution")
 
-            if result['motion_path']:
-                motion = result['motion_path']
+            if result["motion_path"]:
+                motion = result["motion_path"]
                 print(f"   🏃 Motion: {motion['player']} ({motion['type']})")
                 print(f"      Start: {motion['start']}, End: {motion['end']}")
 
-            if result['defensive_reactions']:
+            if result["defensive_reactions"]:
                 print("   🛡️  Defensive Reactions:")
-                for reaction in result['defensive_reactions']:
-                    print(f"      • {reaction['defensive_player']}: {reaction['reaction']}")
+                for reaction in result["defensive_reactions"]:
+                    print(
+                        f"      • {reaction['defensive_player']}: {reaction['reaction']}"
+                    )
 
         else:
             print(f"❌ Could not find play file: {motion_play_path}")
@@ -140,12 +147,18 @@ def show_assignment_catalog():
     print("=" * 45)
 
     print("\n🏃 OFFENSIVE POSITIONS:")
-    for position, assignments in PositionAssignmentCatalog.OFFENSIVE_ASSIGNMENTS.items():
+    for (
+        position,
+        assignments,
+    ) in PositionAssignmentCatalog.OFFENSIVE_ASSIGNMENTS.items():
         assignment_names = [a.value for a in assignments]
         print(f"   {position:3}: {', '.join(assignment_names)}")
 
     print("\n🛡️  DEFENSIVE POSITIONS:")
-    for position, assignments in PositionAssignmentCatalog.DEFENSIVE_ASSIGNMENTS.items():
+    for (
+        position,
+        assignments,
+    ) in PositionAssignmentCatalog.DEFENSIVE_ASSIGNMENTS.items():
         assignment_names = [a.value for a in assignments]
         print(f"   {position:3}: {', '.join(assignment_names)}")
 
@@ -175,7 +188,9 @@ def test_defensive_plays():
             assignment_counts = {}
             for assignment in play.assignments:
                 assignment_type = assignment.assignment_type.value
-                assignment_counts[assignment_type] = assignment_counts.get(assignment_type, 0) + 1
+                assignment_counts[assignment_type] = (
+                    assignment_counts.get(assignment_type, 0) + 1
+                )
 
             print("   Assignment Distribution:")
             for assignment_type, count in assignment_counts.items():

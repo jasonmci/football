@@ -16,7 +16,6 @@ if str(src_path) not in sys.path:
     sys.path.insert(0, str(src_path))
 
 
-
 def test_personnel_validation():
     """Test that personnel validation catches mismatches."""
 
@@ -93,7 +92,9 @@ def test_personnel_validation():
     for file_path, expected_personnel, description in test_files:
         try:
             formation = loader.load_formation(file_path)
-            print(f"   ✅ {formation.name}: {description} - Personnel: {formation.personnel}")
+            print(
+                f"   ✅ {formation.name}: {description} - Personnel: {formation.personnel}"
+            )
         except Exception as e:
             print(f"   ❌ {file_path}: {e}")
 

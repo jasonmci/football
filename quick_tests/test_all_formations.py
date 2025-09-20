@@ -16,7 +16,6 @@ if str(src_path) not in sys.path:
     sys.path.insert(0, str(src_path))
 
 
-
 def test_all_formations():
     """Test loading all formations from the formations directory."""
 
@@ -48,7 +47,9 @@ def test_all_formations():
                     pos_name = role.position.name
                     position_counts[pos_name] = position_counts.get(pos_name, 0) + 1
 
-                pos_summary = ", ".join([f"{count} {pos}" for pos, count in sorted(position_counts.items())])
+                pos_summary = ", ".join(
+                    [f"{count} {pos}" for pos, count in sorted(position_counts.items())]
+                )
                 print(f"      Breakdown: {pos_summary}")
                 print()
 
@@ -61,6 +62,7 @@ def test_all_formations():
     except Exception as e:
         print(f"❌ Error loading formations: {e}")
         import traceback
+
         traceback.print_exc()
         return None
 
@@ -71,9 +73,9 @@ def test_formation_details(formations_dict):
     if not formations_dict:
         return
 
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("DETAILED FORMATION BREAKDOWN")
-    print("="*60)
+    print("=" * 60)
 
     # Let's look at one offensive and one defensive formation in detail
     test_formations = []
@@ -95,9 +97,15 @@ def test_formation_details(formations_dict):
         for role_name, role in formation.roles.items():
             coord_str = f" at {role.coordinate}" if role.coordinate else ""
             # Fix: alignment is already a string, not an enum
-            align_str = f" ({role.alignment})" if hasattr(role, 'alignment') and role.alignment else ""
+            align_str = (
+                f" ({role.alignment})"
+                if hasattr(role, "alignment") and role.alignment
+                else ""
+            )
 
-            print(f"  {role_name:8} | {role.position.name:2} | {role.lane.value:6}/{role.depth:9}{align_str}{coord_str}")
+            print(
+                f"  {role_name:8} | {role.position.name:2} | {role.lane.value:6}/{role.depth:9}{align_str}{coord_str}"
+            )
 
 
 if __name__ == "__main__":
