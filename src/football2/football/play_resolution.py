@@ -1,10 +1,3 @@
-"""
-Football Play Resolution Engine
-
-Resolves play execution using dice rolls, formation advantages, and configurable outcomes.
-Integrates with the existing dice engine to provide realistic football gameplay.
-"""
-
 import random
 from dataclasses import dataclass, field
 from enum import Enum
@@ -13,8 +6,7 @@ import sys
 import os
 
 # Add our football system
-sys.path.append(os.path.join(os.path.dirname(__file__), "..", ".."))
-from football.dice_engine import roll_core
+from football2.dice_engine import roll_core
 from football2.football.plays import FootballPlay
 from football2.football.matchup_analyzer import (
     FormationMatchupAnalyzer,
@@ -25,6 +17,16 @@ from football2.football.play_analyzer import (
     PlayAnalyzer,
     PlayAnalysis,
 )
+
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", ".."))
+
+"""
+Football Play Resolution Engine
+
+Resolves play execution using dice rolls, formation advantages,
+and configurable outcomes.
+Integrates with the existing dice engine to provide realistic football gameplay.
+"""
 
 
 class PlayOutcome(Enum):
@@ -330,46 +332,59 @@ class PlayResolutionEngine:
         play_analysis: PlayAnalysis,
     ) -> Tuple[int, int]:
         """Calculate advantage/disadvantage dice for the roll."""
+        advantage, disadvantage = self._formation_dice_advantage(matchup, play_type)
+        adv2, dis2 = self._play_specific_dice_advantage(play_analysis)
+        advantage += adv2
+        disadvantage += dis2
+        return advantage, disadvantage
+
+    def _formation_dice_advantage(
+        self, matchup: MatchupResult, play_type: PlayType
+    ) -> Tuple[int, int]:
+        """Calculate dice advantage/disadvantage from formation matchup."""
         advantage = 0
         disadvantage = 0
-
-        # Formation-based advantage
-        if play_type == PlayType.RUN:
-            adv_val = matchup.run_advantage.value
-        else:
-            adv_val = matchup.pass_advantage.value
+        adv_val = (
+            matchup.run_advantage.value
+            if play_type == PlayType.RUN
+            else matchup.pass_advantage.value
+        )
 
         if adv_val > 0:
             advantage += 1
         elif adv_val < 0:
             disadvantage += 1
 
-        # Major advantages get extra dice
         if abs(adv_val) >= 3:
             if adv_val > 0:
                 advantage += 1
             else:
                 disadvantage += 1
+        return advantage, disadvantage
 
-        # NEW: Play-specific advantages affect dice
+    def _play_specific_dice_advantage(
+        self, play_analysis: PlayAnalysis
+    ) -> Tuple[int, int]:
+        """Calculate dice advantage/disadvantage from play-specific analysis."""
+        advantage = 0
+        disadvantage = 0
         net_impact = play_analysis.net_impact
-        if net_impact >= 3:
-            advantage += 1
-        elif net_impact >= 6:
+        if net_impact >= 6:
             advantage += 2  # Major play advantage
-        elif net_impact <= -3:
-            disadvantage += 1
+        elif net_impact >= 3:
+            advantage += 1
         elif net_impact <= -6:
             disadvantage += 2  # Major play disadvantage
+        elif net_impact <= -3:
+            disadvantage += 1
 
-        # Specific high-impact factors get bonus dice
         for factor in play_analysis.advantages:
-            if factor.impact >= 3:  # Major advantages like free rusher protection
+            if factor.impact >= 3:
                 advantage += 1
-                break  # Only one bonus die per category
+                break
 
         for factor in play_analysis.disadvantages:
-            if factor.impact <= -3:  # Major disadvantages like free rusher
+            if factor.impact <= -3:
                 disadvantage += 1
                 break
 
@@ -406,11 +421,23 @@ class PlayResolutionEngine:
 
     def _get_situation_key(self, down: int, distance: int, field_pos: int) -> str:
         """Convert game situation to modifier key."""
+        field_key = self._get_field_position_key(field_pos)
+        if field_key:
+            return field_key
+        down_distance_key = self._get_down_distance_key(down, distance)
+        return down_distance_key
+
+    def _get_field_position_key(self, field_pos: int) -> Optional[str]:
+        """Determine if field position triggers a special key."""
         if field_pos <= 5:
             return "goal_line"
         elif field_pos <= 20:
             return "red_zone"
-        elif down == 4:
+        return None
+
+    def _get_down_distance_key(self, down: int, distance: int) -> str:
+        """Determine down and distance key."""
+        if down == 4:
             return "4th_down"
         elif down == 1:
             return "1st_and_10"
@@ -443,7 +470,9 @@ class PlayResolutionEngine:
         """Create a narrative description of the play result."""
 
         base_descriptions = {
-            PlayOutcome.EXPLOSIVE_SUCCESS: f"🚀 EXPLOSIVE PLAY! {offense.label} breaks through for {yards} yards!",
+            PlayOutcome.EXPLOSIVE_SUCCESS: (
+                f"🚀 EXPLOSIVE PLAY! {offense.label} breaks through for {yards} yards!"
+            ),
             PlayOutcome.BIG_SUCCESS: f"💪 Big gain! {offense.label} powers for {yards} yards.",
             PlayOutcome.SUCCESS: f"✅ Successful execution. {offense.label} gains {yards} yards.",
             PlayOutcome.MODERATE_GAIN: f"➡️ Modest gain. {offense.label} picks up {yards} yards.",

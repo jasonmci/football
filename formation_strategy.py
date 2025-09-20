@@ -5,13 +5,12 @@ Formation library summary - shows the strategic diversity of our formations.
 
 import sys
 from pathlib import Path
+from football2.football.yaml_loader import load_all_formations
 
 # Add the src directory to the path so we can import football2
 src_path = Path(__file__).parent / "src"
 if str(src_path) not in sys.path:
     sys.path.insert(0, str(src_path))
-
-from football2.football.yaml_loader import load_all_formations
 
 
 def analyze_formation_strategy():
@@ -23,11 +22,18 @@ def analyze_formation_strategy():
     print("🏈 FOOTBALL FORMATION STRATEGY ANALYSIS")
     print("=" * 50)
 
-    # Offensive Analysis
+    offense = all_formations.get("offense", {})
+    defense = all_formations.get("defense", {})
+
+    analyze_offensive_formations(offense)
+    analyze_defensive_formations(defense)
+    print_matchup_examples()
+    print_formation_summary(offense, defense)
+
+
+def analyze_offensive_formations(offense):
     print("\n📈 OFFENSIVE FORMATIONS")
     print("-" * 25)
-
-    offense = all_formations.get("offense", {})
     for name, formation in offense.items():
         # Count skill positions
         position_counts = {}
@@ -49,13 +55,15 @@ def analyze_formation_strategy():
         else:
             strategy = "🎯 BALANCED"
 
-        print(f"  {formation.name:15} | {wr_count}WR {rb_count}RB {te_count}TE | {strategy}")
+        print(
+            f"  {formation.name:15} | {wr_count}WR {rb_count}RB {te_count}TE | "
+            f"{strategy}"
+        )
 
-    # Defensive Analysis
+
+def analyze_defensive_formations(defense):
     print("\n🛡️  DEFENSIVE FORMATIONS")
     print("-" * 25)
-
-    defense = all_formations.get("defense", {})
     for name, formation in defense.items():
         # Count defenders
         position_counts = {}
@@ -66,8 +74,8 @@ def analyze_formation_strategy():
         dl_count = position_counts.get("DL", 0)
         lb_count = position_counts.get("LB", 0)
         db_count = (position_counts.get("CB", 0) +
-                   position_counts.get("S", 0) +
-                   position_counts.get("NB", 0))
+                    position_counts.get("S", 0) +
+                    position_counts.get("NB", 0))
 
         # Determine strategy
         if dl_count >= 6:
@@ -81,9 +89,13 @@ def analyze_formation_strategy():
         else:
             strategy = "⚖️  BALANCED"
 
-        print(f"  {formation.name:15} | {dl_count}DL {lb_count}LB {db_count}DB | {strategy}")
+        print(
+            f"  {formation.name:15} | {dl_count}DL {lb_count}LB {db_count}DB | "
+            f"{strategy}"
+        )
 
-    # Matchup Examples
+
+def print_matchup_examples():
     print("\n🎮 STRATEGIC MATCHUPS")
     print("-" * 20)
     print("Empty Backfield (5WR) vs Dime Defense (6DB)     - Air Raid!")
@@ -91,6 +103,8 @@ def analyze_formation_strategy():
     print("Shotgun 11 (3WR,1TE) vs 3-4 Defense (4LB)      - Balanced Attack!")
     print("Spread 10 (4WR) vs Nickel (5DB)                - Modern Passing!")
 
+
+def print_formation_summary(offense, defense):
     print("\n📊 FORMATION SUMMARY")
     print("-" * 20)
     print(f"Total Formations: {len(offense) + len(defense)}")

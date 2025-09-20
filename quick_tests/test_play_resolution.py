@@ -124,8 +124,10 @@ def test_play_resolution():
             dis = result.details["disadvantage"]
             if adv or dis:
                 dice_info = []
-                if adv: dice_info.append(f"advantage +{adv}")
-                if dis: dice_info.append(f"disadvantage -{dis}")
+                if adv:
+                    dice_info.append(f"advantage +{adv}")
+                if dis:
+                    dice_info.append(f"disadvantage -{dis}")
                 print(f"     Dice: {', '.join(dice_info)}")
 
 

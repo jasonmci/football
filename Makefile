@@ -19,7 +19,7 @@ lint:  ## Run linting checks
 	python -m flake8 src/ tests/
 
 format:  ## Format code with black
-	python -m black src/ tests/
+	python -m black src/
 
 format-check:  ## Check if code is formatted correctly
 	python -m black --check src/ tests/

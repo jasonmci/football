@@ -1,354 +1,200 @@
-import os
-import tempfile
-from unittest.mock import patch, MagicMock
-
-import pytest
-
-from src.football.models import DefFormation, OffFormationFull
-from src.football.yaml_loader import (
-    ALLOWED_COMBOS,
-    load_def_formations,
-    load_off_formations,
-)
+# create a first yaml loader test
+from football2.football.yaml_loader import FormationLoader
 
 
-class TestLoadOffFormations:
-    """Test the load_off_formations function."""
-
-    def test_valid_offensive_formation(self):
-        """Test loading a valid offensive formation."""
-        yaml_content = """
-formations:
-  - key: "i_formation"
-    placements:
-      - pos: "QB"
-        lane: "middle"
-        depth: "backfield"
-        count: 1
-      - pos: "RB"
-        lane: "middle"
-        depth: "backfield"
-        count: 1
-      - pos: "FB"
-        lane: "middle"
-        depth: "backfield"
-        count: 1
-      - pos: "WR"
-        lane: "left"
-        depth: "wide"
-        count: 1
-      - pos: "WR"
-        lane: "right"
-        depth: "wide"
-        count: 1
-      - pos: "TE"
-        lane: "right"
-        depth: "line"
-        count: 1
-      - pos: "OL"
-        lane: "left"
-        depth: "line"
-        count: 1
-      - pos: "OL"
-        lane: "middle"
-        depth: "line"
-        count: 3
-      - pos: "OL"
-        lane: "right"
-        depth: "line"
-        count: 1
-"""
-        with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
-            f.write(yaml_content)
-            f.flush()
-
-            result = load_off_formations(f.name)
-
-            assert "i_formation" in result
-            assert isinstance(result["i_formation"], OffFormationFull)
-            assert len(result["i_formation"].placements) == 9
-
-        os.unlink(f.name)
-
-    def test_unknown_position(self):
-        """Test error for unknown position."""
-        yaml_content = """
-formations:
-  - key: "bad_formation"
-    placements:
-      - pos: "INVALID_POS"
-        lane: "middle"
-        depth: "backfield"
-        count: 1
-"""
-        with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
-            f.write(yaml_content)
-            f.flush()
-
-            with pytest.raises(ValueError, match="unknown pos 'INVALID_POS'"):
-                load_off_formations(f.name)
-
-        os.unlink(f.name)
-
-    def test_illegal_alignment(self):
-        """Test error for illegal position alignment."""
-        yaml_content = """
-formations:
-  - key: "bad_formation"
-    placements:
-      - pos: "TE"
-        lane: "middle"
-        depth: "wide"
-        count: 1
-"""
-        with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
-            f.write(yaml_content)
-            f.flush()
-
-            with pytest.raises(
-                ValueError, match="illegal alignment for TE: middle/wide"
-            ):
-                load_off_formations(f.name)
-
-        os.unlink(f.name)
-
-    def test_wrong_player_count(self):
-        """Test error when total players != 11."""
-        yaml_content = """
-formations:
-  - key: "bad_formation"
-    placements:
-      - pos: "QB"
-        lane: "middle"
-        depth: "backfield"
-        count: 1
-      - pos: "OL"
-        lane: "middle"
-        depth: "line"
-        count: 5
-"""
-        with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
-            f.write(yaml_content)
-            f.flush()
-
-            with pytest.raises(
-                ValueError, match="offensive formation totals 6, expected 11"
-            ):
-                load_off_formations(f.name)
-
-        os.unlink(f.name)
-
-    @patch.object(OffFormationFull, "validate")
-    def test_formation_validation_error(self, mock_validate: MagicMock):
-        """Test error when formation validation fails."""
-        mock_validate.return_value = ["Some validation error"]
-
-        yaml_content = """
-formations:
-  - key: "bad_formation"
-    placements:
-      - pos: "QB"
-        lane: "middle"
-        depth: "backfield"
-        count: 1
-      - pos: "OL"
-        lane: "left"
-        depth: "line"
-        count: 5
-      - pos: "OL"
-        lane: "middle"
-        depth: "line"
-        count: 3
-      - pos: "OL"
-        lane: "right"
-        depth: "line"
-        count: 2
-"""
-        with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
-            f.write(yaml_content)
-            f.flush()
-
-            with pytest.raises(ValueError, match="validation errors"):
-                load_off_formations(f.name)
-
-        os.unlink(f.name)
+def test_yaml_loader():
+    """Test the YAML loader for formations."""
+    loader = FormationLoader()
+    formation = loader.load_formation("data/formations/offense/singleback_11.yaml")
+    assert formation.name == "singleback_11"
+    assert len(formation.roles) == 11
+    print("YAML loader test passed.")
 
 
-class TestLoadDefFormations:
-    """Test the load_def_formations function."""
+def test_load_all_formations():
+    """Test loading all formations from the directory."""
+    from football2.football.yaml_loader import load_all_formations
 
-    def test_valid_defensive_formation(self):
-        """Test loading a valid defensive formation."""
-        yaml_content = """
-formations:
-  - key: "4_3_base"
-    counts:
-      - lane: "left"
-        depth: "line"
-        count: 1
-      - lane: "middle"
-        depth: "line"
-        count: 2
-      - lane: "right"
-        depth: "line"
-        count: 1
-      - lane: "left"
-        depth: "box"
-        count: 1
-      - lane: "middle"
-        depth: "box"
-        count: 1
-      - lane: "right"
-        depth: "box"
-        count: 1
-      - lane: "left"
-        depth: "deep"
-        count: 1
-      - lane: "middle"
-        depth: "deep"
-        count: 1
-      - lane: "right"
-        depth: "deep"
-        count: 2
-"""
-        with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
-            f.write(yaml_content)
-            f.flush()
-
-            result = load_def_formations(f.name)
-
-            assert "4_3_base" in result
-            assert isinstance(result["4_3_base"], DefFormation)
-
-            # Check some specific counts
-            formation = result["4_3_base"]
-            assert formation.counts[("middle", "line")] == 2
-            assert formation.counts[("right", "deep")] == 2
-
-        os.unlink(f.name)
-
-    def test_illegal_defensive_depth(self):
-        """Test error for illegal defensive depth."""
-        yaml_content = """
-formations:
-  - key: "bad_formation"
-    counts:
-      - lane: "middle"
-        depth: "invalid_depth"
-        count: 1
-"""
-        with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
-            f.write(yaml_content)
-            f.flush()
-
-            with pytest.raises(
-                ValueError, match="illegal defensive depth 'invalid_depth'"
-            ):
-                load_def_formations(f.name)
-
-        os.unlink(f.name)
-
-    def test_wrong_defensive_player_count(self):
-        """Test error when total defensive players != 11."""
-        yaml_content = """
-formations:
-  - key: "bad_formation"
-    counts:
-      - lane: "middle"
-        depth: "line"
-        count: 5
-"""
-        with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
-            f.write(yaml_content)
-            f.flush()
-
-            with pytest.raises(
-                ValueError, match="defensive formation totals 5, expected 11"
-            ):
-                load_def_formations(f.name)
-
-        os.unlink(f.name)
-
-    def test_accumulating_counts(self):
-        """Test that multiple entries for same lane/depth accumulate."""
-        yaml_content = """
-formations:
-  - key: "accumulate_test"
-    counts:
-      - lane: "middle"
-        depth: "line"
-        count: 2
-      - lane: "middle"
-        depth: "line"
-        count: 1
-      - lane: "left"
-        depth: "box"
-        count: 3
-      - lane: "right"
-        depth: "box"
-        count: 3
-      - lane: "middle"
-        depth: "deep"
-        count: 2
-"""
-        with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
-            f.write(yaml_content)
-            f.flush()
-
-            result = load_def_formations(f.name)
-
-            formation = result["accumulate_test"]
-            assert formation.counts[("middle", "line")] == 3  # 2 + 1
-            assert formation.counts[("left", "box")] == 3
-            assert formation.counts[("right", "box")] == 3
-            assert formation.counts[("middle", "deep")] == 2
-
-        os.unlink(f.name)
-
-    def test_empty_formations_file(self):
-        """Test loading empty formations file."""
-        yaml_content = """
-formations: []
-"""
-        with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
-            f.write(yaml_content)
-            f.flush()
-
-            result = load_def_formations(f.name)
-            assert result == {}
-
-        os.unlink(f.name)
+    all_formations = load_all_formations("data/formations")
+    assert "offense" in all_formations
+    assert "defense" in all_formations
+    assert len(all_formations["offense"]) > 0
+    assert len(all_formations["defense"]) > 0
+    print("Load all formations test passed.")
 
 
-class TestAllowedCombos:
-    """Test the ALLOWED_COMBOS constant."""
+def test_create_formation_from_data():
+    """Test creating a formation from data."""
+    loader = FormationLoader()
+    data = {
+        "name": "test_formation",
+        "roles": {
+            "QB": {"pos": "QB", "lane": "middle", "depth": "shotgun"},
+            "RB": {"pos": "RB", "lane": "right", "depth": "backfield"},
+            "TE": {"pos": "TE", "lane": "right", "depth": "line", "align": "tight"},
+            "WR1": {"pos": "WR", "lane": "left", "depth": "line"},
+            "WR2": {"pos": "WR", "lane": "right", "depth": "line"},
+            "WR3": {"pos": "WR", "lane": "right", "depth": "line"},
+            "LT": {"pos": "LT", "lane": "left", "depth": "line", "align": "tight"},
+            "LG": {"pos": "LG", "lane": "middle", "depth": "line", "align": "tight"},
+            "C": {"pos": "C", "lane": "middle", "depth": "line", "align": "tight"},
+            "RG": {"pos": "RG", "lane": "middle", "depth": "line", "align": "tight"},
+            "RT": {"pos": "RT", "lane": "right", "depth": "line", "align": "tight"},
+        },
+        "allowed_personnel": ["11"],
+    }
+    formation = loader._create_formation_from_data(data)
+    assert formation.name == "test_formation"
+    assert len(formation.roles) == 11
+    assert formation.roles["QB"].position.name == "QB"
 
-    def test_allowed_combos_structure(self):
-        """Test that ALLOWED_COMBOS has expected structure."""
-        expected_positions = {"QB", "RB", "FB", "WR", "TE", "OL"}
-        assert set(ALLOWED_COMBOS.keys()) == expected_positions
 
-        # Test QB can only be in middle/backfield
-        assert ALLOWED_COMBOS["QB"] == {("middle", "backfield")}
+def test_create_player_role():
+    """Test creating a player role from YAML role definition."""
+    from football2.core.game_board import Lane, Coordinate
+    from football2.football.positions import ALL_POSITIONS
 
-        # Test WR can only be on wide receivers positions
-        assert ALLOWED_COMBOS["WR"] == {("left", "wide"), ("right", "wide")}
+    loader = FormationLoader()
 
-        # Test TE flexibility
-        expected_te = {
-            ("left", "line"),
-            ("right", "line"),
-            ("left", "wide"),
-            ("right", "wide"),
-        }
-        assert ALLOWED_COMBOS["TE"] == expected_te
+    # Test basic role creation
+    role_info = {"pos": "QB", "lane": "middle", "depth": "shotgun"}
+    role = loader._create_player_role("QB1", role_info)
 
-    def test_all_positions_have_valid_lanes(self):
-        """Test that all positions have valid lane assignments."""
-        valid_lanes = {"left", "middle", "right"}
-        valid_off_depths = {"line", "backfield", "wide"}
+    assert role.name == "QB1"
+    assert role.position == ALL_POSITIONS["QB"]
+    assert role.lane == Lane.MIDDLE
+    assert role.depth == "shotgun"
+    assert role.alignment is None
+    assert role.coordinate is None
 
-        for pos, combos in ALLOWED_COMBOS.items():
-            for lane, depth in combos:
-                assert lane in valid_lanes, f"{pos} has invalid lane: {lane}"
-                assert depth in valid_off_depths, f"{pos} has invalid depth: {depth}"
+    # Test role with alignment
+    role_info_with_align = {
+        "pos": "TE",
+        "lane": "right",
+        "depth": "line",
+        "align": "tight",
+    }
+    role = loader._create_player_role("TE1", role_info_with_align)
+
+    assert role.name == "TE1"
+    assert role.position == ALL_POSITIONS["TE"]
+    assert role.lane == Lane.RIGHT
+    assert role.depth == "line"
+    assert role.alignment == "tight"
+    assert role.coordinate is None
+
+    # Test role with placement info
+    role_info_basic = {"pos": "WR", "lane": "left", "depth": "line"}
+    placement_info = {"x": 10, "y": 5}
+    role = loader._create_player_role("WR1", role_info_basic, placement_info)
+
+    assert role.name == "WR1"
+    assert role.position == ALL_POSITIONS["WR"]
+    assert role.lane == Lane.LEFT
+    assert role.depth == "line"
+    assert role.coordinate == Coordinate(10, 5)
+
+    print("Create player role test passed.")
+
+
+def test_create_player_role_missing_position():
+    """Test error for missing position."""
+    loader = FormationLoader()
+    role_info = {"lane": "middle", "depth": "shotgun"}
+    try:
+        loader._create_player_role("QB1", role_info)
+        assert False, "Should have raised ValueError for missing position"
+    except ValueError as e:
+        assert "Unknown or missing position" in str(e)
+
+
+def test_create_player_role_invalid_position():
+    """Test error for invalid position."""
+    loader = FormationLoader()
+    role_info = {"pos": "INVALID", "lane": "middle", "depth": "shotgun"}
+    try:
+        loader._create_player_role("QB1", role_info)
+        assert False, "Should have raised ValueError for invalid position"
+    except ValueError as e:
+        assert "Unknown or missing position" in str(e)
+
+
+def test_create_player_role_invalid_lane():
+    """Test error for invalid lane."""
+    loader = FormationLoader()
+    role_info = {"pos": "QB", "lane": "invalid_lane", "depth": "shotgun"}
+    try:
+        loader._create_player_role("QB1", role_info)
+        assert False, "Should have raised ValueError for invalid lane"
+    except ValueError as e:
+        assert "Invalid lane" in str(e)
+
+
+def test_create_player_role_missing_depth():
+    """Test error for missing depth."""
+    loader = FormationLoader()
+    role_info = {"pos": "QB", "lane": "middle"}
+    try:
+        loader._create_player_role("QB1", role_info)
+        assert False, "Should have raised ValueError for missing depth"
+    except ValueError as e:
+        assert "Missing depth specification" in str(e)
+
+
+def test_create_player_role_invalid_depth():
+    """Test error for invalid depth."""
+    loader = FormationLoader()
+    role_info = {"pos": "QB", "lane": "middle", "depth": "invalid_depth"}
+    try:
+        loader._create_player_role("QB1", role_info)
+        assert False, "Should have raised ValueError for invalid depth"
+    except ValueError as e:
+        assert "Invalid depth" in str(e)
+
+
+def test_create_player_role_invalid_alignment():
+    """Test error for invalid alignment."""
+    loader = FormationLoader()
+    role_info = {
+        "pos": "TE",
+        "lane": "right",
+        "depth": "line",
+        "align": "invalid_align",
+    }
+    try:
+        loader._create_player_role("TE1", role_info)
+        assert False, "Should have raised ValueError for invalid alignment"
+    except ValueError as e:
+        assert "Invalid alignment" in str(e)
+
+
+def test_create_player_role_invalid_coordinate():
+    """Test error for invalid coordinate (outside field bounds)."""
+    loader = FormationLoader()
+    role_info = {"pos": "WR", "lane": "left", "depth": "line"}
+    placement_info = {"x": 1000, "y": 1000}  # Way outside field bounds
+    try:
+        loader._create_player_role("WR1", role_info, placement_info)
+        assert False, "Should have raised ValueError for invalid coordinate"
+    except ValueError as e:
+        assert "outside field bounds" in str(e)
+
+
+def test_load_offensive_formations():
+    """Test loading offensive formations from directory."""
+    from football2.football.yaml_loader import load_offensive_formations
+
+    formations = load_offensive_formations("data/formations/offense")
+    assert len(formations) > 0
+    assert "spread_10" in formations
+    print("Load offensive formations test passed.")
+
+
+def test_load_defensive_formations():
+    """Test loading defensive formations from directory."""
+    from football2.football.yaml_loader import load_defensive_formations
+
+    formations = load_defensive_formations("data/formations/defense")
+    assert len(formations) > 0
+    assert "bear46" in formations
+    print("Load defensive formations test passed.")

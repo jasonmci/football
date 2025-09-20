@@ -156,8 +156,11 @@ class PositionConstraints:
                     distance = role1.coordinate.distance_to(role2.coordinate)
                     if not (min_dist <= distance <= max_dist):
                         violations.append(
-                            f"Distance between {role1.name} and {role2.name} "
-                            f"({distance:.1f}) violates constraint ({min_dist}-{max_dist})"
+                            (
+                                f"Distance between {role1.name} and {role2.name} "
+                                f"({distance:.1f}) violates constraint "
+                                f"({min_dist}-{max_dist})"
+                            )
                         )
 
         return violations

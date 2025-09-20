@@ -6,11 +6,12 @@ Demonstrates how the system now uses lane/depth/alignment instead of x/y coordin
 """
 
 import sys
-sys.path.append('src')
 
 from pathlib import Path
 from football2.football.play_loader import PlayLoader
 from football2.football.yaml_loader import FormationLoader
+
+sys.path.append('src')
 
 
 def test_motion_abstraction():

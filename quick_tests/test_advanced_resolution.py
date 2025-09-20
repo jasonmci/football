@@ -6,10 +6,8 @@ This demonstrates how pulling guards, blitzes, and other tactical elements
 affect play outcomes in realistic ways.
 """
 
-print("🚀 Starting advanced resolution test...")
 
 import sys
-sys.path.append('src')
 
 from pathlib import Path
 from football2.football.play_loader import PlayLoader
@@ -17,6 +15,8 @@ from football2.football.yaml_loader import FormationLoader
 from football2.football.play_resolution import PlayResolutionEngine
 from football2.football.play_analyzer import PlayAnalyzer
 
+sys.path.append('src')
+print("🚀 Starting advanced resolution test...")
 print("✅ All imports successful")
 
 

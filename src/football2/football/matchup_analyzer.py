@@ -298,11 +298,17 @@ class FormationMatchupAnalyzer:
 
         if run_diff >= 1.0:
             factors.append(
-                f"Offense has strong run blocking advantage ({offense.run_blocking} vs {defense.run_defense})"
+                (
+                    f"Offense has strong run blocking advantage "
+                    f"({offense.run_blocking} vs {defense.run_defense})"
+                )
             )
         elif run_diff <= -1.0:
             factors.append(
-                f"Defense dominates run game ({defense.run_defense} vs {offense.run_blocking})"
+                (
+                    f"Defense dominates run game "
+                    f"({defense.run_defense} vs {offense.run_blocking})"
+                )
             )
 
         if pass_diff >= 1.0:

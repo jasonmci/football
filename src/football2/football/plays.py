@@ -308,29 +308,38 @@ class FootballPlay:
 
         # Apply pre-snap shifts in order
         for shift in sorted(self.pre_snap_shifts, key=lambda x: x.timing):
-            if shift.target_lane or shift.target_depth or shift.target_alignment:
-                player_mods = {}
-                if shift.target_lane:
-                    player_mods["lane"] = shift.target_lane
-                if shift.target_depth:
-                    player_mods["depth"] = shift.target_depth
-                if shift.target_alignment:
-                    player_mods["alignment"] = shift.target_alignment
+            player_mods = self._build_player_mods(
+                lane=shift.target_lane,
+                depth=shift.target_depth,
+                alignment=shift.target_alignment,
+            )
+            if player_mods:
                 modifications[shift.player_position] = player_mods
 
         # Apply motion end position if applicable
         if self.motion:
-            motion_mods = {}
-            if self.motion.end_lane:
-                motion_mods["lane"] = self.motion.end_lane
-            if self.motion.end_depth:
-                motion_mods["depth"] = self.motion.end_depth
-            if self.motion.end_alignment:
-                motion_mods["alignment"] = self.motion.end_alignment
+            motion_mods = self._build_player_mods(
+                lane=self.motion.end_lane,
+                depth=self.motion.end_depth,
+                alignment=self.motion.end_alignment,
+            )
             if motion_mods:
                 modifications[self.motion.player_position] = motion_mods
 
         return modifications
+
+    def _build_player_mods(
+        self, lane: Optional[str], depth: Optional[str], alignment: Optional[str]
+    ) -> Dict[str, str]:
+        """Helper to build player modifications dictionary."""
+        mods = {}
+        if lane:
+            mods["lane"] = lane
+        if depth:
+            mods["depth"] = depth
+        if alignment:
+            mods["alignment"] = alignment
+        return mods
 
     def requires_defensive_formation(self) -> bool:
         """Check if this play requires a specific defensive formation."""

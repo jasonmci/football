@@ -174,12 +174,6 @@ class PlayAnalyzer:
         key_matchups = []
 
         # Get assignments
-        off_assignments = {
-            assign.player_position: assign for assign in offense.assignments
-        }
-        def_assignments = {
-            assign.player_position: assign for assign in defense.assignments
-        }
 
         # Count rushers vs blockers
         rushers = self._count_rushers(defense)
@@ -224,7 +218,9 @@ class PlayAnalyzer:
                     PlayMatchupFactor(
                         factor_type=TacticalAdvantage.PULLING_GUARD.value,
                         impact=impact,
-                        description=f"{', '.join(pulling_guards)} pulling to create extra gap",
+                        description=(
+                            f"{', '.join(pulling_guards)} pulling to create extra gap"
+                        ),
                         details={"pulling_players": pulling_guards},
                     )
                 )
@@ -236,7 +232,9 @@ class PlayAnalyzer:
                 PlayMatchupFactor(
                     factor_type=TacticalDisadvantage.STUNTS_VS_PROTECTION.value,
                     impact=-1,  # Reduced from -2
-                    description=f"Defensive stunts ({', '.join(stunts)}) vs basic protection",
+                    description=(
+                        f"Defensive stunts ({', '.join(stunts)}) vs basic protection"
+                    ),
                     details={"stunts": stunts},
                 )
             )
@@ -248,7 +246,9 @@ class PlayAnalyzer:
                 PlayMatchupFactor(
                     factor_type=TacticalAdvantage.TRAP_BLOCK.value,
                     impact=1,  # Reduced from 2
-                    description=f"Trap block by {', '.join(trap_blocks)} creates misdirection",
+                    description=(
+                        f"Trap block by {', '.join(trap_blocks)} creates misdirection"
+                    ),
                     details={"trap_blockers": trap_blocks},
                 )
             )
@@ -262,7 +262,10 @@ class PlayAnalyzer:
                     PlayMatchupFactor(
                         factor_type=TacticalAdvantage.DOUBLE_TEAM.value,
                         impact=impact,
-                        description=f"Double team blocks ({len(double_teams)}) create push at point of attack",
+                        description=(
+                            f"Double team blocks ({len(double_teams)}) "
+                            "create push at point of attack"
+                        ),
                         details={"double_teams": double_teams},
                     )
                 )
@@ -274,7 +277,9 @@ class PlayAnalyzer:
                 PlayMatchupFactor(
                     factor_type=TacticalAdvantage.CRACK_BLOCK.value,
                     impact=1,
-                    description=f"Crack block by {', '.join(crack_blocks)} on linebacker",
+                    description=(
+                        f"Crack block by {', '.join(crack_blocks)} on linebacker"
+                    ),
                     details={"crack_blockers": crack_blocks},
                 )
             )
@@ -299,10 +304,6 @@ class PlayAnalyzer:
         if offense.play_type != "pass":
             return {"advantages": [], "disadvantages": [], "key_matchups": []}
 
-        # Count receivers vs coverage
-        receivers = self._count_receivers(offense)
-        coverage_players = self._count_coverage_players(defense)
-
         # Analyze blitzes vs coverage
         blitzers = self._count_blitzers(defense)
         if blitzers > 0:
@@ -312,7 +313,9 @@ class PlayAnalyzer:
                     PlayMatchupFactor(
                         factor_type=TacticalAdvantage.OVERLOAD_BLITZ.value,
                         impact=2,
-                        description=f"Heavy blitz ({blitzers} rushers) creates coverage holes",
+                        description=(
+                            f"Heavy blitz ({blitzers} rushers) creates coverage holes"
+                        ),
                         details={"blitzer_count": blitzers},
                     )
                 )
@@ -348,7 +351,6 @@ class PlayAnalyzer:
 
         # Analyze gap assignments vs run fits
         run_direction = self._get_run_direction(offense)
-        run_fits = self._get_run_fits(defense)
 
         # Power concept analysis
         if self._is_power_concept(offense):
@@ -357,7 +359,9 @@ class PlayAnalyzer:
                 PlayMatchupFactor(
                     factor_type=TacticalAdvantage.POWER_CONCEPT.value,
                     impact=1,  # Reduced from 2
-                    description="Power running concept with lead blocker and double teams",
+                    description=(
+                        "Power running concept with lead blocker and double teams"
+                    ),
                     details={"concept": "power"},
                 )
             )
@@ -417,7 +421,10 @@ class PlayAnalyzer:
                     PlayMatchupFactor(
                         factor_type=TacticalAdvantage.MOTION_CONFUSION.value,
                         impact=1,
-                        description=f"{motion_type.title()} motion forces defensive adjustments",
+                        description=(
+                            f"{motion_type.title()} motion forces defensive "
+                            "adjustments"
+                        ),
                         details={"motion_type": motion_type},
                     )
                 )
@@ -430,7 +437,9 @@ class PlayAnalyzer:
                     PlayMatchupFactor(
                         factor_type=TacticalAdvantage.SHIFT_ADVANTAGE.value,
                         impact=1,
-                        description=f"Multiple pre-snap shifts ({shift_count}) create confusion",
+                        description=(
+                            f"Multiple pre-snap shifts ({shift_count}) create confusion"
+                        ),
                         details={"shift_count": shift_count},
                     )
                 )
@@ -595,7 +604,9 @@ class PlayAnalyzer:
                 PlayMatchupFactor(
                     factor_type=TacticalAdvantage.MISMATCH.value,
                     impact=1,
-                    description="Running back matched up against linebacker in coverage",
+                    description=(
+                        "Running back matched up against linebacker in coverage"
+                    ),
                     details={"matchup_type": "speed_mismatch"},
                 )
             )

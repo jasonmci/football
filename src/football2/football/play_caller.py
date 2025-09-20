@@ -201,9 +201,7 @@ class IntelligentPlayCaller:
         """
         preferences = self._situation_preferences.get(context.situation, {})
         preferred_plays = preferences.get("play_types", [])
-        risk_tolerance = preferences.get("risk_tolerance", "MEDIUM")
 
-        # Get formation strengths
         formation_profile = self.analyzer.get_formation_summary(
             formation, is_offense=True
         )
@@ -213,57 +211,121 @@ class IntelligentPlayCaller:
 
         # Analyze matchup if opponent formation is known
         if opponent_formation:
-            try:
-                matchup = self.analyzer.analyze_matchup(formation, opponent_formation)
-                preferred_plays = matchup.recommended_plays
-                reasoning.extend(matchup.key_factors)
+            preferred_plays, confidence, reasoning = self._analyze_matchup_and_adjust(
+                formation, opponent_formation, preferred_plays, confidence, reasoning
+            )
 
-                # Adjust confidence based on matchup advantage
-                if matchup.overall_advantage.value >= 1:
-                    confidence += 0.3
-                elif matchup.overall_advantage.value <= -1:
-                    confidence -= 0.2
+        # Select best play from preferences or fallback
+        best_play, confidence, reasoning = self._select_best_play_and_adjust(
+            context,
+            formation,
+            preferred_plays,
+            formation_profile,
+            confidence,
+            reasoning,
+        )
 
-                reasoning.append(f"Matchup analysis vs {opponent_formation}")
-            except ValueError:
-                reasoning.append(f"Unknown opponent formation: {opponent_formation}")
+        risk_level = self._determine_risk_level(context, best_play)
 
-        # Select best play from preferences
+        confidence = min(1.0, max(0.0, confidence))  # Clamp to valid range
+
+        return PlayRecommendation(
+            formation=formation,
+            play_type=best_play,
+            confidence=confidence,
+            reasoning=reasoning,
+            risk_level=risk_level,
+        )
+
+    def _analyze_matchup_and_adjust(
+        self,
+        formation: str,
+        opponent_formation: str,
+        preferred_plays: List[PlayType],
+        confidence: float,
+        reasoning: List[str],
+    ):
+        try:
+            matchup = self.analyzer.analyze_matchup(formation, opponent_formation)
+            preferred_plays = matchup.recommended_plays
+            reasoning = reasoning + matchup.key_factors
+
+            # Adjust confidence based on matchup advantage
+            if matchup.overall_advantage.value >= 1:
+                confidence += 0.3
+            elif matchup.overall_advantage.value <= -1:
+                confidence -= 0.2
+
+            reasoning.append(f"Matchup analysis vs {opponent_formation}")
+        except ValueError:
+            reasoning.append(f"Unknown opponent formation: {opponent_formation}")
+        return preferred_plays, confidence, reasoning
+
+    def _select_best_play_and_adjust(
+        self,
+        context: GameContext,
+        formation: str,
+        preferred_plays: List[PlayType],
+        formation_profile: Optional[dict],
+        confidence: float,
+        reasoning: List[str],
+    ):
         if preferred_plays:
             best_play = preferred_plays[0]
-
-            # Add situational reasoning
-            if context.situation == GameSituation.SHORT_YARDAGE:
-                reasoning.append("Short yardage situation favors power running")
-                confidence += 0.2
-            elif context.situation == GameSituation.LONG_YARDAGE:
-                reasoning.append("Long yardage requires passing attack")
-                confidence += 0.2
-            elif context.situation == GameSituation.GOAL_LINE:
-                reasoning.append("Goal line demands high-percentage plays")
-                confidence += 0.1
-
-            # Factor in formation strengths
-            if formation_profile:
-                if best_play in [PlayType.RUN_INSIDE, PlayType.RUN_OUTSIDE]:
-                    if formation_profile["run_blocking"] >= 4:
-                        reasoning.append(f"Excellent run blocking in {formation}")
-                        confidence += 0.1
-                elif best_play in [PlayType.PASS_SHORT, PlayType.PASS_DEEP]:
-                    if formation_profile["route_diversity"] >= 4:
-                        reasoning.append(f"Great route options in {formation}")
-                        confidence += 0.1
+            confidence, reasoning = self._add_situational_reasoning(
+                context, confidence, reasoning
+            )
+            confidence, reasoning = self._add_formation_strengths(
+                best_play, formation, formation_profile, confidence, reasoning
+            )
         else:
             # Fallback to formation's optimal plays
-            if formation_profile and formation_profile["optimal_plays"]:
+            if formation_profile and formation_profile.get("optimal_plays"):
                 best_play = PlayType(formation_profile["optimal_plays"][0])
                 reasoning.append(f"Using {formation}'s optimal play type")
             else:
                 best_play = PlayType.RUN_INSIDE  # Conservative fallback
                 reasoning.append("Conservative play call - limited information")
                 confidence = 0.3
+        return best_play, confidence, reasoning
 
-        # Determine risk level
+    def _add_situational_reasoning(
+        self,
+        context: GameContext,
+        confidence: float,
+        reasoning: List[str],
+    ):
+        if context.situation == GameSituation.SHORT_YARDAGE:
+            reasoning.append("Short yardage situation favors power running")
+            confidence += 0.2
+        elif context.situation == GameSituation.LONG_YARDAGE:
+            reasoning.append("Long yardage requires passing attack")
+            confidence += 0.2
+        elif context.situation == GameSituation.GOAL_LINE:
+            reasoning.append("Goal line demands high-percentage plays")
+            confidence += 0.1
+        return confidence, reasoning
+
+    def _add_formation_strengths(
+        self,
+        best_play: PlayType,
+        formation: str,
+        formation_profile: Optional[dict],
+        confidence: float,
+        reasoning: List[str],
+    ):
+        if formation_profile:
+            if best_play in [PlayType.RUN_INSIDE, PlayType.RUN_OUTSIDE]:
+                if formation_profile.get("run_blocking", 0) >= 4:
+                    reasoning.append(f"Excellent run blocking in {formation}")
+                    confidence += 0.1
+            elif best_play in [PlayType.PASS_SHORT, PlayType.PASS_DEEP]:
+                if formation_profile.get("route_diversity", 0) >= 4:
+                    reasoning.append(f"Great route options in {formation}")
+                    confidence += 0.1
+        return confidence, reasoning
+
+    def _determine_risk_level(self, context: GameContext, best_play: PlayType) -> str:
         high_risk_plays = [PlayType.PASS_DEEP, PlayType.PLAY_ACTION]
         if best_play in high_risk_plays:
             risk_level = "HIGH"
@@ -277,16 +339,7 @@ class IntelligentPlayCaller:
             risk_level = "HIGH"  # Must take risks
         elif context.situation == GameSituation.GOAL_LINE:
             risk_level = "LOW"  # Minimize turnovers
-
-        confidence = min(1.0, max(0.0, confidence))  # Clamp to valid range
-
-        return PlayRecommendation(
-            formation=formation,
-            play_type=best_play,
-            confidence=confidence,
-            reasoning=reasoning,
-            risk_level=risk_level,
-        )
+        return risk_level
 
     def get_full_recommendation(
         self, context: GameContext, opponent_formation: Optional[str] = None

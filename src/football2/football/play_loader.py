@@ -240,7 +240,10 @@ class PlayLoader:
             if play.personnel and formation.personnel:
                 if not any(p in formation.personnel for p in play.personnel):
                     violations.append(
-                        f"Play personnel {play.personnel} doesn't match formation {formation.personnel}"
+                        (
+                            f"Play personnel {play.personnel} doesn't match formation "
+                            f"{formation.personnel}"
+                        )
                     )
 
         except Exception as e:

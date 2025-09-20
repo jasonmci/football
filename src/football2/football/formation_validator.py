@@ -126,7 +126,8 @@ class FootballFormationValidator:
 
         # Only validate personnel for FootballFormation instances
         if not isinstance(formation, FootballFormation) or not formation.personnel:
-            return violations  # Skip validation if not a FootballFormation or no personnel declared
+            # Skip validation if not a FootballFormation or no personnel declared
+            return violations
 
         # Count actual skill position players
         position_counts = self._count_positions(formation)
@@ -152,8 +153,13 @@ class FootballFormationValidator:
 
         # If we get here, no personnel grouping matched
         violations.append(
-            f"Personnel mismatch: formation has {actual_rb}RB/{actual_te}TE/{actual_wr}WR "
-            f"but declares {formation.personnel}"
+            (
+                (
+                    f"Personnel mismatch:"
+                    f"formation has {actual_rb}RB/{actual_te}TE/{actual_wr}WR "
+                    f"but declares {formation.personnel}"
+                )
+            )
         )
 
         return violations

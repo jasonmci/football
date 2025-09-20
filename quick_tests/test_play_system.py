@@ -7,12 +7,14 @@ including pre-snap shifts, motion, and position-specific assignments.
 """
 
 import sys
-sys.path.append('src')
-
 from pathlib import Path
 from football2.football.play_loader import PlayLoader
 from football2.football.yaml_loader import FormationLoader
 from football2.football.plays import PlayExecutor, PositionAssignmentCatalog
+
+
+sys.path.append('src')
+
 
 
 def test_play_loading():
@@ -23,7 +25,6 @@ def test_play_loading():
     # Initialize loaders
     formation_loader = FormationLoader()
     play_loader = PlayLoader(formation_loader)
-    play_executor = PlayExecutor()
 
     # Load offensive plays
     offense_plays_dir = Path("data/plays/offense")

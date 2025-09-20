@@ -95,50 +95,11 @@ class FormationLoader:
     ) -> PlayerRole:
         """Create a PlayerRole from YAML role definition."""
 
-        # Get position
-        pos_name = role_info.get("pos")
-        if not pos_name or pos_name not in ALL_POSITIONS:
-            raise ValueError(f"Unknown or missing position: {pos_name}")
-
-        position = ALL_POSITIONS[pos_name]
-
-        # Get lane
-        lane_str = role_info.get("lane", "middle")
-        try:
-            lane = Lane(lane_str)
-        except ValueError:
-            raise ValueError(f"Invalid lane: {lane_str}")
-
-        # Get depth
-        depth = role_info.get("depth")
-        if not depth:
-            raise ValueError("Missing depth specification")
-
-        # Validate depth is a known football depth
-        valid_depths = [d.value for d in FootballDepth]
-        if depth not in valid_depths:
-            raise ValueError(f"Invalid depth '{depth}'. Valid depths: {valid_depths}")
-
-        # Get alignment (optional)
-        alignment = role_info.get("align")
-        if alignment:
-            valid_alignments = [a.value for a in FootballAlignment]
-            if alignment not in valid_alignments:
-                raise ValueError(
-                    f"Invalid alignment '{alignment}'. Valid alignments: {valid_alignments}"
-                )
-
-        # Create coordinate if placement info provided
-        coordinate = None
-        if placement_info:
-            x = placement_info.get("x")
-            y = placement_info.get("y")
-            if x is not None and y is not None:
-                coordinate = Coordinate(x, y)
-
-                # Validate coordinate is on the field
-                if not FOOTBALL_FIELD.is_valid_position(coordinate):
-                    raise ValueError(f"Position {coordinate} is outside field bounds")
+        position = self._get_position(role_info)
+        lane = self._get_lane(role_info)
+        depth = self._get_depth(role_info)
+        alignment = self._get_alignment(role_info)
+        coordinate = self._get_coordinate(placement_info)
 
         return PlayerRole(
             name=role_name,
@@ -148,6 +109,50 @@ class FormationLoader:
             alignment=alignment,
             coordinate=coordinate,
         )
+
+    def _get_position(self, role_info: Dict[str, Any]):
+        pos_name = role_info.get("pos")
+        if not pos_name or pos_name not in ALL_POSITIONS:
+            raise ValueError(f"Unknown or missing position: {pos_name}")
+        return ALL_POSITIONS[pos_name]
+
+    def _get_lane(self, role_info: Dict[str, Any]):
+        lane_str = role_info.get("lane", "middle")
+        try:
+            return Lane(lane_str)
+        except ValueError:
+            raise ValueError(f"Invalid lane: {lane_str}")
+
+    def _get_depth(self, role_info: Dict[str, Any]):
+        depth = role_info.get("depth")
+        if not depth:
+            raise ValueError("Missing depth specification")
+        valid_depths = [d.value for d in FootballDepth]
+        if depth not in valid_depths:
+            raise ValueError(f"Invalid depth '{depth}'. Valid depths: {valid_depths}")
+        return depth
+
+    def _get_alignment(self, role_info: Dict[str, Any]):
+        alignment = role_info.get("align")
+        if alignment:
+            valid_alignments = [a.value for a in FootballAlignment]
+            if alignment not in valid_alignments:
+                raise ValueError(
+                    f"Invalid alignment '{alignment}'. "
+                    f"Valid alignments: {valid_alignments}"
+                )
+        return alignment
+
+    def _get_coordinate(self, placement_info: Dict[str, int] | None):
+        if placement_info:
+            x = placement_info.get("x")
+            y = placement_info.get("y")
+            if x is not None and y is not None:
+                coordinate = Coordinate(x, y)
+                if not FOOTBALL_FIELD.is_valid_position(coordinate):
+                    raise ValueError(f"Position {coordinate} is outside field bounds")
+                return coordinate
+        return None
 
 
 def load_offensive_formations(
