@@ -22,10 +22,10 @@ lint:  ## Run linting checks
 	$(PYTHON) -m flake8 src/
 
 format:  ## Format code with black
-	$(PYTHON) -m black src/
+	$(PYTHON) -m black src/ tests/
 
 format-check:  ## Check if code is formatted correctly
-	$(PYTHON) -m black --check src/
+	$(PYTHON) -m black --check src/ tests/
 
 type-check:  ## Run type checking
 	$(PYTHON) -m mypy src/ --ignore-missing-imports

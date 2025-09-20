@@ -154,7 +154,7 @@ def test_defensive_pre_snap_shifts():
     print(f"   Pre-snap Shifts: {len(play.pre_snap_shifts)}")
 
     for i, shift in enumerate(play.pre_snap_shifts):
-        print(f"   Shift {i+1}:")
+        print(f"   Shift {i + 1}:")
         print(f"     Player: {shift.player_position}")
         print(f"     Action: {shift.action.value}")
         print(f"     Timing: {shift.timing}")
