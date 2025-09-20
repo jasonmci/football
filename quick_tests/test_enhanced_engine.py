@@ -93,7 +93,7 @@ def main():
             )
 
             print(
-                f"  Run {i+1}: {result.outcome:12s} | {result.yards_gained:2d} yards | YAC: {getattr(result, 'yards_after_contact', 0)}"
+                f"  Run {i + 1}: {result.outcome:12s} | {result.yards_gained:2d} yards | YAC: {getattr(result, 'yards_after_contact', 0)}"
             )
 
     print("\n✅ Direct test complete")

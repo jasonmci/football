@@ -76,7 +76,7 @@ def main():
         final_total = base_dice_roll + net_modifier
 
         print(
-            f"Play {i+1:2d}: Dice={base_dice_roll:2d} + Mod={net_modifier:+.1f} = Total={final_total:.1f}"
+            f"Play {i + 1:2d}: Dice={base_dice_roll:2d} + Mod={net_modifier:+.1f} = Total={final_total:.1f}"
         )
 
         result = simulator.simulate_single_play(elite_offense, elite_defense, situation)

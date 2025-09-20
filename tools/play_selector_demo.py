@@ -177,13 +177,13 @@ class PlaySelectorDemo:
             print("Could not load play data")
             return None
 
-        print(f"\n{'='*60}")
+        print(f"\n{'=' * 60}")
         print(
             f"DEMO SIMULATION: "
             f"{offensive_play.replace('_', ' ').title()} vs "
             f"{defensive_play.replace('_', ' ').title()}"
         )
-        print(f"{'='*60}")
+        print(f"{'=' * 60}")
 
         # Show play details
         self.show_play_details(offensive_play, "offense")
@@ -199,7 +199,7 @@ class PlaySelectorDemo:
             results.append(result)
             outcome = result["outcome"]
             yards = result["yards"]
-            print(f"Sim {i+1:2d}: {yards:+3d} yards - {outcome}")
+            print(f"Sim {i + 1:2d}: {yards:+3d} yards - {outcome}")
 
         # Show summary statistics
         total_yards = sum(r["yards"] for r in results)

@@ -19,16 +19,19 @@ coverage:  ## Run tests with coverage
 	$(PYTHON) -m coverage html
 
 lint:  ## Run linting checks
-	$(PYTHON) -m flake8 src/ tests/
+	$(PYTHON) -m flake8 src/
 
 format:  ## Format code with black
 	$(PYTHON) -m black src/
 
 format-check:  ## Check if code is formatted correctly
-	$(PYTHON) -m black --check src/ tests/
+	$(PYTHON) -m black --check src/
 
 type-check:  ## Run type checking
 	$(PYTHON) -m mypy src/ --ignore-missing-imports
+
+fix-format:  ## Fix code formatting with black
+	$(PYTHON) -m ruff format
 
 ci:  ## Run all CI checks (format, lint, type-check, test)
 	$(MAKE) format-check

@@ -6,7 +6,6 @@ This demonstrates how pulling guards, blitzes, and other tactical elements
 affect play outcomes in realistic ways.
 """
 
-
 import sys
 
 from pathlib import Path

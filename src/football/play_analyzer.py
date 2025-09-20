@@ -422,8 +422,7 @@ class PlayAnalyzer:
                         factor_type=TacticalAdvantage.MOTION_CONFUSION.value,
                         impact=1,
                         description=(
-                            f"{motion_type.title()} motion forces defensive "
-                            "adjustments"
+                            f"{motion_type.title()} motion forces defensive adjustments"
                         ),
                         details={"motion_type": motion_type},
                     )

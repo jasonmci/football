@@ -509,12 +509,12 @@ class EnhancedPlaySelector:
             if not offense_data or not defense_data:
                 return None
 
-            print(f"\n{'='*70}")
+            print(f"\n{'=' * 70}")
             print(
                 f"SIMULATION: {offensive_play.replace('_', ' ').title()} vs "
                 f"{defensive_play.replace('_', ' ').title()}"
             )
-            print(f"{'='*70}")
+            print(f"{'=' * 70}")
 
             # Show play details
             self.show_play_details(offensive_play, "offense")
@@ -540,14 +540,16 @@ class EnhancedPlaySelector:
                 mod_str = (
                     f"(+{sum(mods)})"
                     if sum(mods) > 0
-                    else f"({sum(mods)})" if sum(mods) < 0 else ""
+                    else f"({sum(mods)})"
+                    if sum(mods) < 0
+                    else ""
                 )
 
                 # Add RPO decision to display
                 rpo_str = f" [{rpo_decision.upper()}]" if rpo_decision else ""
 
                 print(
-                    f"Sim {i+1:2d}: {yards:+3d} yards - {outcome:>12}{rpo_str} | "
+                    f"Sim {i + 1:2d}: {yards:+3d} yards - {outcome:>12}{rpo_str} | "
                     f"Roll: {roll} → {eff_roll} {mod_str}"
                 )
 

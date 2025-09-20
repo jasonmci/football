@@ -73,9 +73,11 @@ def analyze_defensive_formations(defense):
 
         dl_count = position_counts.get("DL", 0)
         lb_count = position_counts.get("LB", 0)
-        db_count = (position_counts.get("CB", 0) +
-                    position_counts.get("S", 0) +
-                    position_counts.get("NB", 0))
+        db_count = (
+            position_counts.get("CB", 0)
+            + position_counts.get("S", 0)
+            + position_counts.get("NB", 0)
+        )
 
         # Determine strategy
         if dl_count >= 6:

@@ -105,7 +105,7 @@ def test_realistic_plays():
                     outcomes.append(result.outcome.name)
 
                 except Exception as e:
-                    print(f"   ❌ Error on simulation {i+1}: {e}")
+                    print(f"   ❌ Error on simulation {i + 1}: {e}")
                     continue
 
             if results:

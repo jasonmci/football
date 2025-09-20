@@ -127,6 +127,8 @@ class FormationLoader:
         depth = role_info.get("depth")
         if not depth:
             raise ValueError("Missing depth specification")
+        if depth is None:
+            raise ValueError("Missing depth specification")
         valid_depths = [d.value for d in FootballDepth]
         if depth not in valid_depths:
             raise ValueError(f"Invalid depth '{depth}'. Valid depths: {valid_depths}")
@@ -134,6 +136,8 @@ class FormationLoader:
 
     def _get_alignment(self, role_info: Dict[str, Any]):
         alignment = role_info.get("align")
+        if alignment == "":
+            alignment = None
         if alignment:
             valid_alignments = [a.value for a in FootballAlignment]
             if alignment not in valid_alignments:

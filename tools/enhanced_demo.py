@@ -279,7 +279,7 @@ class EnhancedPlaySelectorDemo:
             print("Could not load play data")
             return None
 
-        print(f"\n{'='*75}")
+        print(f"\n{'=' * 75}")
         print(f"{description.upper()}")
         print(
             (
@@ -287,7 +287,7 @@ class EnhancedPlaySelectorDemo:
                 f"vs {defensive_play.replace('_', ' ').title()}"
             )
         )
-        print(f"{'='*75}")
+        print(f"{'=' * 75}")
 
         # Show play details
         self.show_play_details(offensive_play, "offense")
@@ -337,11 +337,13 @@ class EnhancedPlaySelectorDemo:
             mod_str = (
                 f"(+{sum(mods)})"
                 if sum(mods) > 0
-                else f"({sum(mods)})" if sum(mods) < 0 else ""
+                else f"({sum(mods)})"
+                if sum(mods) < 0
+                else ""
             )
             rpo_str = f" [{rpo_decision.upper()}]" if rpo_decision else ""
             print(
-                f"Sim {i+1:2d}: {yards:+3d} yards - {outcome:>12}{rpo_str} | "
+                f"Sim {i + 1:2d}: {yards:+3d} yards - {outcome:>12}{rpo_str} | "
                 f"Dice: {roll} → {eff_roll} {mod_str}"
             )
 
@@ -406,7 +408,7 @@ if __name__ == "__main__":
     for off_play, def_play, description in examples:
         demo.run_demo_simulation(off_play, def_play, description)
 
-    print(f"\n{'='*75}")
+    print(f"\n{'=' * 75}")
     print("DEMO COMPLETE!")
     print("The outcome tables provide:")
     print("• Normal distribution results (2d6 bell curve)")

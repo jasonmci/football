@@ -154,11 +154,9 @@ class FootballFormationValidator:
         # If we get here, no personnel grouping matched
         violations.append(
             (
-                (
-                    f"Personnel mismatch:"
-                    f"formation has {actual_rb}RB/{actual_te}TE/{actual_wr}WR "
-                    f"but declares {formation.personnel}"
-                )
+                f"Personnel mismatch:"
+                f"formation has {actual_rb}RB/{actual_te}TE/{actual_wr}WR "
+                f"but declares {formation.personnel}"
             )
         )
 

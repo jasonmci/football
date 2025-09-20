@@ -359,7 +359,7 @@ def generate_play_narrative(
     field_desc = f"at the {situation['field_position']}-yard line"
 
     # Formation setup
-    narrative = f"\n{'='*60}\n"
+    narrative = f"\n{'=' * 60}\n"
     narrative += f"📍 {down_desc}, {field_desc}\n"
     narrative += f"🔥 Offense: {offense.label} ({offense.base_formation})\n"
     narrative += f"🛡️  Defense: {defense.label} ({defense.base_formation})\n"

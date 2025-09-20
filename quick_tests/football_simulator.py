@@ -212,7 +212,11 @@ class FootballSimulator:
             )
         else:
             enhanced_result = self.enhanced_engine.resolve_pass_play(
-                qb, receiver, defender, base_result, situation  # type: ignore
+                qb,
+                receiver,
+                defender,
+                base_result,
+                situation,  # type: ignore
             )
 
         return SimulationResult(

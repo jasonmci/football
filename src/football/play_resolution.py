@@ -315,12 +315,12 @@ class PlayResolutionEngine:
         for i, advantage_factor in enumerate(
             play_analysis.advantages[:2]
         ):  # Limit to 2
-            modifiers[f"adv_{i+1}"] = 0  # For display only, don't affect total
+            modifiers[f"adv_{i + 1}"] = 0  # For display only, don't affect total
 
         for i, disadvantage_factor in enumerate(
             play_analysis.disadvantages[:2]
         ):  # Limit to 2
-            modifiers[f"dis_{i+1}"] = 0  # For display only, don't affect total
+            modifiers[f"dis_{i + 1}"] = 0  # For display only, don't affect total
 
         return modifiers
 
