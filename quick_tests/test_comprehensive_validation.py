@@ -5,7 +5,7 @@ Tests both formation rules and personnel validation.
 """
 
 import sys
-from football2.football.yaml_loader import load_all_formations
+from football.yaml_loader import load_all_formations
 from pathlib import Path
 
 # Add the src directory to the path so we can import football2

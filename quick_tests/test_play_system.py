@@ -8,9 +8,9 @@ including pre-snap shifts, motion, and position-specific assignments.
 
 import sys
 from pathlib import Path
-from football2.football.play_loader import PlayLoader
-from football2.football.yaml_loader import FormationLoader
-from football2.football.plays import PlayExecutor, PositionAssignmentCatalog
+from football.play_loader import PlayLoader
+from football.yaml_loader import FormationLoader
+from football.plays import PlayExecutor, PositionAssignmentCatalog
 
 
 sys.path.append("src")

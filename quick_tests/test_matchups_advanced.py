@@ -11,9 +11,9 @@ import sys
 sys.path.append("src")
 
 from pathlib import Path
-from football2.football.play_loader import PlayLoader
-from football2.football.yaml_loader import FormationLoader
-from football2.football.matchup_analyzer import FormationMatchupAnalyzer
+from football.play_loader import PlayLoader
+from football.yaml_loader import FormationLoader
+from football.matchup_analyzer import FormationMatchupAnalyzer
 
 
 def load_all_plays():

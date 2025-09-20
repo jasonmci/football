@@ -8,7 +8,7 @@ import os
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
 
-from football2.football.enhanced_resolution import (
+from football.enhanced_resolution import (
     EnhancedResolutionEngine,
     PlayerProfile,
     SkillCategory,

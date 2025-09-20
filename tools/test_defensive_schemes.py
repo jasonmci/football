@@ -6,17 +6,17 @@ Shows how specific defensive play calls interact with player ratings.
 
 import sys
 import os
+
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+
 from football.enhanced_resolution import (
     EnhancedResolutionEngine,
     PlayerProfile,
     SkillCategory,
 )
-
 from football.play_analyzer import PlayAnalysis, PlayMatchupFactor
 from football.plays import FootballPlay
 from types import SimpleNamespace
-
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 
 def create_offensive_plays():

@@ -10,7 +10,7 @@ from pathlib import Path
 import random
 
 
-from football2.football.enhanced_resolution import (
+from football.enhanced_resolution import (
     EnhancedResolutionEngine,
     PlayerProfile,
     SkillCategory,

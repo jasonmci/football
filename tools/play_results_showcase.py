@@ -8,12 +8,12 @@ import sys
 import os
 
 
-from football2.football.play_resolution import (
+from football.play_resolution import (
     PlayResolutionEngine,
     create_realistic_config,
 )
-from football2.football.play_analyzer import PlayAnalysis, PlayMatchupFactor
-from football2.football.plays import FootballPlay
+from football.play_analyzer import PlayAnalysis, PlayMatchupFactor
+from football.plays import FootballPlay
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 

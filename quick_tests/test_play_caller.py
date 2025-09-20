@@ -10,7 +10,7 @@ import sys
 
 sys.path.append("src")
 
-from football2.football.play_caller import (
+from football.play_caller import (
     IntelligentPlayCaller,
     GameContext,
     GameSituation,

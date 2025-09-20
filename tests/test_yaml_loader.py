@@ -1,5 +1,5 @@
 # create a first yaml loader test
-from football2.football.yaml_loader import FormationLoader
+from football.yaml_loader import FormationLoader
 
 
 def test_yaml_loader():
@@ -13,7 +13,7 @@ def test_yaml_loader():
 
 def test_load_all_formations():
     """Test loading all formations from the directory."""
-    from football2.football.yaml_loader import load_all_formations
+    from football.yaml_loader import load_all_formations
 
     all_formations = load_all_formations("data/formations")
     assert "offense" in all_formations
@@ -51,8 +51,8 @@ def test_create_formation_from_data():
 
 def test_create_player_role():
     """Test creating a player role from YAML role definition."""
-    from football2.core.game_board import Lane, Coordinate
-    from football2.football.positions import ALL_POSITIONS
+    from core.game_board import Lane, Coordinate
+    from football.positions import ALL_POSITIONS
 
     loader = FormationLoader()
 
@@ -182,7 +182,7 @@ def test_create_player_role_invalid_coordinate():
 
 def test_load_offensive_formations():
     """Test loading offensive formations from directory."""
-    from football2.football.yaml_loader import load_offensive_formations
+    from football.yaml_loader import load_offensive_formations
 
     formations = load_offensive_formations("data/formations/offense")
     assert len(formations) > 0
@@ -192,7 +192,7 @@ def test_load_offensive_formations():
 
 def test_load_defensive_formations():
     """Test loading defensive formations from directory."""
-    from football2.football.yaml_loader import load_defensive_formations
+    from football.yaml_loader import load_defensive_formations
 
     formations = load_defensive_formations("data/formations/defense")
     assert len(formations) > 0

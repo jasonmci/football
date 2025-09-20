@@ -8,7 +8,7 @@ and help us identify any issues or improvements needed.
 
 import sys
 from pathlib import Path
-from football2.football.yaml_loader import load_all_formations
+from football.yaml_loader import load_all_formations
 
 # Add the src directory to the path so we can import football2
 src_path = Path(__file__).parent / "src"

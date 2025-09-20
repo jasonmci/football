@@ -9,7 +9,7 @@ import os
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
-from football2.football.enhanced_resolution import (
+from football.enhanced_resolution import (
     EnhancedResolutionEngine,
     PlayerProfile,
     SkillCategory,

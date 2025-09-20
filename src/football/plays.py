@@ -10,7 +10,7 @@ Defines plays as dynamic modifications to base formations, including:
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import Dict, List, Optional, Any
-from ..core.game_board import Coordinate
+from core.game_board import Coordinate
 from .positions import FootballFormation
 
 

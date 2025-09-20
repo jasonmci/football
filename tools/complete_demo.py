@@ -7,7 +7,7 @@ import sys
 import yaml
 from pathlib import Path
 import random
-from football2.football.enhanced_resolution import EnhancedResolutionEngine
+from football.enhanced_resolution import EnhancedResolutionEngine
 
 # Add the src directory to Python path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))

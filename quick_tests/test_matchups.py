@@ -10,7 +10,7 @@ import sys
 
 sys.path.append("src")
 
-from football2.football.matchup_analyzer import (
+from football.matchup_analyzer import (
     FormationMatchupAnalyzer,
     MatchupAdvantage,
 )

@@ -2,12 +2,12 @@
 import sys
 import os
 import statistics
-from football2.football.play_resolution import (
+from football.play_resolution import (
     PlayResolutionEngine,
     create_realistic_config,
 )
-from football2.football.play_analyzer import PlayAnalysis, PlayMatchupFactor
-from football2.football.plays import FootballPlay
+from football.play_analyzer import PlayAnalysis, PlayMatchupFactor
+from football.plays import FootballPlay
 
 """
 Offensive vs Defensive Play Matchup Showcase

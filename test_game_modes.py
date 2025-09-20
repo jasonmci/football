@@ -7,17 +7,13 @@ scoring tendencies, and strategic emphasis through configuration.
 """
 
 import sys
-
-sys.path.append("src")
+sys.path.append('src')
 
 from pathlib import Path
 from football.play_loader import PlayLoader
 from football.yaml_loader import FormationLoader
 from football.play_resolution import (
-    PlayResolutionEngine,
-    ResolutionConfig,
-    PlayOutcome,
-    PlayType,
+    PlayResolutionEngine, ResolutionConfig, PlayOutcome, PlayType
 )
 
 
@@ -27,9 +23,9 @@ def create_arcade_config() -> ResolutionConfig:
 
     # More explosive dice
     config.base_dice = {
-        PlayType.RUN: "3d6",  # More dice = higher variance
-        PlayType.PASS: "2d10",  # Higher ceiling for passes
-        PlayType.SPECIAL: "1d20",  # Wild card potential
+        PlayType.RUN: "3d6",      # More dice = higher variance
+        PlayType.PASS: "2d10",    # Higher ceiling for passes
+        PlayType.SPECIAL: "1d20"  # Wild card potential
     }
 
     # Lower thresholds for big plays
@@ -75,7 +71,7 @@ def create_defensive_slugfest_config() -> ResolutionConfig:
     config.base_dice = {
         PlayType.RUN: "1d8",
         PlayType.PASS: "1d10",
-        PlayType.SPECIAL: "1d8",
+        PlayType.SPECIAL: "1d8"
     }
 
     # Very high thresholds
@@ -108,9 +104,7 @@ def run_game_mode_comparison():
     engines = {
         "🕹️  Arcade": PlayResolutionEngine(create_arcade_config(), seed=100),
         "🏈 Simulation": PlayResolutionEngine(create_simulation_config(), seed=100),
-        "🛡️  Slugfest": PlayResolutionEngine(
-            create_defensive_slugfest_config(), seed=100
-        ),
+        "🛡️  Slugfest": PlayResolutionEngine(create_defensive_slugfest_config(), seed=100)
     }
 
     # Test the same play in all modes
@@ -119,28 +113,28 @@ def run_game_mode_comparison():
             "name": "Power Running",
             "offense": "power_left",
             "defense": "43_cover3_base",
-            "situation": {"down": 1, "distance": 10, "field_position": 50},
+            "situation": {"down": 1, "distance": 10, "field_position": 50}
         },
         {
             "name": "Deep Passing",
             "offense": "four_verts",
             "defense": "dime_quarters_drop8",
-            "situation": {"down": 2, "distance": 10, "field_position": 30},
+            "situation": {"down": 2, "distance": 10, "field_position": 30}
         },
         {
             "name": "Short Yardage",
             "offense": "singleback_dive",
             "defense": "bear46_run_commit",
-            "situation": {"down": 3, "distance": 1, "field_position": 5},
-        },
+            "situation": {"down": 3, "distance": 1, "field_position": 5}
+        }
     ]
 
     for scenario in test_scenarios:
         print(f"\n🎯 {scenario['name']} Scenario")
         print("-" * 30)
 
-        off_play = offense_plays[scenario["offense"]]
-        def_play = defense_plays[scenario["defense"]]
+        off_play = offense_plays[scenario['offense']]
+        def_play = defense_plays[scenario['defense']]
 
         print(f"   {off_play.label} vs {def_play.label}")
 
@@ -148,7 +142,7 @@ def run_game_mode_comparison():
             # Run multiple attempts to show variance
             results = []
             for _ in range(5):
-                result = engine.resolve_play(off_play, def_play, scenario["situation"])
+                result = engine.resolve_play(off_play, def_play, scenario['situation'])
                 results.append(result.yards_gained)
 
             avg_yards = sum(results) / len(results)
@@ -171,12 +165,7 @@ def demonstrate_situational_awareness():
     def_play = defense_plays["43_cover3_base"]
 
     situations = [
-        {
-            "name": "1st & 10 (Midfield)",
-            "down": 1,
-            "distance": 10,
-            "field_position": 50,
-        },
+        {"name": "1st & 10 (Midfield)", "down": 1, "distance": 10, "field_position": 50},
         {"name": "3rd & 1 (Goal Line)", "down": 3, "distance": 1, "field_position": 2},
         {"name": "2nd & Long", "down": 2, "distance": 15, "field_position": 30},
         {"name": "4th & 2", "down": 4, "distance": 2, "field_position": 40},
@@ -190,9 +179,7 @@ def demonstrate_situational_awareness():
 
         print(f"\n📍 {situation['name']}:")
         print(f"   {result.description}")
-        print(
-            f"   Dice: {result.dice_roll} + {result.total_modifier} = {result.final_total}"
-        )
+        print(f"   Dice: {result.dice_roll} + {result.total_modifier} = {result.final_total}")
 
         # Show situation-specific modifier
         sit_mod = result.details["modifiers"].get("situation", 0)

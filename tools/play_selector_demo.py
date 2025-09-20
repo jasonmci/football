@@ -12,7 +12,7 @@ import random
 
 # Add the src directory to Python path
 
-from football2.football.enhanced_resolution import (
+from football.enhanced_resolution import (
     EnhancedResolutionEngine,
 )
 

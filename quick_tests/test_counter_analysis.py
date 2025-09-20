@@ -5,10 +5,10 @@ import sys
 
 sys.path.append("src")
 from pathlib import Path
-from football2.football.play_loader import PlayLoader
-from football2.football.yaml_loader import FormationLoader
-from football2.football.play_analyzer import PlayAnalyzer
-from football2.football.play_resolution import PlayResolutionEngine
+from football.play_loader import PlayLoader
+from football.yaml_loader import FormationLoader
+from football.play_analyzer import PlayAnalyzer
+from football.play_resolution import PlayResolutionEngine
 
 # Load plays
 formation_loader = FormationLoader()

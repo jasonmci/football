@@ -8,8 +8,8 @@ Demonstrates how the system now uses lane/depth/alignment instead of x/y coordin
 import sys
 
 from pathlib import Path
-from football2.football.play_loader import PlayLoader
-from football2.football.yaml_loader import FormationLoader
+from football.play_loader import PlayLoader
+from football.yaml_loader import FormationLoader
 
 sys.path.append("src")
 
