@@ -5,7 +5,7 @@ Enforces realistic constraints beyond basic position alignment rules.
 """
 
 from typing import List, Dict
-from core.players import Formation
+from ..core.players import Formation
 from .positions import FootballFormation
 
 

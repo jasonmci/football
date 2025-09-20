@@ -1,0 +1,16 @@
+  name: "bear46"
+  label: "46 Bear"
+  # 6 on the line + 4 in box + 1 deep = 11 (ultra run-heavy)
+  roles:
+    RE:        { pos: DL, lane: right,  depth: line }
+    RDT:       { pos: DL, lane: right,  depth: line }
+    MDT:       { pos: DL, lane: middle, depth: line }
+    LDT:       { pos: DL, lane: left,   depth: line }
+    LE:        { pos: DL, lane: left,   depth: line }
+    SS:        { pos: S, lane: middle, depth: box }
+    MLB:       { pos: LB, lane: middle, depth: box }
+    OLB:       { pos: LB, lane: left,   depth: box }
+    FS:        { pos: S, lane: middle, depth: deep }
+    CB_left:   { pos: CB, lane: left,   depth: deep }
+    CB_right:  { pos: CB, lane: right,  depth: deep }
+  # Note: SS is box safety by default here; can roll down or back via plays

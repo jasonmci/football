@@ -1,0 +1,16 @@
+name: strong_i
+label: "Strong I (22)"
+allowed_personnel: ["22"]
+
+roles:
+  QB:          { pos: QB, lane: middle, depth: backfield }
+  RB1:         { pos: RB, lane: middle, depth: backfield }
+  FB:          { pos: RB, lane: middle, depth: backfield }
+  TE_left:     { pos: TE, lane: left,   depth: line, align: tight }
+  TE_right:    { pos: TE, lane: right,  depth: line, align: tight }
+  WR_right:    { pos: WR, lane: right,  depth: line, align: outside }    # only one WR in 22
+  LT:          { pos: OL, lane: left,   depth: line, align: tight }
+  LG:          { pos: OL, lane: middle, depth: line, align: tight }
+  C:           { pos: OL, lane: middle, depth: line, align: tight }
+  RG:          { pos: OL, lane: middle, depth: line, align: tight }
+  RT:          { pos: OL, lane: right,  depth: line, align: tight }

@@ -1,0 +1,108 @@
+name: nickel_doubleA_cover2
+label: "Nickel Double A-Gap (Cover 2)"
+formation: nickel
+personnel: []
+play_type: defense
+tags: [blitz, coverage, cover2, pressure]
+
+# Pre-snap shifts to disguise the blitz
+pre_snap_shifts:
+  - player: MLB
+    action: move_up
+    coordinate:
+      x: 0
+      y: 2
+    timing: 1
+  - player: WLB
+    action: move_up
+    coordinate:
+      x: -3
+      y: 2
+    timing: 1
+
+# No motion for defensive plays
+motion: null
+
+# No defensive reactions needed (this is the defensive play)
+defensive_reactions: []
+
+# Player assignments using new system
+assignments:
+  - player: DE1
+    assignment: rush
+    details:
+      technique: "speed_rush"
+      contain: true
+
+  - player: DT1
+    assignment: rush
+    details:
+      technique: "bull_rush"
+      gap: "A_gap"
+
+  - player: DT2
+    assignment: rush
+    details:
+      technique: "bull_rush"
+      gap: "A_gap"
+
+  - player: DE2
+    assignment: rush
+    details:
+      technique: "speed_rush"
+      contain: true
+
+  - player: MLB
+    assignment: blitz
+    details:
+      gap: "A_gap"
+      timing: "snap_plus_one"
+
+  - player: WLB
+    assignment: blitz
+    details:
+      gap: "A_gap"
+      timing: "snap_plus_one"
+
+  - player: CB1
+    assignment: coverage
+    zone: "flat"
+    details:
+      coverage: "zone"
+      depth: "0_to_5"
+      side: "left"
+
+  - player: CB2
+    assignment: coverage
+    zone: "flat"
+    details:
+      coverage: "zone"
+      depth: "0_to_5"
+      side: "right"
+
+  - player: NB
+    assignment: coverage
+    zone: "hook"
+    details:
+      coverage: "zone"
+      depth: "8_to_12"
+      robber: true
+
+  - player: FS
+    assignment: coverage
+    zone: "deep_half"
+    details:
+      coverage: "zone"
+      side: "left"
+      depth: "15_plus"
+
+  - player: SS
+    assignment: coverage
+    zone: "deep_half"
+    details:
+      coverage: "zone"
+      side: "right"
+      depth: "15_plus"
+
+snap_count: null
+audible_options: ["check_to_cover_1", "add_edge_rush"]

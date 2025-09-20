@@ -1,0 +1,123 @@
+name: rpo_bubble_screen
+label: "RPO Bubble Screen (11 Personnel)"
+formation: gun_11
+personnel: ["11"]
+play_type: rpo
+tags: [rpo, bubble, screen, quick_game, dual_option]
+
+# Pre-snap shifts
+pre_snap_shifts: []
+
+motion:
+  player: WR3
+  action: "bubble_motion"
+  timing: "pre_snap"
+  coordinate:
+    x: -3
+    y: 0
+
+# RPO assignments - QB reads linebacker for run/pass decision
+assignments:
+  - player: QB
+    assignment: rpo_read
+    details:
+      primary_action: "handoff"
+      secondary_action: "bubble_screen"
+      read_key: "inside_linebacker"
+      read_type: "high_low"
+      decision_timing: "post_snap"
+      throw_timing: "quick_game"
+
+  - player: RB1
+    assignment: run_block
+    direction: right
+    details:
+      hole: "B_gap"
+      vision: "press_hole"
+      mesh_point: "normal"
+      rpo_ready: true  # Ready for no handoff
+
+  - player: WR1
+    assignment: route
+    details:
+      route: "bubble_screen"
+      timing: "quick"
+      mesh_point: "backfield"
+      spacing: "wide"
+      rpo_alert: true
+
+  - player: WR2
+    assignment: route
+    details:
+      route: "go"
+      timing: "clear_out"
+      leverage: "vertical"
+      purpose: "safety_clear"
+
+  - player: WR3
+    assignment: route
+    details:
+      route: "bubble_screen"
+      timing: "quick"
+      mesh_point: "backfield"
+      spacing: "bubble"
+      motion_based: true
+
+  - player: TE
+    assignment: run_block
+    details:
+      scheme: "zone"
+      technique: "reach"
+      direction: "right"
+      rpo_aware: true
+
+  - player: LT
+    assignment: run_block
+    details:
+      scheme: "zone"
+      technique: "reach"
+      direction: "right"
+      rpo_protection: "quick_game"
+
+  - player: LG
+    assignment: run_block
+    details:
+      scheme: "zone"
+      technique: "reach"
+      direction: "right"
+      rpo_protection: "quick_game"
+
+  - player: C
+    assignment: run_block
+    details:
+      scheme: "zone"
+      technique: "combo"
+      help_to: "RG"
+      rpo_protection: "quick_game"
+
+  - player: RG
+    assignment: run_block
+    details:
+      scheme: "zone"
+      technique: "reach"
+      direction: "right"
+      rpo_protection: "quick_game"
+
+  - player: RT
+    assignment: run_block
+    details:
+      scheme: "zone"
+      technique: "reach"
+      direction: "right"
+      rpo_protection: "quick_game"
+
+snap_count: "on one"
+audible_options: ["kill_to_slant", "max_protect_check"]
+
+# RPO concept advantages:
+# 1. Forces defense to declare coverage/run fit
+# 2. Quick bubble beats aggressive run support
+# 3. Inside zone punishes light box
+# 4. High percentage completions
+# 5. Puts stress on linebacker reads
+tactical_advantages: ["rpo_stress", "high_low_read", "quick_game", "numbers_advantage"]

@@ -1,0 +1,227 @@
+name: "elite_offense_config"
+label: "Elite Offensive Unit - Trap Right"
+formation: i_form
+personnel: ["21"]
+play_type: run
+tags: [run, trap, misdirection, gap]
+
+# Player roster with ratings
+players:
+  QB:
+    name: "Elite QB"
+    position: "QB"
+    overall_rating: 92
+    skills:
+      awareness: 95
+      hands: 90
+    traits: ["clutch"]
+
+  RB1:
+    name: "Power RB"
+    position: "RB"
+    overall_rating: 87
+    skills:
+      strength: 88
+      agility: 85
+      speed: 84
+    traits: ["secure_hands"]
+
+  FB:
+    name: "Elite FB"
+    position: "FB"
+    overall_rating: 83
+    skills:
+      strength: 90
+      tackle: 85
+    traits: []
+
+  LT:
+    name: "Elite LT"
+    position: "LT"
+    overall_rating: 90
+    skills:
+      strength: 92
+      pass_block: 94
+      run_block: 88
+    traits: ["anchor"]
+
+  LG:
+    name: "Elite LG"
+    position: "LG"
+    overall_rating: 86
+    skills:
+      strength: 89
+      pass_block: 84
+      run_block: 90
+    traits: []
+
+  C:
+    name: "Elite C"
+    position: "C"
+    overall_rating: 88
+    skills:
+      strength: 85
+      pass_block: 89
+      run_block: 89
+      awareness: 92
+    traits: ["smart"]
+
+  RG:
+    name: "Elite RG"
+    position: "RG"
+    overall_rating: 85
+    skills:
+      strength: 88
+      pass_block: 83
+      run_block: 89
+    traits: []
+
+  RT:
+    name: "Elite RT"
+    position: "RT"
+    overall_rating: 88
+    skills:
+      strength: 90
+      pass_block: 87
+      run_block: 91
+    traits: []
+
+  TE:
+    name: "Elite TE"
+    position: "TE"
+    overall_rating: 84
+    skills:
+      strength: 86
+      run_block: 87
+      hands: 82
+    traits: ["reliable"]
+
+  WR1:
+    name: "Elite WR"
+    position: "WR"
+    overall_rating: 89
+    skills:
+      hands: 91
+      route_running: 93
+      speed: 92
+      agility: 87
+    traits: ["clutch"]
+
+  WR2:
+    name: "Good WR"
+    position: "WR"
+    overall_rating: 78
+    skills:
+      hands: 79
+      route_running: 81
+      speed: 84
+      agility: 76
+    traits: []
+
+# Pre-snap shifts (none for basic trap)
+pre_snap_shifts: []
+
+motion: null
+
+# Trap play assignments - key is "letting defender through then trapping"
+assignments:
+  - player: QB
+    assignment: handoff
+    target: RB1
+    details:
+      mesh_point: "quick"
+      ball_handling: "firm_handoff"
+
+  - player: RB1
+    assignment: run_block
+    direction: right
+    details:
+      technique: "press_hole"
+      vision: "one_cut"
+      target_gap: "B_gap"
+      patience: "minimal"  # Hit it quick before trap breaks down
+
+  - player: FB
+    assignment: lead_block
+    target: "linebacker"
+    direction: right
+    details:
+      scheme: "kick_out"
+      technique: "shoulder_block"
+
+  # LEFT SIDE - Big on big, don't help with trap
+  - player: LT
+    assignment: run_block
+    details:
+      scheme: "big_on_big"
+      technique: "vertical_set"
+      target: "defensive_end"
+
+  # KEY TRAP BLOCKING SCHEME
+  - player: LG
+    assignment: run_block
+    details:
+      scheme: "back_block"  # Let DT go, trap him
+      technique: "hinge_protection"
+      target: "none"  # Intentionally letting someone through
+
+  - player: C
+    assignment: run_block
+    details:
+      scheme: "back_block"
+      technique: "slide_protection"
+      target: "linebacker"
+
+  - player: RG  # KEY TRAP BLOCKER
+    assignment: run_block
+    details:
+      scheme: "trap_block"
+      technique: "kick_out"
+      target: "defensive_tackle"  # The guy LG let through
+
+  - player: RT
+    assignment: run_block
+    details:
+      scheme: "drive_block"
+      technique: "down_block"
+      target: "defensive_end"
+
+  - player: TE
+    assignment: run_block
+    details:
+      scheme: "seal_block"
+      technique: "down_block"
+      target: "linebacker"
+
+  # WRs run basic routes to keep safeties honest
+  - player: WR1
+    assignment: route
+    details:
+      route: "slant"
+      depth: 5
+      timing: "quick"
+
+  - player: WR2
+    assignment: route
+    details:
+      route: "comeback"
+      depth: 12
+      timing: "intermediate"
+
+# Success criteria for this specific play
+success_metrics:
+  explosive_gain_threshold: 15  # 15+ yards is explosive for trap
+  success_threshold: 4          # 4+ yards is successful
+  big_play_threshold: 8         # 8+ yards is big gain
+
+# Expected outcomes vs different defenses
+expected_vs_defenses:
+  base43:
+    advantage: +2  # Trap works well vs base 4-3
+    avg_yards: 6.2
+  nickel:
+    advantage: +1  # Good vs nickel (fewer run defenders)
+    avg_yards: 5.8
+  goalline:
+    advantage: -2  # Tough vs goal line (stacked box)
+    avg_yards: 2.4

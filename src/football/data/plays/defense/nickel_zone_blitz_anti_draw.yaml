@@ -1,0 +1,146 @@
+name: nickel_zone_blitz_vs_draw
+label: "Nickel Zone Blitz (Anti-Draw)"
+formation: nickel
+personnel: []
+play_type: defense
+tags: [coverage, zone_blitz, draw_stop, gap_control]
+
+# Pre-snap adjustments to stop draw
+pre_snap_shifts:
+  - player: OLB1
+    action: move_inside
+    coordinate:
+      x: -1
+      y: 1
+    timing: 1
+  - player: SS
+    action: rotate_down
+    coordinate:
+      x: 0
+      y: 2
+    timing: 1
+
+motion: null
+defensive_reactions:
+  - trigger: "rb_stays_in_backfield"
+    action: "maintain_rush_lanes"
+  - trigger: "qb_sets_up_pass"
+    action: "convert_to_pass_rush"
+
+# Anti-draw zone blitz assignments
+assignments:
+  - player: DE1
+    assignment: rush
+    details:
+      technique: "contain_rush"
+      gap: "C_gap"
+      responsibility: "force_inside"
+      rush_lane_discipline: true
+
+  - player: DT1
+    assignment: rush
+    details:
+      technique: "penetration"
+      gap: "A_gap"
+      responsibility: "shoot_gap"
+      draw_awareness: true
+
+  - player: DT2
+    assignment: rush
+    details:
+      technique: "two_gap"
+      gap: "A_gap"
+      responsibility: "control_both_gaps"
+      draw_awareness: true
+
+  - player: DE2
+    assignment: rush
+    details:
+      technique: "contain_rush"
+      gap: "C_gap"
+      responsibility: "force_inside"
+      rush_lane_discipline: true
+
+  # KEY - OLB blitzes but maintains lane discipline
+  - player: OLB1
+    assignment: blitz
+    details:
+      technique: "edge_blitz"
+      gap: "B_gap"
+      responsibility: "contain_draw"
+      pass_rush_move: "speed_rush"
+
+  - player: MLB
+    assignment: coverage
+    details:
+      zone: "middle_hook"
+      depth: "intermediate"
+      technique: "rob_routes"
+      draw_spy: true  # Key responsibility
+
+  - player: OLB2
+    assignment: coverage
+    details:
+      zone: "flat_right"
+      depth: "short"
+      technique: "pattern_match"
+      draw_awareness: true
+
+  - player: CB1
+    assignment: coverage
+    details:
+      zone: "deep_third_left"
+      depth: "deep"
+      technique: "zone_coverage"
+      responsibility: "no_fly_zone"
+
+  - player: CB2
+    assignment: coverage
+    details:
+      zone: "deep_third_right"
+      depth: "deep"
+      technique: "zone_coverage"
+      responsibility: "no_fly_zone"
+
+  - player: NCB
+    assignment: coverage
+    details:
+      zone: "slot_coverage"
+      depth: "short"
+      technique: "pattern_match"
+      drag_coverage: true
+
+  - player: FS
+    assignment: coverage
+    details:
+      zone: "deep_third_middle"
+      depth: "deep"
+      technique: "center_field"
+      responsibility: "last_line"
+
+  - player: SS
+    assignment: coverage
+    details:
+      zone: "box_support"
+      depth: "short"
+      technique: "run_support"
+      draw_spy: true  # Secondary draw spy
+
+# Execution notes
+execution:
+  key_timing: "Maintain rush lane discipline while pressuring QB"
+  success_factors: ["Lane discipline", "MLB draw spy", "Quick pressure"]
+  failure_points: ["Rushed lanes", "QB escapes pocket", "Blown coverage"]
+
+# Tactical advantages
+advantages:
+  - "Extra pressure with OLB blitz"
+  - "MLB spies draw/scramble"
+  - "Good vs quick passing game"
+  - "Multiple draw spies"
+
+disadvantages:
+  - "Vulnerable to TE seams"
+  - "Less coverage in middle"
+  - "Requires disciplined pass rush"
+  - "Can be beaten by PA"

@@ -1,0 +1,103 @@
+name: smash_concept_motion
+label: "Smash Concept with Jet Motion"
+formation: shotgun_11
+personnel: ["11"]
+play_type: pass
+tags: [pass, quick, motion, concept]
+
+# Pre-snap modifications
+pre_snap_shifts:
+  - player: WR2
+    action: move_wide
+    target_lane: left
+    target_alignment: outside
+    timing: 1
+
+# Jet motion across the formation
+motion:
+  player: WR3
+  type: jet
+  start_lane: right
+  start_depth: line
+  end_lane: left
+  end_depth: line
+  speed: fast
+
+# Player assignments
+assignments:
+  - player: QB
+    assignment: route  # QB is the passer, but "route" covers this
+    details:
+      progression: ["WR1", "WR2", "TE", "RB1"]
+      protection_call: "slide_left"
+
+  - player: RB1
+    assignment: pass_block
+    details:
+      technique: "scan"
+      responsibility: "mike_linebacker"
+
+  - player: WR1
+    assignment: route
+    details:
+      pattern: "corner"
+      depth: 12
+      break_point: 8
+
+  - player: WR2
+    assignment: route
+    details:
+      pattern: "hitch"
+      depth: 6
+      sit_zone: "soft_spot"
+
+  - player: WR3
+    assignment: route
+    details:
+      pattern: "slant"
+      depth: 4
+      leverage: "inside"
+      timing: "quick"
+
+  - player: TE
+    assignment: route
+    details:
+      pattern: "drag"
+      depth: 4
+      direction: "opposite_motion"
+
+  - player: LT
+    assignment: pass_block
+    details:
+      protection: "slide"
+      direction: "left"
+      help_from: LG
+
+  - player: LG
+    assignment: pass_block
+    details:
+      protection: "slide"
+      direction: "left"
+
+  - player: C
+    assignment: pass_block
+    details:
+      protection: "slide"
+      direction: "left"
+      mike_id: true
+
+  - player: RG
+    assignment: pass_block
+    details:
+      protection: "slide"
+      direction: "left"
+
+  - player: RT
+    assignment: pass_block
+    details:
+      protection: "slide"
+      direction: "left"
+      help_to: RG
+
+snap_count: "on two"
+audible_options: ["kill_to_run", "hot_route_slants"]

@@ -10,8 +10,8 @@ from typing import Dict, Any
 from pathlib import Path
 import yaml
 
-from core.players import PlayerRole
-from core.game_board import Lane, Coordinate
+from ..core.players import PlayerRole
+from ..core.game_board import Lane, Coordinate
 from .positions import (
     FootballFormation,
     ALL_POSITIONS,

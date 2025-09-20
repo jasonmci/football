@@ -9,8 +9,8 @@ from __future__ import annotations
 from typing import Set, Tuple, Dict, List
 from enum import Enum
 
-from core.players import Position, Formation, PlayerRole, PositionConstraints
-from core.game_board import Lane, FieldDimensions, StandardGameBoard
+from ..core.players import Position, Formation, PlayerRole, PositionConstraints
+from ..core.game_board import Lane, FieldDimensions, StandardGameBoard
 
 
 class FootballDepth(Enum):

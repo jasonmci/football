@@ -1,0 +1,59 @@
+name: strong_i_bootleg
+label: "Strong-I Bootleg Action (22 Personnel)"
+formation: strong_i
+play_type: pass
+tags: [pass, bootleg, play_action, rollout]
+
+description: "Play action bootleg from Strong-I formation. QB rolls out opposite the action with tight end and fullback providing excellent protection."
+
+assignments:
+  - player: QB
+    assignment: route
+    details: "Fake handoff to RB, bootleg right, look for TE or crossing route"
+
+  - player: RB
+    assignment: pass_block
+    details: "Fake taking handoff, then slide protect for QB"
+
+  - player: FB
+    assignment: pass_block
+    details: "Lead block for QB on bootleg, pick up edge rush"
+
+  - player: C
+    assignment: pass_block
+    details: "Slide protect left, block any interior rush"
+
+  - player: LG
+    assignment: pass_block
+    target: DT_L
+    details: "Slide left, prevent inside penetration"
+
+  - player: LT
+    assignment: pass_block
+    target: DE_L
+    details: "Big on big, anchor left side"
+
+  - player: RG
+    assignment: pass_block
+    target: DT_R
+    details: "Slide protect, help RT"
+
+  - player: RT
+    assignment: pass_block
+    target: DE_R
+    details: "Set deep, let QB get outside"
+
+  - player: TE
+    assignment: route
+    details: "Drag route across formation, find soft spot in zone"
+
+  - player: WR1
+    assignment: route
+    details: "Deep comeback, settle in zone"
+
+  - player: WR2
+    assignment: route
+    details: "Deep cross, opposite of TE drag"
+
+pre_snap_shifts: []
+motion: null

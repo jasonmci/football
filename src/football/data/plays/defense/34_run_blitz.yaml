@@ -1,0 +1,110 @@
+name: 34_run_blitz
+label: "3-4 A-Gap Run Blitz"
+formation: 34_defense
+personnel: []
+play_type: defense
+tags: [blitz, run_stop, pressure, gap_control]
+
+pre_snap_shifts:
+  - player: RILB
+    action: move_up
+    coordinate:
+      x: 2
+      y: 1
+    timing: 1
+  - player: LILB
+    action: move_up
+    coordinate:
+      x: -2
+      y: 1
+    timing: 1
+
+motion: null
+defensive_reactions: []
+
+# 3-4 A-gap blitz assignments
+assignments:
+  - player: DE1
+    assignment: rush
+    details:
+      technique: "contain_rush"
+      gap: "C_gap"
+      set_edge: true
+
+  - player: NT
+    assignment: rush
+    details:
+      technique: "two_gap"
+      gap: "A_gap"
+      control_center: true
+
+  - player: DE2
+    assignment: rush
+    details:
+      technique: "contain_rush"
+      gap: "C_gap"
+      set_edge: true
+
+  - player: ROLB
+    assignment: coverage
+    zone: "flat"
+    details:
+      coverage: "zone"
+      depth: "0_to_5"
+      side: "strong"
+
+  - player: RILB
+    assignment: blitz
+    details:
+      gap: "A_gap"
+      timing: "snap"
+      run_fit: true
+
+  - player: LILB
+    assignment: blitz
+    details:
+      gap: "A_gap"
+      timing: "snap"
+      run_fit: true
+
+  - player: LOLB
+    assignment: coverage
+    zone: "flat"
+    details:
+      coverage: "zone"
+      depth: "0_to_5"
+      side: "weak"
+
+  - player: CB1
+    assignment: coverage
+    target: "WR1"
+    details:
+      coverage: "man"
+      technique: "press"
+      run_support: true
+
+  - player: CB2
+    assignment: coverage
+    target: "WR2"
+    details:
+      coverage: "man"
+      technique: "press"
+      run_support: true
+
+  - player: FS
+    assignment: coverage
+    zone: "deep_middle"
+    details:
+      coverage: "zone"
+      depth: "15_plus"
+      run_support: "late"
+
+  - player: SS
+    assignment: run_fit
+    details:
+      gap: "B_gap"
+      side: "strong"
+      alley_defender: true
+
+snap_count: null
+audible_options: ["check_to_base_34", "safety_blitz"]

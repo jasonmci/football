@@ -1,0 +1,94 @@
+name: power_left
+label: "Power Left (22 Strong I)"
+formation: strong_i
+personnel: ["22"]
+play_type: run
+tags: [run, power, gap]
+
+pre_snap_shifts: []
+motion: null
+
+# Power gap scheme assignments
+assignments:
+  - player: QB
+    assignment: handoff
+    target: RB1
+    details:
+      mesh_point: "deep"
+      ball_security: "high_and_tight"
+
+  - player: RB1
+    assignment: run_block
+    direction: left
+    details:
+      hole: "C_gap"
+      vision: "bang_it"
+      follow: "lead_blocker"
+
+  - player: FB
+    assignment: lead_block
+    target: "first_linebacker"
+    direction: left
+    details:
+      scheme: "isolation"
+      aiming_point: "inside_shoulder"
+
+  - player: LT
+    assignment: run_block
+    details:
+      scheme: "big_on_big"
+      technique: "vertical_set"
+
+  - player: LG
+    assignment: run_block
+    details:
+      scheme: "pull"
+      direction: left
+      kick_out: "end_man_on_line"
+
+  - player: C
+    assignment: run_block
+    details:
+      scheme: "back_block"
+      target: "first_threat"
+
+  - player: RG
+    assignment: run_block
+    details:
+      scheme: "back_block"
+      help_center: true
+
+  - player: RT
+    assignment: run_block
+    details:
+      scheme: "back_block"
+      target: "penetrator"
+
+  - player: TE1
+    assignment: run_block
+    details:
+      scheme: "down_block"
+      target: "first_down_lineman"
+
+  - player: TE2
+    assignment: run_block
+    details:
+      scheme: "cutoff"
+      target: "backside_pursuit"
+
+  - player: WR1
+    assignment: run_block
+    details:
+      technique: "stalk"
+      target: "corner"
+      side: "left"
+
+  - player: WR2
+    assignment: run_block
+    details:
+      technique: "stalk"
+      target: "corner"
+      side: "right"
+
+snap_count: "on one"
+audible_options: ["quick_slant", "check_protection"]

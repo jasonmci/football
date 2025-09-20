@@ -1,0 +1,125 @@
+name: sweep_right
+label: "Outside Zone Sweep Right (11 Personnel)"
+formation: singleback_11
+personnel: ["11"]
+play_type: run
+tags: [run, sweep, outside_zone, perimeter, stretch]
+
+# Pre-snap shifts
+pre_snap_shifts: []
+
+motion:
+  player: WR2
+  path:
+    - from: {lane: "left", depth: "wide"}
+    - to: {lane: "right", depth: "wide"}
+  timing: "pre_snap"
+
+# Sweep assignments - get to the edge fast
+assignments:
+  - player: QB
+    assignment: handoff
+    target: RB1
+    details:
+      mesh_point: "quick_pitch"
+      ball_handling: "sweep_handoff"
+      footwork: "reverse_pivot"
+
+  - player: RB1
+    assignment: run
+    direction: right
+    details:
+      technique: "get_edge"
+      vision: "outside_leverage"
+      target_gap: "outside"
+      patience: "minimal"  # Hit it fast
+      cutback_read: "always_available"
+
+  # ZONE BLOCKING SCHEME - Everyone slides right
+  - player: LT
+    assignment: run_block
+    details:
+      scheme: "zone_block"
+      technique: "slide_right"
+      target: "gap_control"
+      leverage: "outside"
+
+  - player: LG
+    assignment: run_block
+    details:
+      scheme: "zone_block"
+      technique: "slide_right"
+      target: "gap_control"
+      leverage: "outside"
+
+  - player: C
+    assignment: run_block
+    details:
+      scheme: "zone_block"
+      technique: "slide_right"
+      target: "gap_control"
+      leverage: "outside"
+
+  - player: RG
+    assignment: run_block
+    details:
+      scheme: "zone_block"
+      technique: "slide_right"
+      target: "gap_control"
+      leverage: "outside"
+
+  - player: RT
+    assignment: run_block
+    details:
+      scheme: "reach_block"
+      technique: "reach_outside"
+      target: "defensive_end"
+      leverage: "outside"
+
+  - player: TE
+    assignment: run_block
+    details:
+      scheme: "seal_block"
+      technique: "seal_inside"
+      target: "outside_linebacker"
+
+  # WR1 is the key edge blocker
+  - player: WR1
+    assignment: run_block
+    details:
+      scheme: "crack_block"
+      technique: "inside_leverage"
+      target: "safety"
+
+  # WR2 runs route to clear safety
+  - player: WR2
+    assignment: route
+    details:
+      route: "post"
+      depth: 15
+      timing: "intermediate"
+      clear_safety: true
+
+# Execution notes
+execution:
+  key_timing: "RB must get to edge before pursuit arrives"
+  success_factors: ["OL reach blocks", "TE seal", "WR crack block", "RB speed to edge"]
+  failure_points: ["Failed reach blocks", "RB cuts back too early", "Edge not sealed"]
+
+# Tactical advantages
+tactical_advantages:
+  - "outside_speed"
+  - "horizontal_stretch"
+  - "perimeter_attack"
+
+advantages:
+  - "Excellent vs aggressive inside rush"
+  - "Good vs lighter boxes"
+  - "Can break for big gains"
+  - "Stretches defense horizontally"
+
+disadvantages:
+  - "Vulnerable to strong edge setting"
+  - "Struggles vs 8+ man boxes"
+  - "Field position dependent"
+  - "Requires athletic OL"

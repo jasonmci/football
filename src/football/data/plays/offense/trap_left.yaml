@@ -1,0 +1,106 @@
+name: trap_left
+label: "Trap Left (11 Shotgun)"
+formation: shotgun
+personnel: ["11"]
+play_type: run
+tags: [run, trap, misdirection, shotgun]
+
+# Pre-snap shifts
+pre_snap_shifts:
+  - player: RB1
+    action: shift_left
+    target_lane: left
+    target_alignment: tight
+    timing: 1
+
+motion: null
+
+# Shotgun trap - different blocking scheme than I-formation
+assignments:
+  - player: QB
+    assignment: handoff
+    target: RB1
+    details:
+      mesh_point: "extended"  # Shotgun mesh is deeper
+      ball_handling: "secure_exchange"
+
+  - player: RB1
+    assignment: run_block
+    direction: left
+    details:
+      technique: "one_cut"
+      vision: "find_trap_hole"
+      target_gap: "A_gap"
+      patience: "moderate"  # Can wait slightly longer in shotgun
+
+  # RIGHT SIDE - Slide protection away from trap
+  - player: RT
+    assignment: run_block
+    details:
+      scheme: "big_on_big"
+      technique: "vertical_set"
+      target: "defensive_end"
+
+  # TRAP BLOCKING SCHEME (mirrored)
+  - player: RG
+    assignment: run_block
+    details:
+      scheme: "pull"
+      direction: left
+      target: "trap_defender"
+      technique: "trap_block"
+      timing: "aggressive_arrival"  # Shotgun allows better timing
+
+  - player: C
+    assignment: run_block
+    details:
+      scheme: "slide_right"
+      target: "nose_tackle"
+      help: "left_guard"
+
+  # LEFT GUARD - intentionally lets DT penetrate
+  - player: LG
+    assignment: run_block
+    details:
+      scheme: "trap_set"
+      technique: "invite_penetration"
+      target: "defensive_tackle"
+      special: "controlled_release"  # Let DT upfield
+
+  - player: LT
+    assignment: run_block
+    details:
+      scheme: "slide_left"
+      technique: "vertical_set"
+      target: "defensive_end"
+
+  # RECEIVERS - Stalk blocking in space
+  - player: WR1
+    assignment: run_block
+    details:
+      technique: "stalk"
+      target: "corner"
+      level: "perimeter"
+
+  - player: WR2
+    assignment: run_block
+    details:
+      technique: "stalk"
+      target: "safety"
+      level: "perimeter"
+
+  - player: WR3
+    assignment: run_block
+    details:
+      technique: "crack"
+      target: "linebacker"
+      level: "second_level"
+
+snap_count: "on two"  # Hard count to draw defense offsides
+audible_options: ["bubble_screen", "quick_game"]
+
+# Shotgun trap advantages:
+# 1. Better pre-snap reads for QB
+# 2. RB can see the developing hole
+# 3. More time for trap block to develop
+# 4. Threatens pass, keeps safeties honest

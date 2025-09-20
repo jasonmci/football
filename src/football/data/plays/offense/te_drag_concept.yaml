@@ -1,0 +1,124 @@
+name: te_drag_concept
+label: "TE Drag Concept (Bunch Formation)"
+formation: bunch_right
+personnel: ["11"]
+play_type: pass
+tags: [pass, tight_end, drag, quick_game, horizontal_stretch]
+
+# Pre-snap shifts
+pre_snap_shifts:
+  - player: WR2
+    action: move_to_bunch
+    coordinate:
+      x: 2
+      y: 0
+    timing: 1
+
+motion:
+  player: TE
+  path:
+    - from: {lane: "right", depth: "line"}
+    - to: {lane: "left", depth: "slot"}
+  timing: "snap"
+
+# TE drag with horizontal stretch
+assignments:
+  - player: QB
+    assignment: pass
+    target: TE
+    details:
+      read_progression: ["TE", "WR1", "RB1", "WR2"]
+      pocket_presence: "quick_game"
+      release_timing: "quick"
+      read_leverage: true
+
+  - player: RB1
+    assignment: pass_protect
+    details:
+      scheme: "slide_protection"
+      technique: "check_mike"
+      hot_route: true
+
+  # O-Line in quick protection
+  - player: LT
+    assignment: pass_protect
+    details:
+      scheme: "slide_left"
+      technique: "quick_set"
+      target: "defensive_end"
+
+  - player: LG
+    assignment: pass_protect
+    details:
+      scheme: "slide_left"
+      technique: "quick_set"
+      target: "defensive_tackle"
+
+  - player: C
+    assignment: pass_protect
+    details:
+      scheme: "slide_left"
+      technique: "quick_set"
+      target: "nose_tackle"
+      make_calls: true
+
+  - player: RG
+    assignment: pass_protect
+    details:
+      scheme: "slide_right"
+      technique: "quick_set"
+      target: "defensive_tackle"
+
+  - player: RT
+    assignment: pass_protect
+    details:
+      scheme: "slide_right"
+      technique: "quick_set"
+      target: "defensive_end"
+
+  # PRIMARY TARGET - TE drags across formation
+  - player: TE
+    assignment: route
+    details:
+      route: "drag"
+      depth: 5
+      timing: "quick"
+      settle_point: "soft_spot"
+      vs_zone: "find_hole"
+      vs_man: "rub_route"
+
+  # COMPLEMENTARY ROUTES - Create picks and stretches
+  - player: WR1
+    assignment: route
+    details:
+      route: "slant"
+      depth: 6
+      timing: "quick"
+      rub_for_te: true
+
+  - player: WR2
+    assignment: route
+    details:
+      route: "hitch"
+      depth: 8
+      timing: "quick"
+      stretch_coverage: true
+
+# Execution notes
+execution:
+  key_timing: "TE must time drag to avoid traffic"
+  success_factors: ["TE finds soft spot", "Quick protection", "WR picks"]
+  failure_points: ["TE runs into traffic", "Poor timing", "No separation"]
+
+# Tactical advantages
+advantages:
+  - "Quick developing route"
+  - "TE drag finds soft spots in zone"
+  - "Creates natural picks/rubs"
+  - "Good vs blitz"
+
+disadvantages:
+  - "Vulnerable to tight man coverage"
+  - "Limited YAC potential"
+  - "Requires precise timing"
+  - "Can get crowded in middle"

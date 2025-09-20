@@ -1,0 +1,90 @@
+name: four_verts
+label: "Four Verts (10 Spread)"
+formation: spread_10
+personnel: ["10"]
+play_type: pass
+tags: [pass, deep, vertical]
+
+pre_snap_shifts: []
+motion: null
+
+# Four verticals concept
+assignments:
+  - player: QB
+    assignment: route
+    details:
+      action: "pass"
+      read: "levels"
+      progression: ["WR1", "WR2", "WR3", "WR4"]
+      depth: "deep_shot"
+
+  - player: RB1
+    assignment: pass_block
+    details:
+      protection: "scan"
+      responsibility: "mike_linebacker"
+
+  - player: WR1
+    assignment: route
+    details:
+      pattern: "go"
+      depth: 20
+      side: "left"
+      leverage: "outside"
+
+  - player: WR2
+    assignment: route
+    details:
+      pattern: "go"
+      depth: 18
+      side: "left"
+      leverage: "inside"
+
+  - player: WR3
+    assignment: route
+    details:
+      pattern: "go"
+      depth: 18
+      side: "right"
+      leverage: "inside"
+
+  - player: WR4
+    assignment: route
+    details:
+      pattern: "go"
+      depth: 20
+      side: "right"
+      leverage: "outside"
+
+  - player: LT
+    assignment: pass_block
+    details:
+      protection: "slide"
+      direction: "left"
+
+  - player: LG
+    assignment: pass_block
+    details:
+      protection: "slide"
+      direction: "left"
+
+  - player: C
+    assignment: pass_block
+    details:
+      protection: "slide"
+      direction: "left"
+
+  - player: RG
+    assignment: pass_block
+    details:
+      protection: "slide"
+      direction: "left"
+
+  - player: RT
+    assignment: pass_block
+    details:
+      protection: "slide"
+      direction: "left"
+
+snap_count: "on two"
+audible_options: ["check_to_slants", "hot_routes"]
